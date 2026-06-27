@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isDarkMode) {
@@ -42,9 +44,7 @@ const Home = () => {
   return (
     <div className="home-container">
       
-      {/* Navbar */}
-      <nav className="navbar">
-        {/* تم تغيير الاسم وتلوين المقطع الأخير ليعطي شكل لوجو احترافي */}
+      <nav className="navbar animate-fade-in-down">
         <h1 className="logo">Event<span>ify</span></h1>
         <div className="nav-actions">
           <button 
@@ -53,31 +53,32 @@ const Home = () => {
           >
             {isDarkMode ? '☀️' : '🌙'}
           </button>
-          <button className="login-btn">Log In</button>
-          <button className="register-btn">Sign Up</button>
+          <button className="login-btn" onClick={() => navigate('/auth')}>Log In</button>
+          <button className="register-btn" onClick={() => navigate('/auth')}>Sign Up</button>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <header className="hero">
+      <header className="hero animate-slide-up">
         <h2>Discover & Join <br /><span>The Best Events with Eventify</span></h2>
-        <p>Eventify is an all-in-one platform connecting student clubs and activities. Develop your skills, build your network, and live a passionate campus life.</p>
+        <p>An all-in-one platform connecting student clubs and activities. Develop your skills, build your network, and live a passionate campus life.</p>
         <div className="hero-buttons">
-          <button className="primary-btn">Explore Events</button>
-          <button className="secondary-btn">Register Club</button>
+          <button className="primary-btn" onClick={() => navigate('/auth')}>Explore Events</button>
+          <button className="secondary-btn" onClick={() => navigate('/auth')}>Register Club</button>
         </div>
       </header>
 
       <section className="events-section">
-        <div className="section-header">
+        <div className="section-header animate-slide-up-delayed">
           <h3>Upcoming Highlights</h3>
           <p>Don't miss out on these featured activities</p>
         </div>
 
-        <div className="events-grid">
+        <div className="events-grid animate-slide-up-delayed-more">
           {mockEvents.map((event) => (
             <div key={event.id} className="event-card">
-              <img src={event.image} alt={event.title} className="card-image" />
+              <div className="card-image-wrapper">
+                 <img src={event.image} alt={event.title} className="card-image" />
+              </div>
               <div className="card-content">
                 <div className="tags">
                   {event.tags.map((tag, index) => (

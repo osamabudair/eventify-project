@@ -1,0 +1,221 @@
+/* وضع المحتوى في منتصف الصفحة */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  padding: 40px 20px;
+}
+
+/* تصميم البطاقة المركزية الواسعة */
+.auth-card {
+  background-color: var(--card-bg);
+  width: 100%;
+  max-width: 500px; /* مساحة واسعة لراحة العين */
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+  overflow: hidden; /* يحافظ على الزوايا الدائرية بسلاسة */
+}
+
+/* زر الرجوع وتوازن المسافات */
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 24px;
+  padding: 0;
+  transition: color 0.3s;
+}
+
+.back-btn:hover {
+  color: var(--primary-color);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-header .logo {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.auth-header h2 {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+}
+
+.auth-header p {
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+/* تأثير الانتقال الحركي بين الصفحات (Fade Animation) */
+.auth-form-wrapper {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.input-group input {
+  padding: 14px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px var(--tag-bg);
+}
+
+/* شريط قوة الباسوورد */
+.password-strength-container {
+  margin-top: -8px;
+}
+
+.strength-bar-bg {
+  height: 6px;
+  background-color: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.strength-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.strength-text {
+  font-size: 12px;
+}
+
+/* تصميم اختيار نوع الحساب الجديد (I am a) */
+.role-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.role-selection label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.role-options {
+  display: flex;
+  gap: 12px;
+}
+
+.role-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.role-box .role-icon {
+  font-size: 24px;
+}
+
+.role-box:hover {
+  border-color: var(--primary-color);
+  background-color: var(--card-bg);
+}
+
+.role-box.active {
+  border-color: var(--primary-color);
+  background-color: var(--tag-bg);
+  color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+/* زر التأكيد (Submit) */
+.submit-btn {
+  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+}
+
+.auth-toggle {
+  text-align: center;
+  margin-top: 24px;
+  color: var(--text-secondary);
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.toggle-btn:hover {
+  text-decoration: underline;
+}

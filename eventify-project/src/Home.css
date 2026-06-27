@@ -1,4 +1,4 @@
-/* متغيرات الألوان للوضع النهاري والليلي */
+/* إعدادات المتغيرات العامة */
 :root {
   --bg-color: #f9fafb;
   --text-primary: #111827;
@@ -11,7 +11,6 @@
   --tag-text: #1e40af;
 }
 
-/* عند إضافة كلاس dark-mode للـ body، تتغير المتغيرات */
 body.dark-mode {
   --bg-color: #111827;
   --text-primary: #f9fafb;
@@ -24,7 +23,6 @@ body.dark-mode {
   --tag-text: #93c5fd;
 }
 
-/* إعدادات عامة */
 body {
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
@@ -34,9 +32,38 @@ body {
 }
 
 .home-container {
-  max-w-width: 1200px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
+}
+
+/* الأنيميشن والمؤثرات الحركية (Animations) */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+.animate-slide-up-delayed {
+  opacity: 0;
+  animation: slideUp 0.8s ease-out 0.2s forwards;
+}
+
+.animate-slide-up-delayed-more {
+  opacity: 0;
+  animation: slideUp 0.8s ease-out 0.4s forwards;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.6s ease-out forwards;
 }
 
 /* شريط التنقل */
@@ -48,8 +75,8 @@ body {
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 28px;
+  font-weight: 800;
   color: var(--primary-color);
   margin: 0;
 }
@@ -72,7 +99,12 @@ body {
   padding: 8px;
   border-radius: 50%;
   color: var(--text-primary);
-  transition: 0.2s;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--border-color);
+  transform: rotate(15deg);
 }
 
 .login-btn {
@@ -81,41 +113,48 @@ body {
   color: var(--text-primary);
   font-weight: 600;
   cursor: pointer;
+  transition: color 0.2s;
+}
+
+.login-btn:hover {
+  color: var(--primary-color);
 }
 
 .register-btn {
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 10px;
+  font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .register-btn:hover {
-  background-color: var(--primary-hover);
   transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(37, 99, 235, 0.25);
 }
 
-/* القسم الترحيبي (متناسق المسافات بدون هوامش علوية مبالغ فيها) */
+/* القسم الترحيبي (متوازن المسافات) */
 .hero {
   text-align: center;
-  padding: 40px 0 60px 0; /* تم تقليل الـ 60px العلوية إلى 40px */
+  padding: 40px 0 60px 0; 
   max-width: 800px;
   margin: 0 auto;
 }
 
 .hero h2 {
-  font-size: 48px;
+  font-size: 52px;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   line-height: 1.2;
 }
 
 .hero h2 span {
-  color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero p {
@@ -131,37 +170,46 @@ body {
   gap: 16px;
 }
 
+/* توحيد تصميم الزر الرئيسي مع صفحة Auth */
 .primary-btn {
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
   color: white;
   border: none;
-  padding: 14px 32px;
+  padding: 16px 36px;
   border-radius: 12px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .primary-btn:hover {
-  transform: scale(1.05);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
 }
 
 .secondary-btn {
-  background-color: var(--card-bg);
+  background-color: transparent;
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   padding: 14px 32px;
   border-radius: 12px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secondary-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-3px);
 }
 
 /* قسم الفعاليات والبطاقات */
 .events-section {
-  padding: 40px 0 80px 0;
+  padding: 20px 0 80px 0;
 }
 
 .section-header {
@@ -169,74 +217,84 @@ body {
 }
 
 .section-header h3 {
-  font-size: 28px;
+  font-size: 32px;
   margin: 0 0 8px 0;
+  font-weight: 800;
 }
 
 .section-header p {
   color: var(--text-secondary);
   margin: 0;
+  font-size: 16px;
 }
 
 /* شبكة البطاقات */
 .events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 32px;
 }
 
-/* تصميم البطاقة مع الحفاظ على الزوايا الدائرية عند إضافة الصورة */
+/* تصميم البطاقة مع الحفاظ على الزوايا الدائرية والتفاعل */
 .event-card {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  
-  /* الإضافات الجديدة هنا */
+  border-radius: 16px; 
+  overflow: hidden; /* يحافظ على نعومة الزوايا بوجود الصورة */
   display: flex;
   flex-direction: column;
   height: 100%;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 .event-card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  transform: translateY(-4px);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: var(--primary-color);
+}
+
+.card-image-wrapper {
+  overflow: hidden;
 }
 
 .card-image {
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.event-card:hover .card-image {
+  transform: scale(1.05); /* زوم خفيف للصورة عند التمرير */
 }
 
 .card-content {
   padding: 24px;
-  
-  /* الإضافات الجديدة هنا */
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* يجبر الحاوية على أخذ كامل المساحة المتبقية */
+  flex-grow: 1;
 }
 
 .tags {
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .tag {
   background-color: var(--tag-bg);
   color: var(--tag-text);
   font-size: 12px;
-  font-weight: bold;
-  padding: 4px 12px;
+  font-weight: 700;
+  padding: 6px 14px;
   border-radius: 20px;
 }
 
 .card-content h4 {
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 700;
   margin: 0 0 16px 0;
+  line-height: 1.4;
 }
 
 .event-meta {
@@ -245,280 +303,23 @@ body {
   font-size: 14px;
   color: var(--text-secondary);
   margin-bottom: 24px;
-  
-  /* الإضافة الجديدة هنا */
-  margin-top: auto; /* هذه الخاصية تدفع هذا العنصر وما تحته إلى أقصى أسفل البطاقة */
+  margin-top: auto; 
 }
 
 .details-btn {
   width: 100%;
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: bold;
+  font-size: 15px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.3s ease;
 }
 
 .details-btn:hover {
   background-color: var(--primary-color);
   color: white;
-  border-color: var(--primary-color);
-}/* متغيرات الألوان للوضع النهاري والليلي */
-:root {
-  --bg-color: #f9fafb;
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --card-bg: #ffffff;
-  --border-color: #e5e7eb;
-  --primary-color: #2563eb;
-  --primary-hover: #1d4ed8;
-  --tag-bg: #dbeafe;
-  --tag-text: #1e40af;
-}
-
-/* عند إضافة كلاس dark-mode للـ body، تتغير المتغيرات */
-body.dark-mode {
-  --bg-color: #111827;
-  --text-primary: #f9fafb;
-  --text-secondary: #9ca3af;
-  --card-bg: #1f2937;
-  --border-color: #374151;
-  --primary-color: #3b82f6;
-  --primary-hover: #2563eb;
-  --tag-bg: rgba(30, 58, 138, 0.3);
-  --tag-text: #93c5fd;
-}
-
-/* إعدادات عامة */
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.home-container {
-  max-w-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* شريط التنقل */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 0;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--primary-color);
-  margin: 0;
-}
-
-.logo span {
-  color: var(--text-primary);
-}
-
-.nav-actions {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.theme-toggle {
-  background: transparent;
-  border: 1px solid var(--border-color);
-  font-size: 20px;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  color: var(--text-primary);
-  transition: 0.2s;
-}
-
-.login-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-primary);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.register-btn {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
-}
-
-.register-btn:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-2px);
-}
-
-/* القسم الترحيبي (متناسق المسافات بدون هوامش علوية مبالغ فيها) */
-.hero {
-  text-align: center;
-  padding: 60px 0; 
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.hero h2 {
-  font-size: 48px;
-  font-weight: 800;
-  margin-bottom: 20px;
-  line-height: 1.2;
-}
-
-.hero h2 span {
-  color: var(--primary-color);
-}
-
-.hero p {
-  font-size: 18px;
-  color: var(--text-secondary);
-  margin-bottom: 32px;
-  line-height: 1.6;
-}
-
-.hero-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-}
-
-.primary-btn {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 14px 32px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-}
-
-.primary-btn:hover {
-  transform: scale(1.05);
-}
-
-.secondary-btn {
-  background-color: var(--card-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  padding: 14px 32px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* قسم الفعاليات والبطاقات */
-.events-section {
-  padding: 40px 0 80px 0;
-}
-
-.section-header {
-  margin-bottom: 40px;
-}
-
-.section-header h3 {
-  font-size: 28px;
-  margin: 0 0 8px 0;
-}
-
-.section-header p {
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-/* شبكة البطاقات */
-.events-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 32px;
-}
-
-/* تصميم البطاقة مع الحفاظ على الزوايا الدائرية عند إضافة الصورة */
-.event-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 16px; /* زوايا ناعمة */
-  overflow: hidden; /* يمنع الصورة من جعل الزوايا حادة */
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.event-card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  transform: translateY(-4px);
-}
-
-.card-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.card-content {
-  padding: 24px;
-}
-
-.tags {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.tag {
-  background-color: var(--tag-bg);
-  color: var(--tag-text);
-  font-size: 12px;
-  font-weight: bold;
-  padding: 4px 12px;
-  border-radius: 20px;
-}
-
-.card-content h4 {
-  font-size: 20px;
-  margin: 0 0 16px 0;
-}
-
-.event-meta {
-  display: flex;
-  gap: 16px;
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 24px;
-}
-
-.details-btn {
-  width: 100%;
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.details-btn:hover {
-  background-color: var(--primary-color);
-  color: white;
-  border-color: var(--primary-color);
 }
