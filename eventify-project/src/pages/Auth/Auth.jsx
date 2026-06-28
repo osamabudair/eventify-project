@@ -1,26 +1,34 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext';
 import './Auth.css';
 
 const Auth = () => {
+  const { isDarkMode, toggleTheme } = useTheme();
   const [isLogin, setIsLogin] = useState(true);
+  
+  // حالات القيم
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('STUDENT');
   
-  // حالة التحكم بالأنيميشن
+  // حالات إظهار/إخفاء كلمة المرور
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
   const [animationClass, setAnimationClass] = useState('fade-in');
   const navigate = useNavigate();
 
-  // دالة تبديل الصفحة مع تأثير حركي
   const toggleAuthMode = () => {
-    setAnimationClass('fade-out'); // بدء الاختفاء
+    setAnimationClass('fade-out');
     setTimeout(() => {
       setIsLogin(!isLogin);
       setPassword('');
       setConfirmPassword('');
-      setAnimationClass('fade-in'); // بدء الظهور
-    }, 300); // 300 ملي ثانية (نفس مدة الـ CSS)
+      setShowPassword(false); // إعادة الإخفاء عند التبديل
+      setShowConfirmPassword(false);
+      setAnimationClass('fade-in');
+    }, 300);
   };
 
   const getPasswordStrength = (pass) => {
@@ -58,9 +66,14 @@ const Auth = () => {
     <div className="auth-page">
       <div className="auth-card">
         
-        <button className="back-btn" onClick={() => navigate('/')}>
-          &larr; Back to Home
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <button className="back-btn" onClick={() => navigate('/')} style={{ marginBottom: 0 }}>
+            &larr; Back to Home
+          </button>
+          <button className="theme-toggle" onClick={toggleTheme}>
+            {isDarkMode ? '☀️' : '🌙'}
+          </button>
+        </div>
         
         <div className="auth-header">
           <h1 className="logo">Event<span>ify</span></h1>
@@ -68,7 +81,6 @@ const Auth = () => {
           <p>{isLogin ? 'Please enter your details to sign in.' : 'Join us and start managing or joining events.'}</p>
         </div>
 
-        {/* غلاف الأنيميشن */}
         <div className={`auth-form-wrapper ${animationClass}`}>
           <form onSubmit={handleSubmit} className="auth-form">
             {!isLogin && (
@@ -80,19 +92,27 @@ const Auth = () => {
 
             <div className="input-group">
               <label>Email Address</label>
-              {/* تعديل الـ placeholder لإيميل طبيعي */}
               <input type="email" placeholder="example@gmail.com" required />
             </div>
 
             <div className="input-group">
               <label>Password</label>
-              <input 
-                type="password" 
-                placeholder="••••••••" 
-                required 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="password-input-wrapper">
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  placeholder="••••••••" 
+                  required 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button 
+                  type="button" 
+                  className="password-toggle-btn"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </button>
+              </div>
             </div>
 
             {!isLogin && (
@@ -109,21 +129,28 @@ const Auth = () => {
               </div>
             )}
 
-            {/* حقل تأكيد كلمة المرور */}
             {!isLogin && (
               <div className="input-group">
                 <label>Confirm Password</label>
-                <input 
-                  type="password" 
-                  placeholder="••••••••" 
-                  required 
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
+                <div className="password-input-wrapper">
+                  <input 
+                    type={showConfirmPassword ? "text" : "password"} 
+                    placeholder="••••••••" 
+                    required 
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  <button 
+                    type="button" 
+                    className="password-toggle-btn"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? '🙈' : '👁️'}
+                  </button>
+                </div>
               </div>
             )}
 
-            {/* التصميم الموديرن لاختيار نوع الحساب */}
             {!isLogin && (
               <div className="role-selection">
                 <label>I am a:</label>
@@ -147,7 +174,7 @@ const Auth = () => {
             )}
 
             <button type="submit" className="submit-btn">
-              {isLogin ? 'Sign In' : 'Sign Up'}
+              {isLogin ? 'Log In' : 'Registration'}
             </button>
           </form>
         </div>
@@ -156,7 +183,7 @@ const Auth = () => {
           <p>
             {isLogin ? "Don't have an account? " : "Already have an account? "}
             <button type="button" onClick={toggleAuthMode} className="toggle-btn">
-              {isLogin ? 'Sign Up' : 'Sign In'}
+              {isLogin ? 'Registration' : 'Log In'}
             </button>
           </p>
         </div>

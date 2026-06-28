@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react'; // شلنا الـ useState و useEffect
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext'; // استدعاء الثيم العالمي
 import './Home.css';
 
 const Home = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [isDarkMode]);
 
   const mockEvents = [
     {
@@ -43,18 +36,18 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      
       <nav className="navbar animate-fade-in-down">
         <h1 className="logo">Event<span>ify</span></h1>
         <div className="nav-actions">
+          {/* زر تبديل الدارك مود صار يستخدم الدالة العالمية */}
           <button 
             className="theme-toggle" 
-            onClick={() => setIsDarkMode(!isDarkMode)}
+            onClick={toggleTheme}
           >
             {isDarkMode ? '☀️' : '🌙'}
           </button>
           <button className="login-btn" onClick={() => navigate('/auth')}>Log In</button>
-          <button className="register-btn" onClick={() => navigate('/auth')}>Sign Up</button>
+          <button className="register-btn" onClick={() => navigate('/auth')}>Registration</button>
         </div>
       </nav>
 
