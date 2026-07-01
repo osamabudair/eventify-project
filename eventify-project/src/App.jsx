@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import Home from './pages/Home/Home';
 import Auth from './pages/Auth/Auth';
+import Dashboard from './pages/Dashboard/Dashboard'; // الإضافة هنا
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/dashboard" element={<Dashboard />} /> {/* الإضافة هنا */}
         </Routes>
       </Router>
     </ThemeProvider>
