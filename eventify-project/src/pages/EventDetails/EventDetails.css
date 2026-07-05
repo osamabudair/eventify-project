@@ -1,0 +1,222 @@
+/* الإعدادات العامة للصفحة */
+.event-details-page {
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  padding-bottom: 80px;
+}
+
+/* شريط التنقل */
+.details-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  padding: 0;
+}
+
+.back-btn:hover {
+  color: var(--primary-color);
+  transform: translateX(-4px);
+}
+
+/* صورة الغلاف */
+.event-hero-image {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 450px;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.event-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0; left: 40px; right: 40px;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+}
+
+/* مساحة المحتوى الواسعة */
+.event-main-content {
+  max-width: 1400px;
+  margin: -60px auto 0; /* يسحب المحتوى للأعلى ليغطي جزءاً من الصورة */
+  padding: 0 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.content-wrapper {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* عمود الوصف التفصيلي */
+.event-info {
+  flex: 2; /* يأخذ مساحة أكبر لراحة العين في القراءة */
+  background-color: var(--card-bg);
+  padding: 48px;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+  border: 1px solid var(--border-color);
+}
+
+.event-tags {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.event-title {
+  font-size: 42px;
+  font-weight: 800;
+  margin: 0 0 24px 0;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.event-description {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* بطاقة التسجيل الجانبية */
+.event-registration-card {
+  flex: 1; /* يأخذ مساحة أقل */
+  background-color: var(--card-bg);
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+  border: 1px solid var(--border-color);
+  position: sticky;
+  top: 40px; /* يجعل البطاقة تتحرك مع القارئ */
+}
+
+.event-registration-card h3 {
+  font-size: 22px;
+  margin: 0 0 32px 0;
+  font-weight: 800;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.detail-icon {
+  color: var(--primary-color);
+  background-color: var(--tag-bg);
+  padding: 12px;
+  border-radius: 14px;
+  width: 48px;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.detail-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.detail-item p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* زر التسجيل التفاعلي */
+.register-action-btn {
+  width: 100%;
+  padding: 18px;
+  margin-top: 16px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+}
+
+.register-action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
+}
+
+.register-action-btn.registered {
+  background: #10b981;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+  cursor: default;
+}
+
+.register-action-btn.registered:hover {
+  transform: none;
+}
+
+/* تجاوب الشاشات الصغيرة */
+@media (max-width: 992px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+  .event-registration-card {
+    width: 100%;
+    position: relative;
+    top: 0;
+  }
+  .event-hero-image {
+    padding: 0 20px;
+    height: 300px;
+  }
+  .image-overlay {
+    left: 20px; right: 20px;
+  }
+  .event-main-content {
+    padding: 0 20px;
+  }
+}
+
+/* الأنيميشن */
+.animate-fade-in { animation: fadeIn 0.6s ease-out; }
+.animate-slide-up { animation: slideUp 0.6s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
