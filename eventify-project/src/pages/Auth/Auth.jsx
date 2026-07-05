@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // إضافة useEffect
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
+import { Sun, Moon, Eye, EyeOff } from 'lucide-react'; // استيراد الأيقونات
 import './Auth.css';
 
 const Auth = () => {
@@ -18,6 +19,11 @@ const Auth = () => {
   
   const [animationClass, setAnimationClass] = useState('fade-in');
   const navigate = useNavigate();
+
+  // تغيير عنوان الـ Tab بناءً على حالة الفورم (تسجيل دخول أو حساب جديد)
+  useEffect(() => {
+    document.title = isLogin ? "Log In - Eventify" : "Registration - Eventify";
+  }, [isLogin]);
 
   const toggleAuthMode = () => {
     setAnimationClass('fade-out');
@@ -59,7 +65,12 @@ const Auth = () => {
       alert("Passwords do not match!");
       return;
     }
+    
+    // محاكاة عملية تسجيل الدخول بنجاح
     console.log("Form Submitted - Role:", role);
+    
+    // توجيه المستخدم فوراً إلى لوحة التحكم بعد الضغط
+    navigate('/dashboard');
   };
 
   return (
@@ -71,7 +82,8 @@ const Auth = () => {
             &larr; Back to Home
           </button>
           <button className="theme-toggle" onClick={toggleTheme}>
-            {isDarkMode ? '☀️' : '🌙'}
+            {/* الأيقونات الموديرن للثيم */}
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
         
@@ -110,7 +122,8 @@ const Auth = () => {
                   className="password-toggle-btn"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? '🙈' : '👁️'}
+                  {/* أيقونات العين الاحترافية */}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
@@ -129,7 +142,7 @@ const Auth = () => {
               </div>
             )}
 
-            {!isLogin && (
+           {!isLogin && (
               <div className="input-group">
                 <label>Confirm Password</label>
                 <div className="password-input-wrapper">
@@ -145,7 +158,8 @@ const Auth = () => {
                     className="password-toggle-btn"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showConfirmPassword ? '🙈' : '👁️'}
+                    {/* أيقونات العين الاحترافية */}
+                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
               </div>

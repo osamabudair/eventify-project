@@ -1,11 +1,17 @@
-import React from 'react'; // شلنا الـ useState و useEffect
+import React, { useEffect } from 'react'; // أضفنا useEffect
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../../context/ThemeContext'; // استدعاء الثيم العالمي
+import { useTheme } from '../../context/ThemeContext';
+import { Sun, Moon } from 'lucide-react'; // استيراد الأيقونات الاحترافية
 import './Home.css';
 
 const Home = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
+
+  // تغيير عنوان الـ Tab برمجياً
+  useEffect(() => {
+    document.title = "Home - Eventify";
+  }, []);
 
   const mockEvents = [
     {
@@ -36,20 +42,17 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <nav className="navbar animate-fade-in-down">
-        <h1 className="logo">Event<span>ify</span></h1>
-        <div className="nav-actions">
-          {/* زر تبديل الدارك مود صار يستخدم الدالة العالمية */}
-          <button 
-            className="theme-toggle" 
-            onClick={toggleTheme}
-          >
-            {isDarkMode ? '☀️' : '🌙'}
-          </button>
-          <button className="login-btn" onClick={() => navigate('/auth')}>Log In</button>
-          <button className="register-btn" onClick={() => navigate('/auth')}>Registration</button>
-        </div>
-      </nav>
+        <nav className="navbar animate-fade-in-down">
+          <h1 className="logo">Event<span>ify</span></h1>
+          <div className="nav-actions">
+            <button className="theme-toggle" onClick={toggleTheme}>
+              {/* استخدام الأيقونات بدل الإيموجي */}
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button className="login-btn" onClick={() => navigate('/auth')}>Log In</button>
+            <button className="register-btn" onClick={() => navigate('/auth')}>Registration</button>
+          </div>
+        </nav>
 
       <header className="hero animate-slide-up">
         <h2>Discover & Join <br /><span>The Best Events with Eventify</span></h2>
@@ -83,7 +86,13 @@ const Home = () => {
                   <span>📅 {event.date}</span>
                   <span>🏢 {event.club}</span>
                 </div>
-                <button className="details-btn">View Details</button>
+                {/* داخل الـ event-card */}
+                <button 
+                  className="details-btn" 
+                  onClick={() => navigate(`/event/${event.id}`)}
+                >
+                  View Details
+                </button>
               </div>
             </div>
           ))}

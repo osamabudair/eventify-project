@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react'; // إضافة useEffect
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
+import { Sun, Moon } from 'lucide-react'; // استيراد الأيقونات
 import './Dashboard.css';
 
 const Dashboard = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Dashboard - Eventify";
+  }, []);
 
   // بيانات وهمية للإحصائيات والجداول
   const stats = [
@@ -45,7 +50,6 @@ const Dashboard = () => {
 
       {/* مساحة العمل الرئيسية */}
       <main className="main-content">
-        {/* الشريط العلوي (Top Header) */}
         <header className="dashboard-header">
           <div>
             <h2>Welcome back, Club Leader! 👋</h2>
@@ -53,7 +57,8 @@ const Dashboard = () => {
           </div>
           <div className="header-actions">
             <button className="theme-toggle" onClick={toggleTheme}>
-              {isDarkMode ? '☀️' : '🌙'}
+              {/* الأيقونات الموديرن للثيم */}
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <button className="primary-btn add-event-btn">+ Create Event</button>
           </div>
