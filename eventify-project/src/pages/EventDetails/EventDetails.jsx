@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import { Calendar, MapPin, Clock, Users, ArrowLeft, Sun, Moon, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Sun, Moon } from 'lucide-react';
+import EventRegistrationCard from '../../components/EventRegistrationCard';
 import './EventDetails.css';
 
 const EventDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useTheme();
-  
-  // حالة التفاعل لزر التسجيل
   const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     document.title = `Event Details - Eventify`;
-    window.scrollTo(0, 0); // الصعود لأعلى الصفحة عند فتحها
+    window.scrollTo(0, 0);
   }, [id]);
 
-  // بيانات وهمية للفعالية (سيتم جلبها لاحقاً من الـ Backend باستخدام الـ id)
   const event = {
     id: id,
     title: "AI Fundamentals Workshop",
@@ -31,95 +29,36 @@ const EventDetails = () => {
     tags: ["Tech", "Coding", "AI", "Workshop"]
   };
 
-  const handleRegister = () => {
-    // محاكاة عملية التسجيل
-    setIsRegistered(true);
-  };
-
   return (
     <div className="event-details-page">
-      
-      {/* شريط التنقل العلوي البسيط */}
       <nav className="details-nav">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          <ArrowLeft size={20} /> Back
-        </button>
+        <button className="back-btn" onClick={() => navigate(-1)}><ArrowLeft size={20} /> Back</button>
         <button className="theme-toggle" onClick={toggleTheme}>
           {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
         </button>
       </nav>
 
-      {/* صورة الغلاف الواسعة */}
       <div className="event-hero-image animate-fade-in">
         <img src={event.image} alt={event.title} />
         <div className="image-overlay"></div>
       </div>
 
-      {/* المحتوى الرئيسي (تخطيط واسع ومريح) */}
       <main className="event-main-content animate-slide-up">
         <div className="content-wrapper">
-          
-          {/* العمود الأيسر: الوصف التفصيلي */}
           <div className="event-info">
             <div className="event-tags">
-              {event.tags.map((tag, index) => (
-                <span key={index} className="tag">{tag}</span>
-              ))}
+              {event.tags.map((tag, i) => <span key={i} className="tag">{tag}</span>)}
             </div>
             <h1 className="event-title">{event.title}</h1>
             <p className="event-description">{event.description}</p>
           </div>
 
-          {/* العمود الأيمن: بطاقة معلومات التسجيل */}
-          <div className="event-registration-card">
-            <h3>Event Details</h3>
-            
-            <div className="detail-item">
-              <Calendar className="detail-icon" size={24} />
-              <div>
-                <span className="detail-label">Date</span>
-                <p>{event.date}</p>
-              </div>
-            </div>
-            
-            <div className="detail-item">
-              <Clock className="detail-icon" size={24} />
-              <div>
-                <span className="detail-label">Time</span>
-                <p>{event.time}</p>
-              </div>
-            </div>
-            
-            <div className="detail-item">
-              <MapPin className="detail-icon" size={24} />
-              <div>
-                <span className="detail-label">Location</span>
-                <p>{event.location}</p>
-              </div>
-            </div>
-            
-            <div className="detail-item">
-              <Users className="detail-icon" size={24} />
-              <div>
-                <span className="detail-label">Organized By</span>
-                <p>{event.club}</p>
-              </div>
-            </div>
-
-            {/* الزر التفاعلي للتسجيل */}
-            <button 
-              className={`register-action-btn ${isRegistered ? 'registered' : ''}`}
-              onClick={handleRegister}
-              disabled={isRegistered}
-            >
-              {isRegistered ? (
-                <><CheckCircle size={20} /> Registered Successfully</>
-              ) : (
-                'Register Now'
-              )}
-            </button>
-          </div>
-
+          {/* استدعاء بطاقة التسجيل كمكون نظيف */}
+          <EventRegistrationCard 
+            event={event} 
+            isRegistered={isRegistered} 
+            onRegister={() => setIsRegistered(true)} 
+          />
         </div>
       </main>
     </div>

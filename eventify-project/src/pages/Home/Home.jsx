@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react'; // أضفنا useEffect
-import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../../context/ThemeContext';
-import { Sun, Moon } from 'lucide-react'; // استيراد الأيقونات الاحترافية
+import React, { useEffect } from 'react';
+import Navbar from '../../components/Navbar';
+import HeroSection from '../../components/HeroSection';
+import EventCard from '../../components/EventCard'; // المكون اللي عملناه سابقاً
 import './Home.css';
 
 const Home = () => {
-  const { isDarkMode, toggleTheme } = useTheme();
-  const navigate = useNavigate();
-
-  // تغيير عنوان الـ Tab برمجياً
-  useEffect(() => {
-    document.title = "Home - Eventify";
-  }, []);
+  useEffect(() => { document.title = "Home - Eventify"; }, []);
 
   const mockEvents = [
     {
@@ -42,63 +36,20 @@ const Home = () => {
 
   return (
     <div className="home-container">
-        <nav className="navbar animate-fade-in-down">
-          <h1 className="logo">Event<span>ify</span></h1>
-          <div className="nav-actions">
-            <button className="theme-toggle" onClick={toggleTheme}>
-              {/* استخدام الأيقونات بدل الإيموجي */}
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <button className="login-btn" onClick={() => navigate('/auth')}>Log In</button>
-            <button className="register-btn" onClick={() => navigate('/auth')}>Registration</button>
-          </div>
-        </nav>
-
-      <header className="hero animate-slide-up">
-        <h2>Discover & Join <br /><span>The Best Events with Eventify</span></h2>
-        <p>An all-in-one platform connecting student clubs and activities. Develop your skills, build your network, and live a passionate campus life.</p>
-        <div className="hero-buttons">
-          <button className="primary-btn" onClick={() => navigate('/auth')}>Explore Events</button>
-          <button className="secondary-btn" onClick={() => navigate('/auth')}>Register Club</button>
-        </div>
-      </header>
-
+      <Navbar />
+      <HeroSection />
+      
       <section className="events-section">
         <div className="section-header animate-slide-up-delayed">
           <h3>Upcoming Highlights</h3>
           <p>Don't miss out on these featured activities</p>
         </div>
-
         <div className="events-grid animate-slide-up-delayed-more">
           {mockEvents.map((event) => (
-            <div key={event.id} className="event-card">
-              <div className="card-image-wrapper">
-                 <img src={event.image} alt={event.title} className="card-image" />
-              </div>
-              <div className="card-content">
-                <div className="tags">
-                  {event.tags.map((tag, index) => (
-                    <span key={index} className="tag">{tag}</span>
-                  ))}
-                </div>
-                <h4>{event.title}</h4>
-                <div className="event-meta">
-                  <span>📅 {event.date}</span>
-                  <span>🏢 {event.club}</span>
-                </div>
-                {/* داخل الـ event-card */}
-                <button 
-                  className="details-btn" 
-                  onClick={() => navigate(`/event/${event.id}`)}
-                >
-                  View Details
-                </button>
-              </div>
-            </div>
+            <EventCard key={event.id} event={event} />
           ))}
         </div>
       </section>
-
     </div>
   );
 };
