@@ -1,26 +1,25 @@
-import React, { useState, useEffect } from 'react'; // إضافة useEffect
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import { Sun, Moon, Eye, EyeOff } from 'lucide-react'; // استيراد الأيقونات
+import { Sun, Moon, Eye, EyeOff } from 'lucide-react';
+import PasswordStrengthMeter from '../../components/PasswordStrengthMeter';
+import AuthVisuals from '../../components/AuthVisuals';
 import './Auth.css';
 
 const Auth = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const [isLogin, setIsLogin] = useState(true);
   
-  // حالات القيم
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('STUDENT');
   
-  // حالات إظهار/إخفاء كلمة المرور
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   const [animationClass, setAnimationClass] = useState('fade-in');
   const navigate = useNavigate();
 
-  // تغيير عنوان الـ Tab بناءً على حالة الفورم (تسجيل دخول أو حساب جديد)
   useEffect(() => {
     document.title = isLogin ? "Log In - Eventify" : "Registration - Eventify";
   }, [isLogin]);
@@ -31,33 +30,11 @@ const Auth = () => {
       setIsLogin(!isLogin);
       setPassword('');
       setConfirmPassword('');
-      setShowPassword(false); // إعادة الإخفاء عند التبديل
+      setShowPassword(false);
       setShowConfirmPassword(false);
       setAnimationClass('fade-in');
     }, 300);
   };
-
-  const getPasswordStrength = (pass) => {
-    let score = 0;
-    if (!pass) return score;
-    if (pass.length >= 8) score += 1;
-    if (/[A-Z]/.test(pass) && /[a-z]/.test(pass)) score += 1;
-    if (/\d/.test(pass)) score += 1;
-    if (/[^A-Za-z0-9]/.test(pass)) score += 1;
-    return score;
-  };
-
-  const strength = getPasswordStrength(password);
-  const getStrengthData = () => {
-    switch(strength) {
-      case 1: return { label: 'Weak', color: '#ef4444', width: '25%' };
-      case 2: return { label: 'Fair', color: '#f59e0b', width: '50%' };
-      case 3: return { label: 'Good', color: '#3b82f6', width: '75%' };
-      case 4: return { label: 'Strong', color: '#10b981', width: '100%' };
-      default: return { label: '', color: '#e5e7eb', width: '0%' };
-    }
-  };
-  const strengthData = getStrengthData();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,11 +42,6 @@ const Auth = () => {
       alert("Passwords do not match!");
       return;
     }
-    
-    // محاكاة عملية تسجيل الدخول بنجاح
-    console.log("Form Submitted - Role:", role);
-    
-    // توجيه المستخدم فوراً إلى لوحة التحكم بعد الضغط
     navigate('/dashboard');
   };
 
@@ -82,7 +54,6 @@ const Auth = () => {
             &larr; Back to Home
           </button>
           <button className="theme-toggle" onClick={toggleTheme}>
-            {/* الأيقونات الموديرن للثيم */}
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
@@ -117,32 +88,16 @@ const Auth = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <button 
-                  type="button" 
-                  className="password-toggle-btn"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {/* أيقونات العين الاحترافية */}
+                <button type="button" className="password-toggle-btn" onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
 
-            {!isLogin && (
-              <div className="password-strength-container">
-                <div className="strength-bar-bg">
-                  <div 
-                    className="strength-bar-fill" 
-                    style={{ width: strengthData.width, backgroundColor: strengthData.color }}
-                  ></div>
-                </div>
-                <div className="strength-text">
-                  <span style={{ color: strengthData.color, fontWeight: 'bold' }}>{strengthData.label}</span>
-                </div>
-              </div>
-            )}
+            {/* استدعاء مكون قوة كلمة المرور */}
+            {!isLogin && <PasswordStrengthMeter password={password} />}
 
-           {!isLogin && (
+            {!isLogin && (
               <div className="input-group">
                 <label>Confirm Password</label>
                 <div className="password-input-wrapper">
@@ -153,12 +108,7 @@ const Auth = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
-                  <button 
-                    type="button" 
-                    className="password-toggle-btn"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {/* أيقونات العين الاحترافية */}
+                  <button type="button" className="password-toggle-btn" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                     {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
@@ -169,17 +119,11 @@ const Auth = () => {
               <div className="role-selection">
                 <label>I am a:</label>
                 <div className="role-options">
-                  <div 
-                    className={`role-box ${role === 'STUDENT' ? 'active' : ''}`}
-                    onClick={() => setRole('STUDENT')}
-                  >
+                  <div className={`role-box ${role === 'STUDENT' ? 'active' : ''}`} onClick={() => setRole('STUDENT')}>
                     <span className="role-icon">🎓</span>
                     <span>Student</span>
                   </div>
-                  <div 
-                    className={`role-box ${role === 'CLUB_LEADER' ? 'active' : ''}`}
-                    onClick={() => setRole('CLUB_LEADER')}
-                  >
+                  <div className={`role-box ${role === 'CLUB_LEADER' ? 'active' : ''}`} onClick={() => setRole('CLUB_LEADER')}>
                     <span className="role-icon">👑</span>
                     <span>Club Leader</span>
                   </div>
@@ -203,6 +147,9 @@ const Auth = () => {
         </div>
         
       </div>
+      
+      {/* استدعاء المكون البصري إذا كنت بتستخدم تصميم العمودين */}
+      {/* <AuthVisuals /> */} 
     </div>
   );
 };
