@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
-import Navbar from '../../components/Navbar';
-import HeroSection from '../../components/HeroSection';
-import EventCard from '../../components/EventCard'; // المكون اللي عملناه سابقاً
+
+// الاستدعاءات الجديدة بعد الترتيب
+import Navbar from '../../components/Navbar/Navbar';
+import HeroSection from '../../components/HeroSection/HeroSection';
+import EventCard from '../../components/EventCard/EventCard'; 
+
 import './Home.css';
 
 const Home = () => {

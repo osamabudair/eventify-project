@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import './EventCard.css';
 
 const EventCard = ({ event }) => {
   const navigate = useNavigate();

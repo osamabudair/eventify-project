@@ -3,7 +3,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import Home from './pages/Home/Home';
 import Auth from './pages/Auth/Auth';
 import Dashboard from './pages/Dashboard/Dashboard';
-import EventDetails from './pages/EventDetails/EventDetails'; // الإضافة هنا
+import EventDetails from './pages/EventDetails/EventDetails';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/event/:id" element={<EventDetails />} /> {/* الإضافة هنا */}
+          <Route path="/event/:id" element={<EventDetails />} />
         </Routes>
       </Router>
     </ThemeProvider>

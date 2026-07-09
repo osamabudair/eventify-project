@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 import { Sun, Moon } from 'lucide-react';
+import './Navbar.css';
 
 const Navbar = () => {
   const { isDarkMode, toggleTheme } = useTheme();
