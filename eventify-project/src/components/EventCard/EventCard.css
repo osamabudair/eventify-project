@@ -5,12 +5,11 @@
   gap: 32px;
 }
 
-/* تصميم البطاقة مع الحفاظ على الزوايا الدائرية والتفاعل */
 .event-card {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 16px; 
-  overflow: hidden; /* يحافظ على نعومة الزوايا بوجود الصورة */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -35,7 +34,7 @@
 }
 
 .event-card:hover .card-image {
-  transform: scale(1.05); /* زوم خفيف للصورة عند التمرير */
+  transform: scale(1.05);
 }
 
 .card-content {

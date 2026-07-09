@@ -55,16 +55,16 @@
 .theme-toggle {
   background: transparent;
   border: 1px solid var(--border-color);
-  width: 44px;         /* عرض ثابت */
-  height: 44px;        /* طول مساوٍ للعرض */
-  display: flex;       /* لتوسيط الأيقونة */
+  width: 44px;  
+  height: 44px;       
+  display: flex;       
   align-items: center;
   justify-content: center;
-  border-radius: 50%;  /* شكل دائري مثالي */
+  border-radius: 50%; 
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.3s ease;
-  padding: 0;          /* إزالة أي حشوة داخلية تسبب تشوه الشكل */
+  padding: 0;
 }
 
 .theme-toggle:hover {

@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
-
-// الاستدعاءات الجديدة بعد الترتيب
 import Navbar from '../../components/Navbar/Navbar';
 import HeroSection from '../../components/HeroSection/HeroSection';
 import EventCard from '../../components/EventCard/EventCard'; 
-
 import './Home.css';
 
 const Home = () => {
