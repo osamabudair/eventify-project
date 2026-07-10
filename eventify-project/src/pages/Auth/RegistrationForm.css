@@ -1,0 +1,51 @@
+/* Role Selection */
+.role-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.role-selection label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.role-options {
+  display: flex;
+  gap: 12px;
+}
+
+.role-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.role-box .role-icon {
+  font-size: 24px;
+}
+
+.role-box:hover {
+  border-color: var(--primary-color);
+  background-color: var(--card-bg);
+}
+
+.role-box.active {
+  border-color: var(--primary-color);
+  background-color: var(--tag-bg);
+  color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}

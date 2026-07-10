@@ -1,4 +1,5 @@
 import React from 'react';
+import './PasswordStrengthMeter.css';
 
 const PasswordStrengthMeter = ({ password }) => {
   const getPasswordStrength = (pass) => {
@@ -25,7 +26,7 @@ const PasswordStrengthMeter = ({ password }) => {
 
   const strengthData = getStrengthData();
 
-  if (!password) return null; // لا تعرض شيئاً إذا كان الحقل فارغاً
+  if (!password) return null;
 
   return (
     <div className="password-strength-container">
