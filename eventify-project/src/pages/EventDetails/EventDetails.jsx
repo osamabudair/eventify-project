@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ArrowLeft, Sun, Moon } from 'lucide-react';
-import EventRegistrationCard from '../../components/EventRegistrationCard';
+import EventRegistrationCard from '../../components/EventRegistrationCard/EventRegistrationCard';
 import './EventDetails.css';
 
 const EventDetails = () => {
@@ -31,34 +31,55 @@ const EventDetails = () => {
 
   return (
     <div className="event-details-page">
+      {/* navbar */}
       <nav className="details-nav">
-        <button className="back-btn" onClick={() => navigate(-1)}><ArrowLeft size={20} /> Back</button>
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          <ArrowLeft size={20} /> Back
+        </button>
         <button className="theme-toggle" onClick={toggleTheme}>
           {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
         </button>
       </nav>
 
-      <div className="event-hero-image animate-fade-in">
-        <img src={event.image} alt={event.title} />
-        <div className="image-overlay"></div>
-      </div>
-
-      <main className="event-main-content animate-slide-up">
-        <div className="content-wrapper">
-          <div className="event-info">
-            <div className="event-tags">
-              {event.tags.map((tag, i) => <span key={i} className="tag">{tag}</span>)}
+      {/* image section */}
+      <header className="modern-hero animate-fade-in">
+        <div className="hero-image-container">
+          <img src={event.image} alt={event.title} className="hero-bg-image" />
+          <div className="hero-gradient-overlay"></div>
+          
+          <div className="hero-content">
+            <div className="hero-tags">
+              {event.tags.map((tag, i) => (
+                <span key={i} className="modern-tag">{tag}</span>
+              ))}
             </div>
-            <h1 className="event-title">{event.title}</h1>
-            <p className="event-description">{event.description}</p>
+            <h1 className="hero-title">{event.title}</h1>
+          </div>
+        </div>
+      </header>
+
+      {/* main content below image */}
+      <main className="modern-main-content animate-slide-up">
+        <div className="content-grid">
+          
+          {/* Event Description Section */}
+          <div className="event-description-section">
+            <h2>About this event</h2>
+            <div className="description-text">
+              <p>{event.description}</p>
+              <p>Don't miss out on this opportunity to connect with like-minded individuals and advance your technical career.</p>
+            </div>
           </div>
 
-          {/* استدعاء بطاقة التسجيل كمكون نظيف */}
-          <EventRegistrationCard 
-            event={event} 
-            isRegistered={isRegistered} 
-            onRegister={() => setIsRegistered(true)} 
-          />
+          {/* Event Registration Card */}
+          <div className="event-sidebar">
+            <EventRegistrationCard 
+              event={event} 
+              isRegistered={isRegistered} 
+              onRegister={() => setIsRegistered(true)} 
+            />
+          </div>
+          
         </div>
       </main>
     </div>
