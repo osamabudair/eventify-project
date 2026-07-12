@@ -12,30 +12,30 @@ const Sidebar = ({ activeTab, setActiveTab, handleLogout }) => {
           className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
           onClick={() => setActiveTab('overview')}
         >
-          <LayoutDashboard size={20} /> Overview
+          <LayoutDashboard size={18} /> Overview
         </button>
         <button 
           className={`nav-item ${activeTab === 'manage' ? 'active' : ''}`}
           onClick={() => setActiveTab('manage')}
         >
-          <CalendarDays size={20} /> Manage Events
+          <CalendarDays size={18} /> Manage Events
         </button>
         <button 
           className={`nav-item ${activeTab === 'registrations' ? 'active' : ''}`}
           onClick={() => setActiveTab('registrations')}
         >
-          <Users size={20} /> Registrations
+          <Users size={18} /> Registrations
         </button>
         <button 
           className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
           onClick={() => setActiveTab('settings')}
         >
-          <Settings size={20} /> Settings
+          <Settings size={18} /> Settings
         </button>
       </nav>
       <div className="sidebar-footer">
         <button className="logout-btn" onClick={handleLogout}>
-          <LogOut size={20} /> Logout
+          <LogOut size={18} /> Logout
         </button>
       </div>
     </aside>

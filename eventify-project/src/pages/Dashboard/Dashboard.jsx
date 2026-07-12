@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import { Sun, Moon, CalendarDays, Calendar, Users, Clock, Edit, Trash2, Plus } from 'lucide-react';
+import { Sun, Moon, Plus } from 'lucide-react';
 import Sidebar from '../../components/Sidebar';
 import CreateEventModal from '../../components/CreateEventModal';
-import StatCard from '../../components/StatCard';
-import RecentEventsTable from '../../components/RecentEventsTable';
+import OverviewTab from './tabs/OverviewTab';
+import ManageEventsTab from './tabs/ManageEventsTab';
+import RegistrationsTab from './tabs/RegistrationsTab';
+import SettingsTab from './tabs/SettingsTab';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -15,66 +17,33 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    document.title = "Dashboard - Eventify";
-  }, []);
-
-  const stats = [
-    { title: 'Total Events', value: '12', icon: <Calendar size={24} /> },
-    { title: 'Total Registrations', value: '348', icon: <Users size={24} /> },
-    { title: 'Pending Requests', value: '25', icon: <Clock size={24} /> },
-  ];
-
-  const recentEvents = [
-    { id: 1, name: 'AI Fundamentals Workshop', date: 'July 15, 2026', status: 'Active' },
-    { id: 2, name: 'Web Dev Bootcamp', date: 'July 22, 2026', status: 'Draft' },
-    { id: 3, name: 'Cybersecurity Panel', date: 'August 05, 2026', status: 'Active' },
-  ];
+  useEffect(() => { document.title = "Dashboard - Eventify"; }, []);
 
   const handleLogout = () => navigate('/');
-  const handleEdit = (eventName) => alert(`Editing event: ${eventName}`);
-  const handleDelete = (eventName) => {
-    if(window.confirm(`Are you sure you want to delete "${eventName}"?`)) {
-      alert("Event deleted successfully!");
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'overview': 
+        return <OverviewTab setActiveTab={setActiveTab} />;
+      case 'manage': 
+        return <ManageEventsTab />;
+      case 'registrations': 
+        return <RegistrationsTab />;
+      case 'settings': 
+        return <SettingsTab />;
+      default: 
+        return null;
     }
   };
 
-  const renderContent = () => {
-    if (activeTab === 'overview') {
-      return (
-        <div className="animate-fade-in">
-          {/* استدعاء البطاقات الإحصائية بنظافة */}
-          <div className="stats-grid">
-            {stats.map((stat, index) => (
-              <StatCard key={index} title={stat.title} value={stat.value} icon={stat.icon} />
-            ))}
-          </div>
-
-          {/* استدعاء الجدول بنظافة */}
-          <RecentEventsTable 
-            events={recentEvents} 
-            onEdit={handleEdit} 
-            onDelete={handleDelete} 
-            onViewAll={() => setActiveTab('manage')} 
-          />
-        </div>
-      );
-    }
-  }
-
   return (
     <div className="dashboard-layout">
-      {/* استدعاء الشريط الجانبي كمكون مستقل */}
-      <Sidebar 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        handleLogout={handleLogout} 
-      />
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} handleLogout={handleLogout} />
 
       <main className="main-content">
         <header className="dashboard-header">
           <div>
-            <h2>Welcome back, Club Leader! 👋</h2>
+            <h2>Welcome back, Club Leader</h2>
             <p className="text-secondary">Here is what's happening with your events today.</p>
           </div>
           <div className="header-actions">
@@ -90,11 +59,7 @@ const Dashboard = () => {
         {renderContent()}
       </main>
 
-      {/* استدعاء النافذة المنبثقة كمكون مستقل */}
-      <CreateEventModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-      />
+      <CreateEventModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };

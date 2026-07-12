@@ -1,0 +1,16 @@
+/* registration actions buttons */
+.action-btn.approve {
+  color: #10b981;
+}
+
+.action-btn.approve:hover {
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.action-btn.reject {
+  color: #ef4444;
+}
+
+.action-btn.reject:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}

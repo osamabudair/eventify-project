@@ -1,0 +1,98 @@
+/* manage events */
+.modern-view-section {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.section-heading {
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 20px;
+}
+
+/* table */
+.table-container {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.table-header h3 { 
+  margin: 0; 
+  font-size: 18px; 
+}
+
+.view-all-btn {
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.events-table th,
+.events-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.events-table th {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.events-table td.font-semibold {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* status badges */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status-badge.active { background-color: rgba(16, 185, 129, 0.1); color: #10b981; }
+.status-badge.draft { background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+
+/* action buttons */
+.action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.action-btn.edit { color: var(--text-secondary); }
+.action-btn.edit:hover { background-color: var(--tag-bg); color: var(--primary-color); }
+
+.action-btn.delete { color: var(--text-secondary); }
+.action-btn.delete:hover { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
