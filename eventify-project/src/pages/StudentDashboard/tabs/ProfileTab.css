@@ -1,0 +1,177 @@
+/* التخطيط الشبكي للعمودين */
+.modern-profile-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr; /* العمود الأيسر ثابت، والأيمن يأخذ باقي المساحة */
+  gap: 32px;
+  align-items: start;
+}
+
+/* ----------------------------------
+   البطاقة التعريفية (العمود الأيسر)
+----------------------------------- */
+.profile-sidebar-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+}
+
+.avatar-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+}
+
+.avatar-edit-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  border: 2px solid var(--card-bg);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.avatar-edit-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+  transform: scale(1.1);
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+}
+
+.profile-role {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+  background-color: var(--tag-bg);
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin: 0 0 24px 0;
+}
+
+.profile-quick-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 24px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.info-icon {
+  color: var(--text-primary);
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+/* ----------------------------------
+   الفورمات (العمود الأيمن)
+----------------------------------- */
+.profile-forms-section {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.modern-form-card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  border-radius: 20px;
+}
+
+.card-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.card-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 8px 0;
+  font-size: 20px;
+}
+
+.header-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.disabled-input {
+  background-color: var(--bg-color);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.settings-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.settings-save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+}
+
+/* تجاوب الشاشات الصغيرة */
+@media (max-width: 1024px) {
+  .modern-profile-layout {
+    grid-template-columns: 1fr; /* تحويل التخطيط لعمود واحد في الشاشات الصغيرة */
+  }
+}

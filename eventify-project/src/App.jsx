@@ -4,6 +4,7 @@ import Home from './pages/Home/Home';
 import Auth from './pages/Auth/Auth';
 import Dashboard from './pages/Dashboard/Dashboard';
 import EventDetails from './pages/EventDetails/EventDetails';
+import StudentDashboard from './pages/StudentDashboard/StudentDashboard';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/event/:id" element={<EventDetails />} />
+          <Route path="/student" element={<StudentDashboard />} />
         </Routes>
       </Router>
     </ThemeProvider>
