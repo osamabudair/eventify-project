@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Calendar, Building2} from 'lucide-react';
 import './EventCard.css';
 
 const EventCard = ({ event }) => {
@@ -18,8 +19,8 @@ const EventCard = ({ event }) => {
         </div>
         <h4>{event.title}</h4>
         <div className="event-meta">
-          <span>📅 {event.date}</span>
-          <span>🏢 {event.club}</span>
+          <span><Calendar size={16} className="meta-icon" /> {event.date}</span>
+          <span><Building2 size={16} className="meta-icon" /> {event.club}</span>
         </div>
         <button className="details-btn" onClick={() => navigate(`/event/${event.id}`)}>
           View Details

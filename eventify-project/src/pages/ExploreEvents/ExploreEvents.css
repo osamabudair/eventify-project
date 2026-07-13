@@ -1,0 +1,145 @@
+/* الحاوية الأساسية */
+.explore-page-container {
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+}
+
+/* قسم الترويسة والبحث */
+.explore-header {
+  background-color: var(--bg-color);
+  padding: 80px 20px 60px;
+  border-bottom: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.explore-header-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.explore-header h1 {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+}
+
+.explore-header p {
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin: 0 0 40px 0;
+}
+
+/* تصميم شريط البحث */
+.search-filter-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.search-bar-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+}
+
+.search-input {
+  width: 100%;
+  padding: 18px 20px 18px 56px;
+  font-size: 16px;
+  border-radius: 100px;
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* أزرار الفلترة */
+.category-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.filter-icon {
+  color: var(--text-secondary);
+  margin-right: 8px;
+}
+
+.category-btn {
+  background-color: var(--bg-color);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.category-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.category-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* قسم عرض النتائج */
+.explore-main {
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* حالة عدم وجود نتائج (Empty State) */
+.no-results {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-secondary);
+}
+
+.no-results-icon {
+  opacity: 0.3;
+  margin-bottom: 20px;
+}
+
+.no-results h3 {
+  font-size: 24px;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+}
+
+.no-results p {
+  margin: 0 0 24px 0;
+}
+
+/* الأنيميشن */
+.animate-fade-in { animation: fadeIn 0.8s ease-out; }
+.animate-slide-up { animation: slideUp 0.6s ease-out forwards; }

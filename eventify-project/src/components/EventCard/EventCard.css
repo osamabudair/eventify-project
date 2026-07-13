@@ -75,6 +75,12 @@
   margin-top: auto; 
 }
 
+.meta-icon {
+  margin-right: 6px;
+  margin-top: -4px;
+  vertical-align: middle;
+}
+
 .details-btn {
   width: 100%;
   background-color: transparent;

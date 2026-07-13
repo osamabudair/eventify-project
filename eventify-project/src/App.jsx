@@ -5,6 +5,7 @@ import Auth from './pages/Auth/Auth';
 import Dashboard from './pages/Dashboard/Dashboard';
 import EventDetails from './pages/EventDetails/EventDetails';
 import StudentDashboard from './pages/StudentDashboard/StudentDashboard';
+import ExploreEvents from './pages/ExploreEvents/ExploreEvents';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/event/:id" element={<EventDetails />} />
           <Route path="/student" element={<StudentDashboard />} />
+          <Route path="/explore" element={<ExploreEvents />} />
         </Routes>
       </Router>
     </ThemeProvider>

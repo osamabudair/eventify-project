@@ -32,7 +32,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 0;
+  padding: 24px 40px;
+  max-width: 1200px; /* نفس العرض المستخدم في باقي الأقسام */
+  margin: 0 auto;    /* لتوسيط الشريط في الشاشات الكبيرة */
+  width: 100%;
+  box-sizing: border-box;
+  background-color: transparent; /* أو var(--bg-color) حسب تصميمك */
 }
 
 .logo {
