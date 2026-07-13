@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, CalendarX } from 'lucide-react';
+import { Search, Filter, CalendarX, Building2, X } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
 import EventCard from '../../components/EventCard/EventCard';
 import './ExploreEvents.css';
 
 const ExploreEvents = () => {
-  // 1. إدارة الحالة (States)
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedClub, setSelectedClub] = useState('All');
 
-  // تعيين عنوان الصفحة
   useEffect(() => {
     document.title = "Explore Events - Eventify";
     window.scrollTo(0, 0);
   }, []);
 
-  // 2. بيانات وهمية موسعة (بفئات مختلفة لتجربة الفلترة)
   const allEvents = [
     { id: 1, title: "AI Fundamentals Workshop", club: "Tech Club", date: "July 15, 2026", category: "Tech", tags: ["Tech", "AI"], image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800" },
     { id: 2, title: "Startup Pitch Deck", club: "Business Club", date: "July 18, 2026", category: "Business", tags: ["Business", "Startup"], image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800" },
@@ -26,57 +24,82 @@ const ExploreEvents = () => {
   ];
 
   const categories = ['All', 'Tech', 'Business', 'Sports', 'Arts'];
+  const clubs = ['All', ...new Set(allEvents.map(e => e.club))];
 
-  // 3. المنطق البرمجي للفلترة (أهم جزء)
   const filteredEvents = allEvents.filter(event => {
-    // التحقق من البحث (هل اسم الفعالية أو اسم النادي يحتوي على الكلمة المكتوبة؟)
     const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           event.club.toLowerCase().includes(searchQuery.toLowerCase());
-    // التحقق من التصنيف
     const matchesCategory = selectedCategory === 'All' || event.category === selectedCategory;
+    const matchesClub = selectedClub === 'All' || event.club === selectedClub;
     
-    return matchesSearch && matchesCategory;
+    return matchesSearch && matchesCategory && matchesClub;
   });
 
   return (
     <div className="explore-page-container">
       <Navbar />
 
-      {/* قسم الترويسة والبحث */}
+      {/* header content */}
       <header className="explore-header animate-fade-in">
         <div className="explore-header-content">
           <h1>Explore Campus Events</h1>
           <p>Find the perfect activities to build your skills and network.</p>
-          
-          <div className="search-filter-container">
-            <div className="search-bar-wrapper">
+
+          <div className="interactive-filter-section">
+            
+            <div className="modern-search-bar">
               <Search className="search-icon" size={20} />
               <input 
                 type="text" 
                 placeholder="Search events or clubs..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-input"
               />
+              {/* delete search button */}
+              {searchQuery && (
+                <button className="clear-search-btn" onClick={() => setSearchQuery('')}>
+                  <X size={16} />
+                </button>
+              )}
             </div>
-          </div>
-          
-          <div className="category-filters">
-            <Filter size={18} className="filter-icon" />
-            {categories.map(category => (
-              <button 
-                key={category}
-                className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </button>
-            ))}
+            
+            {/* pills filter category */}
+            <div className="modern-pills-container">
+              <div className="pill-group">
+                <Filter size={18} className="group-icon" />
+                {categories.map(category => (
+                  <button 
+                    key={category}
+                    className={`filter-pill ${selectedCategory === category ? 'active' : ''}`}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+
+              <div className="pill-divider"></div>
+              {/* club filter */}
+              <div className="pill-group">
+                <Building2 size={18} className="group-icon" />
+                <select 
+                  className="filter-pill select-pill" 
+                  value={selectedClub} 
+                  onChange={(e) => setSelectedClub(e.target.value)}
+                >
+                  <option value="All">All Clubs</option>
+                  {clubs.filter(c => c !== 'All').map(club => (
+                    <option key={club} value={club}>{club}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
           </div>
         </div>
       </header>
-
-      {/* قسم عرض النتائج */}
+      
+      {/* main content */}
       <main className="explore-main animate-slide-up">
         {filteredEvents.length > 0 ? (
           <div className="events-grid">
@@ -88,8 +111,8 @@ const ExploreEvents = () => {
           <div className="no-results">
             <CalendarX size={64} className="no-results-icon" />
             <h3>No events found</h3>
-            <p>We couldn't find any events matching your current filters. Try adjusting your search.</p>
-            <button className="secondary-btn" onClick={() => {setSearchQuery(''); setSelectedCategory('All');}}>
+            <p>We couldn't find any events matching your criteria.</p>
+            <button className="secondary-btn" onClick={() => {setSearchQuery(''); setSelectedCategory('All'); setSelectedClub('All');}}>
               Clear Filters
             </button>
           </div>

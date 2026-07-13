@@ -1,4 +1,4 @@
-/* الحاوية الأساسية */
+/* container */
 .explore-page-container {
   min-height: 100vh;
   background-color: var(--bg-color);
@@ -6,7 +6,7 @@
   flex-direction: column;
 }
 
-/* قسم الترويسة والبحث */
+/* header content */
 .explore-header {
   background-color: var(--bg-color);
   padding: 80px 20px 60px;
@@ -32,83 +32,138 @@
   margin: 0 0 40px 0;
 }
 
-/* تصميم شريط البحث */
-.search-filter-container {
+/* filter section */
+.interactive-filter-section {
   display: flex;
-  justify-content: center;
-  margin-bottom: 24px;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 700px;
+  margin: 0 auto 32px;
 }
 
-.search-bar-wrapper {
+/* search bar*/
+.modern-search-bar {
   position: relative;
   width: 100%;
-  max-width: 600px;
+  display: flex;
+  align-items: center;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 50px; 
+  padding: 8px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-search-bar:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+  transform: translateY(-2px);
 }
 
 .search-icon {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
   color: var(--text-secondary);
+  margin-right: 12px;
+  margin-left: 8px;
 }
 
-.search-input {
-  width: 100%;
-  padding: 18px 20px 18px 56px;
+.modern-search-bar input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px 0;
   font-size: 16px;
-  border-radius: 100px;
-  border: 2px solid var(--border-color);
-  background-color: var(--bg-color);
   color: var(--text-primary);
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-}
-
-.search-input:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-/* أزرار الفلترة */
-.category-filters {
+.clear-search-btn {
+  background: var(--tag-bg);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.filter-icon {
   color: var(--text-secondary);
-  margin-right: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 4px;
 }
 
-.category-btn {
-  background-color: var(--bg-color);
+.clear-search-btn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* pills container */
+.modern-pills-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.pill-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.group-icon {
+  color: var(--text-secondary);
+}
+
+.pill-divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--border-color);
+}
+
+/* filter pills */
+.filter-pill {
+  background-color: transparent;
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
-  padding: 8px 20px;
-  border-radius: 100px;
+  padding: 10px 20px;
+  border-radius: 50px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.category-btn:hover {
+.filter-pill:hover {
   border-color: var(--primary-color);
   color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.1);
 }
 
-.category-btn.active {
+.filter-pill.active {
   background-color: var(--primary-color);
   color: white;
   border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
-/* قسم عرض النتائج */
+.select-pill {
+  appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  outline: none;
+}
+
+.select-pill:focus {
+  border-color: var(--primary-color);
+}
+/* main content */
 .explore-main {
   flex: 1;
   max-width: 1400px;
@@ -118,7 +173,7 @@
   box-sizing: border-box;
 }
 
-/* حالة عدم وجود نتائج (Empty State) */
+/* no results */
 .no-results {
   text-align: center;
   padding: 80px 20px;
