@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import EventDetails from './pages/EventDetails/EventDetails';
 import StudentDashboard from './pages/StudentDashboard/StudentDashboard';
 import ExploreEvents from './pages/ExploreEvents/ExploreEvents';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -14,9 +15,23 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/event/:id" element={<EventDetails />} />
-          <Route path="/student-dashboard" element={<StudentDashboard />} />
+          <Route 
+            path="/student-dashboard" 
+            element={
+              <ProtectedRoute allowedRoles={['STUDENT', 'ADMIN']}>
+                <StudentDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/club-dashboard" 
+            element={
+              <ProtectedRoute allowedRoles={['CLUB_LEADER', 'ADMIN']}>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="/explore" element={<ExploreEvents />} />
         </Routes>
       </Router>
