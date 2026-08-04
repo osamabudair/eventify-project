@@ -16,7 +16,7 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/event/:id" element={<EventDetails />} />
-          <Route path="/student" element={<StudentDashboard />} />
+          <Route path="/student-dashboard" element={<StudentDashboard />} />
           <Route path="/explore" element={<ExploreEvents />} />
         </Routes>
       </Router>
