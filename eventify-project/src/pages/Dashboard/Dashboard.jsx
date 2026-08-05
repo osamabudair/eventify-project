@@ -16,10 +16,23 @@ const Dashboard = () => {
 
   const [activeTab, setActiveTab] = useState('overview');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userName, setUserName] = useState('Club Leader'); // حالة لتخزين اسم المستخدم
 
-  useEffect(() => { document.title = "Dashboard - Eventify"; }, []);
+  useEffect(() => { 
+    document.title = "Dashboard - Eventify"; 
 
-  const handleLogout = () => navigate('/');
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      setUserName(user.username || 'Club Leader');
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/');
+  };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -43,7 +56,7 @@ const Dashboard = () => {
       <main className="main-content">
         <header className="dashboard-header">
           <div>
-            <h2>Welcome back, Club Leader</h2>
+            <h2>Welcome back, {userName}</h2>
             <p className="text-secondary">Here is what's happening with your events today.</p>
           </div>
           <div className="header-actions">

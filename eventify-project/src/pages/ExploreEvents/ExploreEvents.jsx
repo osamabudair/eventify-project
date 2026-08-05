@@ -1,29 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, CalendarX, Building2, X } from 'lucide-react';
+import { Search, Filter, CalendarX, Building2, X, Loader2 } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
 import EventCard from '../../components/EventCard/EventCard';
+import { getAllEventsApi } from '../../api/axiosInstance'; // 👈 استيراد دالة الـ API
 import './ExploreEvents.css';
 
 const ExploreEvents = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedClub, setSelectedClub] = useState('All');
+  
+  // 👈 إضافة State للفعاليات الحقيقية وحالة التحميل
+  const [allEvents, setAllEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = "Explore Events - Eventify";
     window.scrollTo(0, 0);
+
+    // 👈 دالة جلب الفعاليات من الباك إند
+    const fetchEvents = async () => {
+      try {
+        const res = await getAllEventsApi();
+        
+        // تنسيق البيانات الجاية من الداتا بيس عشان تطابق تصميمك
+        const formattedEvents = res.data.map(ev => ({
+          id: ev._id,
+          title: ev.title,
+          club: ev.organizer?.username || "University Club", 
+          // تحويل التاريخ لصيغة مقروءة
+          date: new Date(ev.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+          category: ev.category,
+          tags: [ev.category], // استخدمنا التصنيف كـ Tag مؤقتاً
+          // صورة افتراضية بما إنه لسا ما ضفنا رفع صور بالباك إند
+          image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800" 
+        }));
+
+        setAllEvents(formattedEvents);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvents();
   }, []);
 
-  const allEvents = [
-    { id: 1, title: "AI Fundamentals Workshop", club: "Tech Club", date: "July 15, 2026", category: "Tech", tags: ["Tech", "AI"], image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800" },
-    { id: 2, title: "Startup Pitch Deck", club: "Business Club", date: "July 18, 2026", category: "Business", tags: ["Business", "Startup"], image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800" },
-    { id: 3, title: "Web Dev Bootcamp", club: "Tech Club", date: "July 22, 2026", category: "Tech", tags: ["Coding", "Web"], image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800" },
-    { id: 4, title: "Campus Marathon 2026", club: "Sports Club", date: "August 10, 2026", category: "Sports", tags: ["Health", "Running"], image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&q=80&w=800" },
-    { id: 5, title: "Modern Art Exhibition", club: "Art Club", date: "August 15, 2026", category: "Arts", tags: ["Art", "Exhibition"], image: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800" },
-    { id: 6, title: "Cybersecurity Panel", club: "Tech Club", date: "August 20, 2026", category: "Tech", tags: ["Security", "Tech"], image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" },
-  ];
-
-  const categories = ['All', 'Tech', 'Business', 'Sports', 'Arts'];
+  const categories = ['All', 'Technology', 'Business', 'Sports', 'Art', 'Science', 'Other']; // 👈 عدلتهم ليطابقوا الباك إند
   const clubs = ['All', ...new Set(allEvents.map(e => e.club))];
 
   const filteredEvents = allEvents.filter(event => {
@@ -101,7 +125,12 @@ const ExploreEvents = () => {
       
       {/* main content */}
       <main className="explore-main animate-slide-up">
-        {filteredEvents.length > 0 ? (
+        {/* 👈 إضافة شكل تحميل ناعم أثناء جلب البيانات */}
+        {isLoading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '40vh', color: '#6366f1' }}>
+             <Loader2 className="animate-spin" size={48} />
+          </div>
+        ) : filteredEvents.length > 0 ? (
           <div className="events-grid">
             {filteredEvents.map(event => (
               <EventCard key={event.id} event={event} />

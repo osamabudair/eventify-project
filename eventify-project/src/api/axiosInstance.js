@@ -19,5 +19,6 @@ export const registerApi = (data) => API.post('/auth/register', data);
 
 // Events APIs
 export const createEventApi = (data) => API.post('/events', data);
+export const getAllEventsApi = () => API.get('/events');
 
 export default API;
