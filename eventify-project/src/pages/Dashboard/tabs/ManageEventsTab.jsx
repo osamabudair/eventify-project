@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Edit, Trash2, Loader2 } from 'lucide-react';
-import { getMyEventsApi } from '../../../api/axiosInstance';
+import { getMyEventsApi, deleteEventApi } from '../../../api/axiosInstance';
 import './ManageEventsTab.css';
 
 const ManageEventsTab = () => {
@@ -23,9 +23,18 @@ const ManageEventsTab = () => {
   }, []);
 
   const handleEdit = (eventName) => alert(`Editing event: ${eventName}`);
-  const handleDelete = (eventName) => {
-    if(window.confirm(`Are you sure you want to delete "${eventName}"?`)) alert("Event deleted!");
-  };
+  const handleDelete = async (eventId, eventName) => {
+  if (window.confirm(`Are you sure you want to delete "${eventName}"?`)) {
+    try {
+      await deleteEventApi(eventId);
+      // تحديث القائمة محلياً لحذف العنصر من الشاشة فوراً
+      setEvents(events.filter(event => event._id !== eventId));
+      alert("Event deleted successfully!");
+    } catch {
+      alert("Failed to delete event");
+    }
+  }
+};
 
   return (
     <div className="animate-fade-in modern-view-section">
@@ -67,7 +76,7 @@ const ManageEventsTab = () => {
                     <button className="action-btn edit" onClick={() => handleEdit(event.title)}>
                       <Edit size={16} /> Edit
                     </button>
-                    <button className="action-btn delete" onClick={() => handleDelete(event.title)}>
+                    <button className="action-btn delete" onClick={() => handleDelete(event._id, event.title)}>
                       <Trash2 size={16} /> Delete
                     </button>
                   </td>

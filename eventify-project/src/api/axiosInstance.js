@@ -21,5 +21,6 @@ export const registerApi = (data) => API.post('/auth/register', data);
 export const createEventApi = (data) => API.post('/events', data);
 export const getAllEventsApi = () => API.get('/events');
 export const getMyEventsApi = () => API.get('/events/me');
+export const deleteEventApi = (id) => API.delete(`/events/${id}`);
 
 export default API;
