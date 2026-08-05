@@ -31,7 +31,7 @@ const RecentEventsTable = ({ events, onEdit, onDelete, onViewAll }) => {
                 <button className="action-btn edit" onClick={() => onEdit(event.name)}>
                   <Edit size={16} /> Edit
                 </button>
-                <button className="action-btn delete" onClick={() => onDelete(event.name)}>
+                <button className="action-btn delete" onClick={() => onDelete(event.id, event.name)}>
                   <Trash2 size={16} /> Delete
                 </button>
               </td>

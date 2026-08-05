@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Users, Clock, Loader2 } from 'lucide-react';
 import StatCard from '../../../components/StatCard';
 import RecentEventsTable from '../../../components/RecentEventsTable';
-import { getMyEventsApi } from '../../../api/axiosInstance';
+import { getMyEventsApi, deleteEventApi } from '../../../api/axiosInstance'; // 👈 استيراد دالة الحذف
 import './OverviewTab.css';
 
 const OverviewTab = ({ setActiveTab }) => {
@@ -24,22 +24,18 @@ const OverviewTab = ({ setActiveTab }) => {
     fetchOverviewData();
   }, []);
 
-  // 1. حساب إجمالي عدد الفعاليات الحقيقية
   const totalEvents = events.length;
 
-  // 2. حساب إجمالي المسجلين في كل الفعاليات الخاصة بالنادي
   const totalRegistrations = events.reduce((sum, event) => {
     return sum + (event.attendees?.length || 0);
   }, 0);
 
-  // 3. تجهيز بيانات البطاقات الإحصائية
   const stats = [
     { title: 'Total Events', value: totalEvents.toString(), icon: <Calendar size={24} /> },
     { title: 'Total Registrations', value: totalRegistrations.toString(), icon: <Users size={24} /> },
-    { title: 'Pending Requests', value: '0', icon: <Clock size={24} /> }, // سنربطها لاحقاً بطلبات الانضمام
+    { title: 'Pending Requests', value: '0', icon: <Clock size={24} /> },
   ];
 
-  // 4. تجهيز أول 3 فعاليات فقط للجدول المختصر
   const recentEventsFormatted = events.slice(0, 3).map((event) => {
     const isPast = new Date(event.date) < new Date();
     return {
@@ -51,8 +47,19 @@ const OverviewTab = ({ setActiveTab }) => {
   });
 
   const handleEdit = (eventName) => alert(`Editing event: ${eventName}`);
-  const handleDelete = (eventName) => {
-    if(window.confirm(`Are you sure you want to delete "${eventName}"?`)) alert("Event deleted!");
+
+  // 👈 دالة الحذف الجديدة
+  const handleDelete = async (eventId, eventName) => {
+    if (window.confirm(`Are you sure you want to delete "${eventName}"?`)) {
+      try {
+        await deleteEventApi(eventId);
+        // تحديث القائمة عشان الأرقام والجدول يتحدثوا فوراً
+        setEvents(events.filter(event => event._id !== eventId));
+      } catch (error) {
+        console.error("Delete Error:", error);
+        alert("Failed to delete event");
+      }
+    }
   };
 
   if (isLoading) {
