@@ -1,17 +1,23 @@
 import axios from 'axios';
 
-// إنشاء نسخة axios موحدة
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api', // رابط سيرفر الـ Node.js
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  baseURL: 'http://localhost:5000/api',
 });
 
-// دالة تسجيل الدخول
-export const loginApi = (data) => API.post('/auth/login', data);
+// Interceptor: بيشتغل قبل أي طلب وبضيف التوكن إذا كان موجود
+API.interceptors.request.use((req) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    req.headers.Authorization = `Bearer ${token}`;
+  }
+  return req;
+});
 
-// دالة إنشاء حساب جديد
+// Auth APIs
+export const loginApi = (data) => API.post('/auth/login', data);
 export const registerApi = (data) => API.post('/auth/register', data);
+
+// Events APIs
+export const createEventApi = (data) => API.post('/events', data);
 
 export default API;

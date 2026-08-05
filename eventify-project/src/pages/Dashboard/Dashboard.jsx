@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { Sun, Moon, Plus } from 'lucide-react';
 import Sidebar from '../../components/Sidebar';
-import CreateEventModal from '../../components/CreateEventModal';
+import CreateEventModal from '../../components/createEventModel/CreateEventModal';
 import OverviewTab from './tabs/OverviewTab';
 import ManageEventsTab from './tabs/ManageEventsTab';
 import RegistrationsTab from './tabs/RegistrationsTab';
