@@ -1,38 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
 import HeroSection from '../../components/HeroSection/HeroSection';
 import EventCard from '../../components/EventCard/EventCard'; 
+import { getAllEventsApi } from '../../api/axiosInstance';
 import './Home.css';
 
 const Home = () => {
-  useEffect(() => { document.title = "Home - Eventify"; }, []);
+  const [featuredEvents, setFeaturedEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const mockEvents = [
-    {
-      id: 1,
-      title: "AI Fundamentals Workshop",
-      club: "Tech Club",
-      date: "July 15, 2026",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=800",
-      tags: ["Tech", "Coding"]
-    },
-    {
-      id: 2,
-      title: "University Chess Championship",
-      club: "Cultural Club",
-      date: "July 20, 2026",
-      image: "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&q=80&w=800",
-      tags: ["Tournament", "Culture"]
-    },
-    {
-      id: 3,
-      title: "Blood Donation Drive",
-      club: "Volunteer Club",
-      date: "July 25, 2026",
-      image: "https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&q=80&w=800",
-      tags: ["Volunteer", "Health"]
-    }
-  ];
+  useEffect(() => { 
+    document.title = "Home - Eventify"; 
+    
+    const fetchRecentEvents = async () => {
+      try {
+        const res = await getAllEventsApi();
+        
+        // أخذ أحدث 3 فعاليات فقط للصفحة الرئيسية وتنسيقها
+        const recent = res.data.slice(0, 3).map(ev => ({
+          id: ev._id,
+          title: ev.title,
+          club: ev.organizer?.username || "University Club",
+          date: new Date(ev.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+          image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800", // صورة افتراضية
+          tags: [ev.category]
+        }));
+
+        setFeaturedEvents(recent);
+      } catch (error) {
+        console.error("Error fetching home events:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRecentEvents();
+  }, []);
 
   return (
     <div className="home-container">
@@ -44,11 +48,18 @@ const Home = () => {
           <h3>Upcoming Highlights</h3>
           <p>Don't miss out on these featured activities</p>
         </div>
-        <div className="events-grid animate-slide-up-delayed-more">
-          {mockEvents.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-        </div>
+        
+        {isLoading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '40px', color: '#6366f1' }}>
+            <Loader2 className="animate-spin" size={40} />
+          </div>
+        ) : (
+          <div className="events-grid animate-slide-up-delayed-more">
+            {featuredEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
