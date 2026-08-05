@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, CalendarX, Building2, X, Loader2 } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
 import EventCard from '../../components/EventCard/EventCard';
-import { getAllEventsApi } from '../../api/axiosInstance'; // 👈 استيراد دالة الـ API
+import { getAllEventsApi } from '../../api/axiosInstance';
 import './ExploreEvents.css';
 
 const ExploreEvents = () => {
@@ -10,7 +10,6 @@ const ExploreEvents = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedClub, setSelectedClub] = useState('All');
   
-  // 👈 إضافة State للفعاليات الحقيقية وحالة التحميل
   const [allEvents, setAllEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -18,22 +17,20 @@ const ExploreEvents = () => {
     document.title = "Explore Events - Eventify";
     window.scrollTo(0, 0);
 
-    // 👈 دالة جلب الفعاليات من الباك إند
     const fetchEvents = async () => {
       try {
         const res = await getAllEventsApi();
         
-        // تنسيق البيانات الجاية من الداتا بيس عشان تطابق تصميمك
         const formattedEvents = res.data.map(ev => ({
           id: ev._id,
           title: ev.title,
           club: ev.organizer?.username || "University Club", 
-          // تحويل التاريخ لصيغة مقروءة
           date: new Date(ev.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
           category: ev.category,
-          tags: [ev.category], // استخدمنا التصنيف كـ Tag مؤقتاً
-          // صورة افتراضية بما إنه لسا ما ضفنا رفع صور بالباك إند
-          image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800" 
+          tags: [ev.category], 
+          image: ev.image 
+            ? `http://localhost:5000${ev.image.startsWith('/') ? '' : '/'}${ev.image}` 
+            : "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
         }));
 
         setAllEvents(formattedEvents);
@@ -47,7 +44,7 @@ const ExploreEvents = () => {
     fetchEvents();
   }, []);
 
-  const categories = ['All', 'Technology', 'Business', 'Sports', 'Art', 'Science', 'Other']; // 👈 عدلتهم ليطابقوا الباك إند
+  const categories = ['All', 'Technology', 'Business', 'Sports', 'Art', 'Science', 'Other'];
   const clubs = ['All', ...new Set(allEvents.map(e => e.club))];
 
   const filteredEvents = allEvents.filter(event => {
@@ -125,7 +122,6 @@ const ExploreEvents = () => {
       
       {/* main content */}
       <main className="explore-main animate-slide-up">
-        {/* 👈 إضافة شكل تحميل ناعم أثناء جلب البيانات */}
         {isLoading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '40vh', color: '#6366f1' }}>
              <Loader2 className="animate-spin" size={48} />

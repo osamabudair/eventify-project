@@ -17,13 +17,14 @@ const Home = () => {
       try {
         const res = await getAllEventsApi();
         
-        // أخذ أحدث 3 فعاليات فقط للصفحة الرئيسية وتنسيقها
         const recent = res.data.slice(0, 3).map(ev => ({
           id: ev._id,
           title: ev.title,
           club: ev.organizer?.username || "University Club",
           date: new Date(ev.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-          image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800", // صورة افتراضية
+          image: ev.image 
+            ? `http://localhost:5000${ev.image.startsWith('/') ? '' : '/'}${ev.image}` 
+            : "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
           tags: [ev.category]
         }));
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Calendar, MapPin, Tag, Users, FileText, Sparkles } from 'lucide-react';
+import { X, Calendar, MapPin, Tag, Users, FileText, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { createEventApi } from '../../api/axiosInstance';
 import './CreateEventModal.css';
 
@@ -8,24 +8,46 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
     title: '', description: '', date: '', location: 'Amman', category: 'Technology', maxAttendees: 100
   });
   
+  const [imageFile, setImageFile] = useState(null); 
+  
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   if (!isOpen) return null;
 
-  // الحصول على تاريخ اليوم بصيغة YYYY-MM-DD لمنع التواريخ القديمة
   const today = new Date().toISOString().split('T')[0];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true); setErrorMsg('');
+    
     try {
-      const res = await createEventApi({ ...formData, maxAttendees: Number(formData.maxAttendees) });
+      const data = new FormData();
+      data.append('title', formData.title);
+      data.append('description', formData.description);
+      data.append('date', formData.date);
+      data.append('location', formData.location);
+      data.append('category', formData.category);
+      data.append('maxAttendees', Number(formData.maxAttendees));
+      
+      if (imageFile) {
+        data.append('image', imageFile);
+      }
+
+      const res = await createEventApi(data);
+      
+      // تصفير الحقول
       setFormData({ title: '', description: '', date: '', location: 'Amman', category: 'Technology', maxAttendees: 100 });
+      setImageFile(null);
+      
       if (onEventCreated) onEventCreated(res.data);
       onClose();
       window.location.reload(); 
@@ -48,6 +70,16 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
           {errorMsg && <div className="error-banner">{errorMsg}</div>}
 
           <div className="input-group-modern">
+            <label><ImageIcon size={16} /> Event Image</label>
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={handleImageChange} 
+              style={{ padding: '8px', background: '#fff' }}
+            />
+          </div>
+
+          <div className="input-group-modern">
             <label><FileText size={16} /> Event Name</label>
             <input type="text" name="title" placeholder="e.g. React & Node.js Bootcamp" value={formData.title} onChange={handleChange} required />
           </div>
@@ -60,13 +92,11 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
           <div className="form-row-two-cols">
             <div className="input-group-modern">
               <label><Calendar size={16} /> Date</label>
-              {/* خاصية min تمنع اختيار تاريخ قبل اليوم */}
               <input type="date" name="date" min={today} value={formData.date} onChange={handleChange} required />
             </div>
 
             <div className="input-group-modern">
               <label><MapPin size={16} /> Location</label>
-              {/* قائمة محافظات الأردن */}
               <select name="location" value={formData.location} onChange={handleChange} required>
                 <option value="Amman">Amman</option>
                 <option value="Irbid">Irbid</option>
@@ -107,7 +137,7 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
 
           <div className="modal-actions-modern">
             <button type="button" className="cancel-btn-modern" onClick={onClose}>Cancel</button>
-            <button type="submit" className="submit-btn-modern" disabled={loading}>{loading ? 'Creating...' : 'Save Event'}</button>
+            <button type="submit" className="submit-btn-modern" disabled={loading}>{loading ? 'Uploading & Creating...' : 'Save Event'}</button>
           </div>
         </form>
       </div>
