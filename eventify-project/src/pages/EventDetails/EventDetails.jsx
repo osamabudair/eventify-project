@@ -1,33 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import { ArrowLeft, Sun, Moon } from 'lucide-react';
+import { ArrowLeft, Sun, Moon, Loader2 } from 'lucide-react';
 import EventRegistrationCard from '../../components/EventRegistrationCard/EventRegistrationCard';
+import { getEventByIdApi } from '../../api/axiosInstance'; // 👈 استيراد الدالة اللي عملناها
 import './EventDetails.css';
 
 const EventDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useTheme();
+  
+  const [event, setEvent] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
-    document.title = `Event Details - Eventify`;
     window.scrollTo(0, 0);
+    
+    const fetchEventData = async () => {
+      try {
+        const res = await getEventByIdApi(id);
+        const data = res.data;
+        
+        // تنسيق البيانات لتناسب التصميم
+        const formattedEvent = {
+          id: data._id,
+          title: data.title,
+          club: data.organizer?.username || "University Club",
+          date: new Date(data.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+          time: data.time || "10:00 AM - 02:00 PM",
+          location: data.location,
+          capacity: `${data.maxAttendees || 100} Attendees`,
+          image: data.image 
+            ? `http://localhost:5000${data.image.startsWith('/') ? '' : '/'}${data.image}`
+            : "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=1400",
+          description: data.description,
+          tags: [data.category]
+        };
+
+        setEvent(formattedEvent);
+        document.title = `${formattedEvent.title} - Eventify`;
+      } catch (error) {
+        console.error("Error fetching event details:", error);
+        setErrorMsg("Failed to load event details. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEventData();
   }, [id]);
 
-  const event = {
-    id: id,
-    title: "AI Fundamentals Workshop",
-    club: "Tech Club",
-    date: "July 15, 2026",
-    time: "10:00 AM - 02:00 PM",
-    location: "Main Campus, Hall A",
-    capacity: "120 Attendees",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=1400",
-    description: "Join us for an in-depth workshop on the fundamentals of Artificial Intelligence. We will cover the basics of machine learning, neural networks, and real-world applications. This interactive session is perfect for beginners and tech enthusiasts looking to expand their knowledge and build their network. Please bring your laptops as there will be hands-on coding exercises.",
-    tags: ["Tech", "Coding", "AI", "Workshop"]
-  };
+  if (isLoading) {
+    return (
+      <div className="event-details-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Loader2 className="animate-spin text-primary" size={48} />
+      </div>
+    );
+  }
+
+  if (errorMsg || !event) {
+    return (
+      <div className="event-details-page" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: '20px' }}>
+        <h2 style={{ color: 'red' }}>{errorMsg || "Event not found"}</h2>
+        <button onClick={() => navigate(-1)} className="back-btn"><ArrowLeft size={20} /> Go Back</button>
+      </div>
+    );
+  }
 
   return (
     <div className="event-details-page">
@@ -67,7 +108,6 @@ const EventDetails = () => {
             <h2>About this event</h2>
             <div className="description-text">
               <p>{event.description}</p>
-              <p>Don't miss out on this opportunity to connect with like-minded individuals and advance your technical career.</p>
             </div>
           </div>
 

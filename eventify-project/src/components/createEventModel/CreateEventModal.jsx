@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { X, Calendar, MapPin, Tag, Users, FileText, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { X, Calendar, MapPin, Tag, Users, FileText, Sparkles, Image as ImageIcon, Clock } from 'lucide-react';
 import { createEventApi } from '../../api/axiosInstance';
 import './CreateEventModal.css';
 
 const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
   const [formData, setFormData] = useState({
-    title: '', description: '', date: '', location: 'Amman', category: 'Technology', maxAttendees: 100
+    title: '', description: '', time: '', date: '', location: 'Amman', category: 'Technology', maxAttendees: 100
   });
   
   const [imageFile, setImageFile] = useState(null); 
@@ -34,6 +34,7 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
       data.append('title', formData.title);
       data.append('description', formData.description);
       data.append('date', formData.date);
+      data.append('time', formData.time);
       data.append('location', formData.location);
       data.append('category', formData.category);
       data.append('maxAttendees', Number(formData.maxAttendees));
@@ -82,6 +83,11 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
           <div className="input-group-modern">
             <label><FileText size={16} /> Event Name</label>
             <input type="text" name="title" placeholder="e.g. React & Node.js Bootcamp" value={formData.title} onChange={handleChange} required />
+          </div>
+
+          <div className="input-group-modern">
+            <label><Clock size={16} /> Time</label>
+            <input type="text" name="time" placeholder="e.g. 10:00 AM - 02:00 PM" value={formData.time} onChange={handleChange} required />
           </div>
 
           <div className="input-group-modern">
