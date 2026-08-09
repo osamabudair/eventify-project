@@ -23,5 +23,7 @@ export const getMyEventsApi = () => API.get('/events/me');
 export const deleteEventApi = (id) => API.delete(`/events/${id}`);
 export const getEventByIdApi = (id) => API.get(`/events/${id}`);
 export const registerForEventApi = (id) => API.post(`/events/${id}/register`);
+export const getOrganizerRegistrationsApi = () => API.get('/events/registrations/manage');
+export const updateRegistrationStatusApi = (id, status) => API.put(`/events/registrations/${id}`, { status });
 
 export default API;

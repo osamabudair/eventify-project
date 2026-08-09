@@ -1,23 +1,55 @@
-import React, { useState } from 'react';
-import { CheckCircle, XCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { getOrganizerRegistrationsApi, updateRegistrationStatusApi } from '../../../api/axiosInstance';
 import './RegistrationsTab.css';
 
 const RegistrationsTab = () => {
-  const [pendingRequests, setPendingRequests] = useState([
-    { id: 101, student: 'Ahmad Ali', event: 'AI Fundamentals Workshop', date: 'July 10, 2026' },
-    { id: 102, student: 'Sara Khaled', event: 'Web Dev Bootcamp', date: 'July 11, 2026' },
-    { id: 103, student: 'Omar Sami', event: 'Cybersecurity Panel', date: 'July 12, 2026' },
-  ]);
+  const [pendingRequests, setPendingRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleApproveRequest = (id, name) => {
-    setPendingRequests(pendingRequests.filter(req => req.id !== id));
-    alert(`Approved registration for ${name}`);
+  useEffect(() => {
+    fetchPendingRegistrations();
+  }, []);
+
+  const fetchPendingRegistrations = async () => {
+    try {
+      const res = await getOrganizerRegistrationsApi();
+      const onlyPending = res.data.filter(reg => reg.status === 'pending');
+      setPendingRequests(onlyPending);
+    } catch (error) {
+      console.error("Error fetching registrations:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleRejectRequest = (id, name) => {
-    setPendingRequests(pendingRequests.filter(req => req.id !== id));
-    alert(`Rejected registration for ${name}`);
+  const handleApproveRequest = async (id, name) => {
+    try {
+      await updateRegistrationStatusApi(id, 'approved');
+      setPendingRequests(pendingRequests.filter(req => req._id !== id));
+      alert(`Approved registration for ${name}`);
+    } catch{
+      alert(`Failed to approve registration for ${name}`);
+    }
   };
+
+  const handleRejectRequest = async (id, name) => {
+    try {
+      await updateRegistrationStatusApi(id, 'rejected');
+      setPendingRequests(pendingRequests.filter(req => req._id !== id));
+      alert(`Rejected registration for ${name}`);
+    } catch{
+      alert(`Failed to reject registration for ${name}`);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="animate-fade-in modern-view-section" style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>
+        <Loader2 className="animate-spin" size={40} style={{ color: 'var(--primary-color)' }} />
+      </div>
+    );
+  }
 
   return (
     <div className="animate-fade-in modern-view-section">
@@ -43,15 +75,19 @@ const RegistrationsTab = () => {
           </thead>
           <tbody>
             {pendingRequests.map((req) => (
-              <tr key={req.id}>
-                <td className="font-semibold">{req.student}</td>
-                <td>{req.event}</td>
-                <td>{req.date}</td>
+              <tr key={req._id}>
+                <td className="font-semibold">{req.user?.username || 'Unknown Student'}</td>
+                <td>{req.event?.title || 'Deleted Event'}</td>
                 <td>
-                  <button className="action-btn approve" onClick={() => handleApproveRequest(req.id, req.student)}>
+                  {new Date(req.createdAt).toLocaleDateString('en-US', { 
+                    month: 'short', day: 'numeric', year: 'numeric' 
+                  })}
+                </td>
+                <td>
+                  <button className="action-btn approve" onClick={() => handleApproveRequest(req._id, req.user?.username)}>
                     <CheckCircle size={16} /> Approve
                   </button>
-                  <button className="action-btn reject" onClick={() => handleRejectRequest(req.id, req.student)}>
+                  <button className="action-btn reject" onClick={() => handleRejectRequest(req._id, req.user?.username)}>
                     <XCircle size={16} /> Reject
                   </button>
                 </td>

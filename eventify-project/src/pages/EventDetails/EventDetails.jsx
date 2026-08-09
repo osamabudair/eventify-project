@@ -54,6 +54,13 @@ const EventDetails = () => {
   }, [id]);
 
   const handleRegister = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("You must be logged in to register for events!");
+      navigate('/auth');
+      return;
+    }
+
     try {
       await registerForEventApi(id);
       setIsRegistered(true);
