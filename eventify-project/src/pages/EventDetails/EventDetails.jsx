@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ArrowLeft, Sun, Moon, Loader2 } from 'lucide-react';
 import EventRegistrationCard from '../../components/EventRegistrationCard/EventRegistrationCard';
-import { getEventByIdApi } from '../../api/axiosInstance'; // 👈 استيراد الدالة اللي عملناها
+import { getEventByIdApi, registerForEventApi } from '../../api/axiosInstance';
 import './EventDetails.css';
 
 const EventDetails = () => {
@@ -52,6 +52,16 @@ const EventDetails = () => {
 
     fetchEventData();
   }, [id]);
+
+  const handleRegister = async () => {
+    try {
+      await registerForEventApi(id);
+      setIsRegistered(true);
+      alert("Registration successful! Waiting for organizer approval."); 
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to register. Please try again.");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -116,7 +126,7 @@ const EventDetails = () => {
             <EventRegistrationCard 
               event={event} 
               isRegistered={isRegistered} 
-              onRegister={() => setIsRegistered(true)} 
+              onRegister={handleRegister} 
             />
           </div>
           

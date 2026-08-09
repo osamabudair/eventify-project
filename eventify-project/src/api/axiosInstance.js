@@ -4,7 +4,6 @@ const API = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
 
-// Interceptor: بيشتغل قبل أي طلب وبضيف التوكن إذا كان موجود
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -23,5 +22,6 @@ export const getAllEventsApi = () => API.get('/events');
 export const getMyEventsApi = () => API.get('/events/me');
 export const deleteEventApi = (id) => API.delete(`/events/${id}`);
 export const getEventByIdApi = (id) => API.get(`/events/${id}`);
+export const registerForEventApi = (id) => API.post(`/events/${id}/register`);
 
 export default API;
