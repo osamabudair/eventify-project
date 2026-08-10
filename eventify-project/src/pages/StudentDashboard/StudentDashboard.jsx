@@ -53,7 +53,7 @@ const StudentDashboard = () => {
             <button className="theme-toggle" onClick={toggleTheme}>
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            <button className="primary-btn add-event-btn" onClick={() => navigate('/events')}>
+            <button className="primary-btn add-event-btn" onClick={() => navigate('/explore')}>
               Explore Events
             </button>
           </div>

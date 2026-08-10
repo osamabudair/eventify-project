@@ -1,38 +1,62 @@
-import React from 'react';
-import { Calendar, CheckCircle, ArrowRight, Users } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Clock, CheckCircle, ArrowRight, Users, Loader2 } from 'lucide-react';
 import StatCard from '../../../components/StatCard';
 import { useNavigate } from 'react-router-dom';
-import './StudentOverviewTab.css'; 
+import { getMyRegistrationsApi, getAllEventsApi } from '../../../api/axiosInstance';
+import './StudentOverviewTab.css';
 
 const StudentOverviewTab = () => {
   const navigate = useNavigate();
+  
+  const [stats, setStats] = useState({ approved: 0, pending: 0 });
+  const [suggestedEvents, setSuggestedEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const suggestedEvents = [
-    {
-      id: 10,
-      title: "Java Backend Engineering Bootcamp",
-      date: "Aug 15, 2026",
-      club: "Software Engineering Club",
-      status: "Open"
-    },
-    {
-      id: 11,
-      title: "Advanced React & Node.js Architecture",
-      date: "Aug 22, 2026",
-      club: "Tech Club",
-      status: "Filling Fast"
-    }
-  ];
+  useEffect(() => {
+    const fetchOverviewData = async () => {
+      try {
+        const regsRes = await getMyRegistrationsApi();
+        const myRegistrations = regsRes.data;
+        
+        const approvedCount = myRegistrations.filter(reg => reg.status === 'approved').length;
+        const pendingCount = myRegistrations.filter(reg => reg.status === 'pending').length;
+        setStats({ approved: approvedCount, pending: pendingCount });
+
+        const eventsRes = await getAllEventsApi();
+        const allEvents = eventsRes.data;
+
+        const myEventIds = myRegistrations.map(reg => reg.event?._id);
+        const availableEvents = allEvents.filter(event => !myEventIds.includes(event._id));
+
+        setSuggestedEvents(availableEvents.slice(0, 2));
+
+      } catch (error) {
+        console.error("Error fetching overview data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOverviewData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>
+        <Loader2 className="animate-spin" size={40} style={{ color: 'var(--primary-color)' }} />
+      </div>
+    );
+  }
 
   return (
     <div className="student-overview-container">
-      {/* قسم الإحصائيات */}
+      {/* قسم الإحصائيات (مربوط بالبيانات الحقيقية) */}
       <div className="stats-grid">
-        <StatCard title="Upcoming Events" value="2" icon={<Calendar size={24} />} />
-        <StatCard title="Approved Tickets" value="5" icon={<CheckCircle size={24} />} />
+        <StatCard title="Approved Tickets" value={stats.approved} icon={<CheckCircle size={24} />} />
+        <StatCard title="Pending Requests" value={stats.pending} icon={<Clock size={24} />} />
       </div>
       
-      {/* قسم الفعاليات المقترحة */}
+      {/* قسم الفعاليات المقترحة (مربوط بالبيانات الحقيقية) */}
       <div className="modern-view-section">
         <div className="section-header">
           <div>
@@ -42,28 +66,37 @@ const StudentOverviewTab = () => {
           <button className="view-all-btn" onClick={() => navigate('/events')}>View All</button>
         </div>
         
-        <div className="suggested-events-grid">
-          {suggestedEvents.map(event => (
-            <div key={event.id} className="suggested-event-card">
-              <div className="event-card-header">
-                <span className="event-status-badge">{event.status}</span>
-                <span className="event-date">{event.date}</span>
+        {suggestedEvents.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '30px', color: 'var(--text-secondary)' }}>
+            <p>No new events available at the moment. Check back later!</p>
+          </div>
+        ) : (
+          <div className="suggested-events-grid">
+            {suggestedEvents.map(event => (
+              <div key={event._id} className="suggested-event-card">
+                <div className="event-card-header">
+                  {/* عرض Category كـ Badge أو Status */}
+                  <span className="event-status-badge">{event.category || 'Event'}</span>
+                  <span className="event-date">
+                    {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </span>
+                </div>
+                
+                <h4 className="event-title">{event.title}</h4>
+                <p className="event-club">
+                  <Users size={14} /> {event.location || 'TBA'}
+                </p>
+                
+                <button 
+                  className="view-details-btn" 
+                  onClick={() => navigate(`/event/${event._id}`)}
+                >
+                  View Details <ArrowRight size={18} />
+                </button>
               </div>
-              
-              <h4 className="event-title">{event.title}</h4>
-              <p className="event-club">
-                <Users size={14} /> {event.club}
-              </p>
-              
-              <button 
-                className="view-details-btn" 
-                onClick={() => navigate(`/event/${event.id}`)}
-              >
-                View Details <ArrowRight size={18} />
-              </button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
