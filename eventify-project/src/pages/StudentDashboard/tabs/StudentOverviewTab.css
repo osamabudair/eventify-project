@@ -123,3 +123,174 @@
   background-color: var(--primary-hover);
   gap: 12px;
 }
+
+.overview-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; 
+  gap: 32px;
+  align-items: start;
+}
+
+.next-event-card {
+  background: linear-gradient(135deg, var(--primary-color), #8b5cf6) !important;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 32px !important;
+  border: none !important;
+}
+
+.next-event-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.next-event-content h3 {
+  font-size: 1.5rem;
+  margin: 0 0 12px 0;
+  color: white;
+}
+
+.next-event-details {
+  display: flex;
+  gap: 16px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.next-event-details span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.view-ticket-btn {
+  background-color: white;
+  color: var(--primary-color);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.view-ticket-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.empty-state-box {
+  text-align: center;
+  padding: 40px;
+  background-color: var(--bg-color);
+  border: 1px dashed var(--border-color);
+  border-radius: 16px;
+  color: var(--text-secondary);
+}
+
+.activity-section {
+  padding: 24px !important;
+}
+
+.activity-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.activity-timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background-color: var(--border-color);
+  opacity: 0.5;
+}
+
+.activity-item {
+  display: flex;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.activity-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--border-color);
+  margin-top: 4px;
+  border: 2px solid var(--card-bg);
+}
+
+.activity-dot.pending { background-color: #f59e0b; }
+.activity-dot.approved { background-color: #10b981; }
+.activity-dot.rejected { background-color: #ef4444; }
+
+.activity-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.activity-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1024px) {
+  .overview-main-grid {
+    grid-template-columns: 1fr;
+  }
+  .next-event-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+}
+
+.empty-next-event {
+  background: var(--card-bg) !important;
+  border: 1px dashed var(--border-color) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+  justify-content: flex-start !important;
+}
+
+.empty-next-event h3 {
+  color: var(--text-primary) !important;
+  font-size: 1.2rem !important;
+  margin-bottom: 4px !important;
+}
+
+.empty-next-event p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.empty-badge {
+  background-color: var(--tag-bg) !important;
+  color: var(--primary-color) !important;
+}

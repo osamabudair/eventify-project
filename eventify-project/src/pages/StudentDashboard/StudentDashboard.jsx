@@ -32,10 +32,10 @@ const StudentDashboard = () => {
 
   const memoizedContent = useMemo(() => {
     switch (activeTab) {
-      case 'overview': return <StudentOverviewTab />;
+      case 'overview': return <StudentOverviewTab setActiveTab={setActiveTab} />;
       case 'tickets': return <MyTicketsTab />;
       case 'profile': return <ProfileTab />;
-      default: return <StudentOverviewTab />;
+      default: return <StudentOverviewTab setActiveTab={setActiveTab} />;
     }
   }, [activeTab]);
 
