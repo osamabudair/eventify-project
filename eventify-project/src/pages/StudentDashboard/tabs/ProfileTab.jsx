@@ -1,193 +1,133 @@
-import React, { useState } from 'react';
-import { User, Lock, Save, Camera, Mail, BookOpen, Hash } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Save, Camera } from 'lucide-react';
+import { updateProfileApi } from '../..//../api/axiosInstance';
 import './ProfileTab.css';
 
 const ProfileTab = () => {
-  const [profileData, setProfileData] = useState({
-    fullName: 'Osama',
-    universityId: '202210459',
-    email: 'osama@university.edu',
-    major: 'Computer Science'
-  });
+  const [profileData, setProfileData] = useState({ fullName: '', email: '' });
+  const [passwords, setPasswords] = useState({ current: '', new: '', confirm: '' });
 
-  const [passwords, setPasswords] = useState({
-    current: '',
-    new: '',
-    confirm: ''
-  });
-
-  const handleProfileChange = (e) => {
-    setProfileData({ ...profileData, [e.target.name]: e.target.value });
-  };
-
-  const handlePasswordChange = (e) => {
-    setPasswords({ ...passwords, [e.target.name]: e.target.value });
-  };
-
-  const handleSaveProfile = (e) => {
-    e.preventDefault();
-    alert(`Profile updated successfully for ${profileData.fullName}!`);
-  };
-
-  const handleSavePassword = (e) => {
-    e.preventDefault();
-    if (passwords.new !== passwords.confirm) {
-      alert("New passwords do not match!");
-      return;
+  useEffect(() => {
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      setProfileData({
+        fullName: user.username || 'Student',
+        email: user.email || 'student@university.edu'
+      });
     }
-    alert("Password updated successfully!");
-    setPasswords({ current: '', new: '', confirm: '' });
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name in profileData) {
+      setProfileData({ ...profileData, [name]: value });
+    } else {
+      setPasswords({ ...passwords, [name]: value });
+    }
   };
 
-  // استخراج أول حرفين من الاسم للصورة الرمزية
-  const initials = profileData.fullName.substring(0, 2).toUpperCase();
+  const handleSaveChanges = async (e) => {
+    e.preventDefault();
+    if (passwords.current || passwords.new || passwords.confirm) {
+      if (passwords.new !== passwords.confirm) {
+        alert("New passwords do not match!");
+        return;
+      }
+      if (!passwords.current) {
+        alert("Please enter your current password to set a new one.");
+        return;
+      }
+    }
+
+    try {
+      const res = await updateProfileApi({
+        fullName: profileData.fullName,
+        current: passwords.current,
+        new: passwords.new
+      });
+
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      
+      window.dispatchEvent(new Event('storage'));
+
+      alert(res.data.message);
+      
+      setPasswords({ current: '', new: '', confirm: '' });
+
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to update profile. Please try again.");
+      setPasswords({ current: '', new: '', confirm: '' });
+    }
+  };
+
+  const initials = profileData.fullName ? profileData.fullName.substring(0, 2).toUpperCase() : 'ST';
 
   return (
     <div className="animate-fade-in modern-profile-layout">
-      
-      {/* العمود الأيسر: البطاقة التعريفية */}
-      <div className="profile-sidebar-card">
-        <div className="avatar-wrapper">
-          {initials}
-          <button className="avatar-edit-btn" title="Change Avatar">
-            <Camera size={16} />
-          </button>
-        </div>
-        <h2 className="profile-name">{profileData.fullName}</h2>
-        <p className="profile-role">Student</p>
+      <form className="single-profile-card" onSubmit={handleSaveChanges}>
         
-        <div className="profile-quick-info">
-          <div className="info-item">
-            <BookOpen size={16} className="info-icon" />
-            <span>{profileData.major}</span>
-          </div>
-          <div className="info-item">
-            <Mail size={16} className="info-icon" />
-            <span>{profileData.email}</span>
-          </div>
-          <div className="info-item">
-            <Hash size={16} className="info-icon" />
-            <span>ID: {profileData.universityId}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* العمود الأيمن: الفورمات */}
-      <div className="profile-forms-section">
-        
-        {/* فورم المعلومات الشخصية */}
-        <form className="settings-card modern-form-card" onSubmit={handleSaveProfile}>
-          <div className="card-header">
-            <h3><User size={20} className="text-primary" /> Personal Information</h3>
-            <p className="header-subtitle">Update your personal details and university info.</p>
-          </div>
-          
-          <div className="form-row">
-            <div className="input-group">
-              <label>Full Name</label>
-              <input 
-                type="text" 
-                name="fullName"
-                value={profileData.fullName} 
-                onChange={handleProfileChange}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <label>University ID</label>
-              <input 
-                type="text" 
-                name="universityId"
-                value={profileData.universityId} 
-                onChange={handleProfileChange}
-                disabled
-                className="disabled-input"
-              />
-            </div>
-          </div>
-          
-          <div className="form-row">
-            <div className="input-group">
-              <label>Email Address</label>
-              <input 
-                type="email" 
-                name="email"
-                value={profileData.email} 
-                onChange={handleProfileChange}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <label>Major / Department</label>
-              <input 
-                type="text" 
-                name="major"
-                value={profileData.major} 
-                onChange={handleProfileChange}
-                required
-              />
-            </div>
-          </div>
-
-          <div className="form-actions">
-            <button type="submit" className="settings-save-btn">
-              <Save size={18} /> Save Changes
+        <div className="profile-header-compact">
+          <div className="avatar-wrapper">
+            {initials}
+            <button className="avatar-edit-btn" title="Change Avatar" type="button">
+              <Camera size={16} />
             </button>
           </div>
-        </form>
-
-        {/* فورم تغيير كلمة المرور */}
-        <form className="settings-card modern-form-card" onSubmit={handleSavePassword}>
-          <div className="card-header">
-            <h3><Lock size={20} className="text-primary" /> Security & Password</h3>
-            <p className="header-subtitle">Ensure your account is using a long, random password to stay secure.</p>
+          <div className="profile-titles">
+            <h2>{profileData.fullName}</h2>
+            <p>{profileData.email}</p>
           </div>
+        </div>
 
-          <div className="input-group" style={{ maxWidth: '50%', marginBottom: '20px' }}>
-            <label>Current Password</label>
+        <hr className="form-divider" />
+
+        <div className="form-grid-compact">
+          <div className="input-group">
+            <label>Full Name</label>
             <input 
-              type="password" 
-              name="current"
-              placeholder="Enter current password" 
-              value={passwords.current}
-              onChange={handlePasswordChange}
-              required
+              type="text" name="fullName" value={profileData.fullName} 
+              onChange={handleChange} required 
             />
           </div>
-          
-          <div className="form-row">
-            <div className="input-group">
-              <label>New Password</label>
-              <input 
-                type="password" 
-                name="new"
-                placeholder="••••••••" 
-                value={passwords.new}
-                onChange={handlePasswordChange}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <label>Confirm New Password</label>
-              <input 
-                type="password" 
-                name="confirm"
-                placeholder="••••••••" 
-                value={passwords.confirm}
-                onChange={handlePasswordChange}
-                required
-              />
-            </div>
+          <div className="input-group">
+            <label>Email Address</label>
+            <input 
+              type="email" name="email" value={profileData.email} 
+              disabled className="disabled-input" 
+            />
           </div>
 
-          <div className="form-actions">
-            <button type="submit" className="settings-save-btn">
-              <Lock size={18} /> Update Password
-            </button>
+          <div className="input-group full-width">
+            <label>Current Password</label>
+            <input 
+              type="password" name="current" placeholder="Enter current password" 
+              value={passwords.current} onChange={handleChange} 
+            />
           </div>
-        </form>
 
-      </div>
+          <div className="input-group">
+            <label>New Password</label>
+            <input 
+              type="password" name="new" placeholder="••••••••" 
+              value={passwords.new} onChange={handleChange} 
+            />
+          </div>
+          <div className="input-group">
+            <label>Confirm New Password</label>
+            <input 
+              type="password" name="confirm" placeholder="••••••••" 
+              value={passwords.confirm} onChange={handleChange} 
+            />
+          </div>
+        </div>
+
+        <div className="form-actions">
+          <button type="submit" className="settings-save-btn">
+            <Save size={18} /> Save Changes
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
