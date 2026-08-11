@@ -27,5 +27,6 @@ export const getOrganizerRegistrationsApi = () => API.get('/events/registrations
 export const updateRegistrationStatusApi = (id, status) => API.put(`/events/registrations/${id}`, { status });
 export const getMyRegistrationsApi = () => API.get('/events/registrations/my-tickets');
 export const updateProfileApi = (data) => API.put('/auth/profile', data);
+export const cancelRegistrationApi = (id) => API.delete(`/events/registrations/${id}`);
 
 export default API;
