@@ -1,4 +1,4 @@
-/* manage events */
+/* manage events section */
 .modern-view-section {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -9,37 +9,19 @@
 
 .section-heading {
   margin-top: 0;
-  margin-bottom: 24px;
+  margin-bottom: 8px; /* تقليل المسافة عشان الوصف يجي أقرب */
   font-size: 20px;
+  color: var(--text-primary);
+}
+
+.section-description {
+  margin-bottom: 24px;
 }
 
 /* table */
-.table-container {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-}
-
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.table-header h3 { 
-  margin: 0; 
-  font-size: 18px; 
-}
-
-.view-all-btn {
-  background: transparent;
-  border: none;
-  color: var(--primary-color);
-  font-weight: 600;
-  cursor: pointer;
+.table-responsive {
+  width: 100%;
+  overflow-x: auto; /* إضافة سكرول أفقي في الشاشات الصغيرة */
 }
 
 .events-table {
@@ -63,6 +45,11 @@
 .events-table td.font-semibold {
   font-weight: 600;
   font-size: 14px;
+  color: var(--text-primary);
+}
+
+.events-table td:last-child {
+  white-space: nowrap;
 }
 
 /* status badges */
@@ -75,24 +62,65 @@
 
 .status-badge.active { background-color: rgba(16, 185, 129, 0.1); color: #10b981; }
 .status-badge.draft { background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.status-badge.completed { background-color: rgba(99, 102, 241, 0.1); color: #6366f1; } 
 
-/* action buttons */
-.action-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 13px;
-  margin-right: 8px;
-  display: inline-flex;
+/* actions wrapper */
+.actions-wrapper {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  transition: all 0.2s;
+  flex-wrap: nowrap;
+  gap: 10px; 
 }
 
-.action-btn.edit { color: var(--text-secondary); }
-.action-btn.edit:hover { background-color: var(--tag-bg); color: var(--primary-color); }
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+}
 
-.action-btn.delete { color: var(--text-secondary); }
-.action-btn.delete:hover { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
+.action-btn.edit {
+  color: var(--text-secondary);
+}
+.action-btn.edit:hover {
+  background-color: var(--tag-bg);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.action-btn.delete {
+  color: #ef4444;
+  background-color: #fef2f2;
+  border-color: #fee2e2;
+}
+.action-btn.delete:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+/* Loading & Empty States */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+  color: var(--primary-color);
+}
+
+.empty-state-container {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+  background-color: var(--bg-color);
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  margin-top: 16px;
+}

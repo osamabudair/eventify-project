@@ -130,7 +130,7 @@ const StudentOverviewTab = ({ setActiveTab }) => {
                 <h3 className="section-heading">Suggested For You</h3>
                 <p className="text-secondary" style={{ margin: 0 }}>Curated events to boost your skills.</p>
               </div>
-              <button className="view-all-btn" onClick={() => navigate('/events')}>View All</button>
+              <button className="view-all-btn" onClick={() => navigate('/explore')}>View All</button>
             </div>
             
             {suggestedEvents.length === 0 ? (

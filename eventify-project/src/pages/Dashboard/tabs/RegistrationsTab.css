@@ -1,16 +1,127 @@
-/* registration actions buttons */
+/* Main Section */
+.modern-view-section {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.section-heading {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 20px;
+  color: var(--text-primary);
+}
+
+.section-description {
+  margin-bottom: 24px;
+}
+
+/* Table & Responsive Wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.events-table th,
+.events-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.events-table th {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.events-table td.font-semibold {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.events-table td:last-child {
+  white-space: nowrap;
+}
+
+/* Actions Wrapper */
+.actions-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
+}
+
+/* Action Buttons (Modern UI) */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+}
+
+/* Approve Button (Green Theme) */
 .action-btn.approve {
   color: #10b981;
+  background-color: #ecfdf5; /* خلفية خضراء فاتحة جداً */
+  border-color: #d1fae5;
 }
 
 .action-btn.approve:hover {
-  background-color: rgba(16, 185, 129, 0.1);
+  background-color: #d1fae5;
+  color: #059669;
+  border-color: #6ee7b7;
 }
 
+/* Reject Button (Red Theme) */
 .action-btn.reject {
   color: #ef4444;
+  background-color: #fef2f2; /* خلفية حمراء فاتحة جداً */
+  border-color: #fee2e2;
 }
 
 .action-btn.reject:hover {
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+/* Loading & Empty States */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+  color: var(--primary-color);
+}
+
+.empty-state-container {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+  background-color: var(--bg-color);
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  margin-top: 16px;
+}
+
+.empty-icon {
+  opacity: 0.5;
+  margin: 0 auto 16px auto;
+  display: block;
 }

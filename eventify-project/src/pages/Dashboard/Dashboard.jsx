@@ -16,7 +16,7 @@ const Dashboard = () => {
 
   const [activeTab, setActiveTab] = useState('overview');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userName, setUserName] = useState('Club Leader'); // حالة لتخزين اسم المستخدم
+  const [userName, setUserName] = useState('Club Leader');
 
   useEffect(() => { 
     document.title = "Dashboard - Eventify"; 
@@ -51,7 +51,11 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-layout">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} handleLogout={handleLogout} />
+      <Sidebar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        handleLogout={handleLogout} 
+      />
 
       <main className="main-content">
         <header className="dashboard-header">
@@ -60,7 +64,7 @@ const Dashboard = () => {
             <p className="text-secondary">Here is what's happening with your events today.</p>
           </div>
           <div className="header-actions">
-            <button className="theme-toggle" onClick={toggleTheme}>
+            <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle Theme">
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <button className="primary-btn add-event-btn" onClick={() => setIsModalOpen(true)}>
@@ -69,10 +73,16 @@ const Dashboard = () => {
           </div>
         </header>
 
-        {renderContent()}
+        {/* عرض محتوى التاب النشط */}
+        <div className="animate-fade-in">
+          {renderContent()}
+        </div>
       </main>
 
-      <CreateEventModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <CreateEventModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </div>
   );
 };
