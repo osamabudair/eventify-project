@@ -7,7 +7,7 @@ import CreateEventModal from '../../components/createEventModel/CreateEventModal
 import OverviewTab from './tabs/OverviewTab';
 import ManageEventsTab from './tabs/ManageEventsTab';
 import RegistrationsTab from './tabs/RegistrationsTab';
-import SettingsTab from './tabs/SettingsTab';
+import ProfileTab from '../StudentDashboard/tabs/ProfileTab'; 
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -43,7 +43,7 @@ const Dashboard = () => {
       case 'registrations': 
         return <RegistrationsTab />;
       case 'settings': 
-        return <SettingsTab />;
+        return <ProfileTab />;
       default: 
         return null;
     }

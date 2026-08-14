@@ -30,7 +30,7 @@ const Sidebar = ({ activeTab, setActiveTab, handleLogout }) => {
           className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
           onClick={() => setActiveTab('settings')}
         >
-          <Settings size={18} /> Settings
+          <Settings size={18} /> Profile
         </button>
       </nav>
       <div className="sidebar-footer">
