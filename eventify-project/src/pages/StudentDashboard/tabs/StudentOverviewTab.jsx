@@ -1,3 +1,4 @@
+// --- Imports ---
 import React, { useState, useEffect } from 'react';
 import { Clock, CheckCircle, ArrowRight, Users, Loader2, CalendarCheck, Activity, MapPin, Trash2, Ticket } from 'lucide-react';
 import StatCard from '../../../components/StatCard';
@@ -5,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { getMyRegistrationsApi, getAllEventsApi, cancelRegistrationApi } from '../../../api/axiosInstance';
 import './StudentOverviewTab.css';
 
-// دالة ذكية لحساب الوقت النسبي (Relative Time)
+// --- Helper Functions ---
 const getTimeAgo = (date) => {
   const seconds = Math.floor((new Date() - new Date(date)) / 1000);
   let interval = seconds / 31536000;
@@ -22,6 +23,7 @@ const getTimeAgo = (date) => {
 };
 
 const StudentOverviewTab = ({ setActiveTab }) => {
+  // --- State Management ---
   const navigate = useNavigate();
   
   const [stats, setStats] = useState({ approved: 0, pending: 0 });
@@ -30,6 +32,7 @@ const StudentOverviewTab = ({ setActiveTab }) => {
   const [recentActivity, setRecentActivity] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // --- Data Fetching ---
   const fetchOverviewData = async () => {
     try {
       const regsRes = await getMyRegistrationsApi();
@@ -60,11 +63,12 @@ const StudentOverviewTab = ({ setActiveTab }) => {
     }
   };
 
+  // --- Side Effects ---
   useEffect(() => {
     fetchOverviewData();
   }, []);
 
-  // دالة إلغاء الطلب (Quick Action)
+  // --- Handlers ---
   const handleCancelRequest = async (id) => {
     if (window.confirm("Are you sure you want to cancel this registration request?")) {
       try {
@@ -76,6 +80,7 @@ const StudentOverviewTab = ({ setActiveTab }) => {
     }
   };
 
+  // --- Loading State ---
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>
@@ -84,14 +89,17 @@ const StudentOverviewTab = ({ setActiveTab }) => {
     );
   }
 
+  // --- Main Render ---
   return (
     <div className="student-overview-container">
       
+      {/* Stats Grid */}
       <div className="stats-grid">
         <StatCard title="Approved Tickets" value={stats.approved} icon={<CheckCircle size={24} />} />
         <StatCard title="Pending Requests" value={stats.pending} icon={<Clock size={24} />} />
       </div>
 
+      {/* Next Upcoming Event Card */}
       {nextEvent ? (
         <div className="modern-view-section next-event-card">
           <div className="next-event-content">
@@ -122,7 +130,7 @@ const StudentOverviewTab = ({ setActiveTab }) => {
       
       <div className="overview-main-grid">
         
-        {/* العمود الأيسر: الفعاليات المقترحة */}
+        {/* Main Column: Suggested Events */}
         <div className="main-column">
           <div className="modern-view-section">
             <div className="section-header">
@@ -159,7 +167,7 @@ const StudentOverviewTab = ({ setActiveTab }) => {
           </div>
         </div>
 
-        {/* العمود الأيمن: النشاطات الأخيرة (مع الـ UX الجديد) */}
+        {/* Side Column: Recent Activity Feed */}
         <div className="side-column">
           <div className="modern-view-section activity-section">
             <h3 className="section-heading" style={{ fontSize: '1.2rem', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -177,7 +185,6 @@ const StudentOverviewTab = ({ setActiveTab }) => {
                     <div className="activity-content">
                       <p className="activity-text">
                         Registration <strong>{activity.status}</strong> for{' '}
-                        {/* النص صار رابط تفاعلي */}
                         <span 
                           className="activity-link"
                           onClick={() => activity.status === 'approved' ? setActiveTab('tickets') : navigate(`/event/${activity.event?._id}`)}
@@ -185,11 +192,10 @@ const StudentOverviewTab = ({ setActiveTab }) => {
                           {activity.event?.title || 'an event'}
                         </span>
                       </p>
-                      {/* الوقت الذكي */}
                       <span className="activity-time">{getTimeAgo(activity.createdAt)}</span>
                     </div>
 
-                    {/* أزرار الأكشن السريعة (تظهر فقط عند التمرير Hover) */}
+                    {/* Quick Action Buttons (Shown on Hover) */}
                     <div className="activity-actions">
                       {activity.status === 'pending' && (
                         <button 
@@ -210,7 +216,6 @@ const StudentOverviewTab = ({ setActiveTab }) => {
                         </button>
                       )}
                     </div>
-
                   </div>
                 ))}
               </div>

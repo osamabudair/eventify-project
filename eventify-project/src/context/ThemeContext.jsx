@@ -1,18 +1,20 @@
+// --- Imports ---
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
-// إنشاء الـ Context
+// --- Context Creation ---
 const ThemeContext = createContext();
 
-// دالة مخصصة لاستخدام الثيم بسهولة
+// --- Custom Hook for Easy Access ---
 export const useTheme = () => useContext(ThemeContext);
 
+// --- Theme Provider Component ---
 export const ThemeProvider = ({ children }) => {
-  // جلب الحالة من التخزين المحلي أو وضعها كنهاري افتراضياً
+  // --- State Management ---
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem('theme') === 'dark';
   });
 
-  // تطبيق الكلاس على كامل الموقع وحفظ الخيار
+  // --- Side Effects (Apply Theme & Save to LocalStorage) ---
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
@@ -23,8 +25,10 @@ export const ThemeProvider = ({ children }) => {
     }
   }, [isDarkMode]);
 
+  // --- Toggle Handler ---
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
+  // --- Main Render ---
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
       {children}

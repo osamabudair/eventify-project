@@ -1,24 +1,26 @@
+// --- Imports ---
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  // 1. بنجيب التوكن وبيانات المستخدم من التخزين المحلي
+  // --- Data Retrieval ---
   const token = localStorage.getItem('token');
   const userString = localStorage.getItem('user');
   const user = userString ? JSON.parse(userString) : null;
 
-  // 2. إذا ما في توكن، يعني مش مسجل دخول -> بنرجعه لصفحة تسجيل الدخول
+  // --- Authentication Check ---
+  // Redirect to the auth page if the user is not logged in
   if (!token || !user) {
-    return <Navigate to="/auth" replace />; // استبدل /login بالمسار تبع صفحة الدخول عندك
+    return <Navigate to="/auth" replace />;
   }
 
-  // 3. إذا الصفحة مخصصة لأدوار معينة (مثلاً لرؤساء الأندية فقط) والمستخدم ما عنده الصلاحية
+  // --- Role Authorization Check ---
+  // Redirect to the appropriate dashboard if the user lacks the required role
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    // بنرجعه لصفحة ما عنده صلاحية، أو لصفحته الافتراضية
     return <Navigate to={user.role === 'STUDENT' ? '/student-dashboard' : '/'} replace />;
   }
 
-  // 4. إذا كل الشروط تمام، بنسمحله يدخل ويشوف الصفحة
+  // --- Access Granted ---
   return children;
 };
 

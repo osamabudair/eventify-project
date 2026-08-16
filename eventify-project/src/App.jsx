@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import Home from './pages/Home/Home';
 import Auth from './pages/Auth/Auth';
-import Dashboard from './pages/Dashboard/Dashboard';
+import ClubDashboard from './pages/Dashboard/ClubDashboard';
 import EventDetails from './pages/EventDetails/EventDetails';
 import StudentDashboard from './pages/StudentDashboard/StudentDashboard';
 import ExploreEvents from './pages/ExploreEvents/ExploreEvents';
@@ -28,7 +28,7 @@ function App() {
             path="/club-dashboard" 
             element={
               <ProtectedRoute allowedRoles={['CLUB_LEADER', 'ADMIN']}>
-                <Dashboard />
+                <ClubDashboard />
               </ProtectedRoute>
             } 
           />

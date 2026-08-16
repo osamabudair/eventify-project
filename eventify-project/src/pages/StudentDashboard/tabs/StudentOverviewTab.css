@@ -1,3 +1,4 @@
+/* --- Overview Container --- */
 .student-overview-container {
   display: flex;
   flex-direction: column;
@@ -5,7 +6,7 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Section Headers */
+/* --- Section Headers --- */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -35,14 +36,14 @@
   background-color: var(--tag-bg);
 }
 
-/* Suggested Events Grid */
+/* --- Suggested Events Grid --- */
 .suggested-events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
 }
 
-/* Suggested Event Card */
+/* --- Suggested Event Card --- */
 .suggested-event-card {
   padding: 24px;
   border-radius: 16px;
@@ -124,6 +125,7 @@
   gap: 12px;
 }
 
+/* --- Main Layout Grids --- */
 .overview-main-grid {
   display: grid;
   grid-template-columns: 2fr 1fr; 
@@ -131,6 +133,7 @@
   align-items: start;
 }
 
+/* --- Next Upcoming Event Card --- */
 .next-event-card {
   background: linear-gradient(135deg, var(--primary-color), #8b5cf6) !important;
   color: white;
@@ -190,6 +193,33 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
+/* Empty Next Event State */
+.empty-next-event {
+  background: var(--card-bg) !important;
+  border: 1px dashed var(--border-color) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+  justify-content: flex-start !important;
+}
+
+.empty-next-event h3 {
+  color: var(--text-primary) !important;
+  font-size: 1.2rem !important;
+  margin-bottom: 4px !important;
+}
+
+.empty-next-event p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.empty-badge {
+  background-color: var(--tag-bg) !important;
+  color: var(--primary-color) !important;
+}
+
+/* --- Empty States --- */
 .empty-state-box {
   text-align: center;
   padding: 40px;
@@ -199,6 +229,7 @@
   color: var(--text-secondary);
 }
 
+/* --- Activity Section --- */
 .activity-section {
   padding: 24px !important;
 }
@@ -226,6 +257,8 @@
   gap: 16px;
   position: relative;
   z-index: 1;
+  padding-right: 40px; 
+  align-items: flex-start;
 }
 
 .activity-dot {
@@ -242,6 +275,7 @@
 .activity-dot.rejected { background-color: #ef4444; }
 
 .activity-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -259,43 +293,7 @@
   color: var(--text-secondary);
 }
 
-@media (max-width: 1024px) {
-  .overview-main-grid {
-    grid-template-columns: 1fr;
-  }
-  .next-event-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-  }
-}
-
-.empty-next-event {
-  background: var(--card-bg) !important;
-  border: 1px dashed var(--border-color) !important;
-  color: var(--text-primary) !important;
-  box-shadow: none !important;
-  justify-content: flex-start !important;
-}
-
-.empty-next-event h3 {
-  color: var(--text-primary) !important;
-  font-size: 1.2rem !important;
-  margin-bottom: 4px !important;
-}
-
-.empty-next-event p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.empty-badge {
-  background-color: var(--tag-bg) !important;
-  color: var(--primary-color) !important;
-}
-
-/* تنسيق الرابط التفاعلي لاسم الفعالية */
+/* --- Interactive Links --- */
 .activity-link {
   font-style: italic;
   color: var(--primary-color);
@@ -309,31 +307,16 @@
   text-decoration-color: var(--primary-color);
 }
 
-/* تنسيق حاوية النشاط عشان تدعم ظهور الأزرار */
-.activity-item {
-  display: flex;
-  gap: 16px;
-  position: relative;
-  z-index: 1;
-  padding-right: 40px; /* مساحة للأزرار */
-  align-items: flex-start;
-}
-
-.activity-content {
-  flex: 1;
-}
-
-/* الأزرار المخفية بشكل افتراضي */
+/* --- Hover Actions (Activity) --- */
 .activity-actions {
   position: absolute;
   right: 0;
   top: 0;
-  opacity: 0; /* مخفي */
+  opacity: 0; 
   visibility: hidden;
   transition: all 0.2s ease-in-out;
 }
 
-/* سحر الـ Hover: إظهار الأزرار لما نمرر الماوس على النشاط كله */
 .activity-item:hover .activity-actions {
   opacity: 1;
   visibility: visible;
@@ -352,7 +335,7 @@
 }
 
 .cancel-btn {
-  color: #ef4444; /* لون أحمر للإلغاء */
+  color: #ef4444; 
 }
 .cancel-btn:hover {
   background: #fef2f2;
@@ -365,4 +348,16 @@
 .view-btn:hover {
   background: var(--tag-bg);
   border-color: var(--primary-color);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1024px) {
+  .overview-main-grid {
+    grid-template-columns: 1fr;
+  }
+  .next-event-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
 }

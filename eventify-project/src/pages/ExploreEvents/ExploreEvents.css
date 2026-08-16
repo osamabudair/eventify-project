@@ -1,4 +1,4 @@
-/* container */
+/* --- Page Container --- */
 .explore-page-container {
   min-height: 100vh;
   background-color: var(--bg-color);
@@ -6,7 +6,7 @@
   flex-direction: column;
 }
 
-/* header content */
+/* --- Header Content --- */
 .explore-header {
   background-color: var(--bg-color);
   padding: 80px 20px 60px;
@@ -32,7 +32,7 @@
   margin: 0 0 40px 0;
 }
 
-/* filter section */
+/* --- Filter Section --- */
 .interactive-filter-section {
   display: flex;
   flex-direction: column;
@@ -42,7 +42,7 @@
   margin: 0 auto 32px;
 }
 
-/* search bar*/
+/* --- Search Bar --- */
 .modern-search-bar {
   position: relative;
   width: 100%;
@@ -98,7 +98,7 @@
   color: white;
 }
 
-/* pills container */
+/* --- Pills Container --- */
 .modern-pills-container {
   display: flex;
   align-items: center;
@@ -123,7 +123,7 @@
   background-color: var(--border-color);
 }
 
-/* filter pills */
+/* --- Filter Pills --- */
 .filter-pill {
   background-color: transparent;
   color: var(--text-secondary);
@@ -150,6 +150,7 @@
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
+/* --- Select Pill Override --- */
 .select-pill {
   appearance: none;
   padding-right: 36px;
@@ -163,7 +164,8 @@
 .select-pill:focus {
   border-color: var(--primary-color);
 }
-/* main content */
+
+/* --- Main Content --- */
 .explore-main {
   flex: 1;
   max-width: 1400px;
@@ -173,7 +175,7 @@
   box-sizing: border-box;
 }
 
-/* no results */
+/* --- No Results State --- */
 .no-results {
   text-align: center;
   padding: 80px 20px;
@@ -195,6 +197,6 @@
   margin: 0 0 24px 0;
 }
 
-/* الأنيميشن */
+/* --- Animations --- */
 .animate-fade-in { animation: fadeIn 0.8s ease-out; }
 .animate-slide-up { animation: slideUp 0.6s ease-out forwards; }

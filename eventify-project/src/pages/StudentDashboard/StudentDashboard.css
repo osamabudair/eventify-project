@@ -1,11 +1,11 @@
-/* تصميم شبكة التذاكر */
+/* --- Tickets Grid Layout --- */
 .tickets-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 24px;
 }
 
-/* بطاقة التذكرة (تصميم يشبه التذكرة الحقيقية) */
+/* --- Ticket Card Base --- */
 .ticket-card {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -21,10 +21,10 @@
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
 }
 
-/* الرأس والتفاصيل */
+/* --- Ticket Header & Details --- */
 .ticket-header {
   padding: 24px;
-  border-bottom: 2px dashed var(--border-color); /* خط متقطع مثل التذاكر */
+  border-bottom: 2px dashed var(--border-color); 
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -55,7 +55,7 @@
   font-weight: 600;
 }
 
-/* التذييل والباركود الوهمي */
+/* --- Ticket Footer & Barcode --- */
 .ticket-footer {
   background-color: var(--tag-bg);
   padding: 16px 24px;
@@ -78,6 +78,7 @@
   opacity: 0.5;
 }
 
+/* --- Status Badges --- */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -88,13 +89,11 @@
   font-weight: bold;
 }
 
-/* اللون الأخضر لحالة القبول */
 .status-badge.approved {
   background-color: rgba(16, 185, 129, 0.1);
   color: #10b981;
 }
 
-/* اللون البرتقالي/الأصفر لحالة الانتظار */
 .status-badge.pending {
   background-color: rgba(245, 158, 11, 0.1);
   color: #f59e0b;

@@ -1,16 +1,20 @@
+// --- Imports ---
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { getOrganizerRegistrationsApi, updateRegistrationStatusApi } from '../../../api/axiosInstance';
 import './RegistrationsTab.css';
 
 const RegistrationsTab = () => {
+  // --- State Management ---
   const [pendingRequests, setPendingRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // --- Side Effects ---
   useEffect(() => {
     fetchPendingRegistrations();
   }, []);
 
+  // --- Data Fetching ---
   const fetchPendingRegistrations = async () => {
     try {
       const res = await getOrganizerRegistrationsApi();
@@ -23,6 +27,7 @@ const RegistrationsTab = () => {
     }
   };
 
+  // --- Handlers ---
   const handleApproveRequest = async (id, name) => {
     try {
       await updateRegistrationStatusApi(id, 'approved');
@@ -43,6 +48,7 @@ const RegistrationsTab = () => {
     }
   };
 
+  // --- Loading State ---
   if (loading) {
     return (
       <div className="modern-view-section loading-container">
@@ -51,19 +57,28 @@ const RegistrationsTab = () => {
     );
   }
 
+  // --- Main Render ---
   return (
     <div className="animate-fade-in modern-view-section">
+      
+      {/* --- Header Section --- */}
       <h3 className="section-heading">Pending Registrations</h3>
       <p className="text-secondary section-description">
         Review and approve student applications for your upcoming events.
       </p>
       
+      {/* --- Content Area --- */}
       {pendingRequests.length === 0 ? (
+        
+        /* Empty State */
         <div className="empty-state-container">
           <CheckCircle size={48} className="empty-icon" />
           <p>All caught up! No pending requests.</p>
         </div>
+        
       ) : (
+        
+        /* Registrations Table */
         <div className="table-responsive">
           <table className="events-table">
             <thead>

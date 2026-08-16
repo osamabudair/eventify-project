@@ -1,20 +1,25 @@
-/* الحاوية الأساسية للصفحة */
+/* --- Page Layout --- */
 .auth-page-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: var(--bg-color);
-  padding: 20px;
   animation: pageFadeIn 0.6s ease-out forwards;
 }
 
 @keyframes pageFadeIn {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-/* الحاوية الجديدة اللي بتجمع الأزرار والبطاقة */
+/* --- Content Wrapper --- */
 .auth-content-wrapper {
   display: flex;
   flex-direction: column;
@@ -22,19 +27,20 @@
   width: 950px;
   max-width: 100%;
   height: 100%;
-  max-height: 650px; /* حددنا أقصى ارتفاع عشان نجبر الفورم يعمل سكرول داخلي فقط */
+  max-height: 650px;
 }
 
-/* الأزرار العلوية (شيلنا الـ position: absolute عشان تبطل طايرة) */
+/* --- Top Navigation --- */
 .top-nav-buttons {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0; /* شلنا الـ padding عشان تصير الأزرار على نفس خط البطاقة بالضبط */
+  padding: 0;
 }
 
-.back-btn, .theme-toggle {
+.back-btn,
+.theme-toggle {
   background: none;
   border: none;
   color: var(--text-secondary);
@@ -48,9 +54,12 @@
   transition: color 0.3s;
 }
 
-.back-btn:hover, .theme-toggle:hover { color: var(--primary-color); }
+.back-btn:hover,
+.theme-toggle:hover {
+  color: var(--primary-color);
+}
 
-/* 4. الصندوق الرئيسي */
+/* --- Main Auth Container --- */
 .auth-main-container {
   background-color: var(--card-bg);
   border-radius: 24px;
@@ -58,11 +67,11 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 100%; /* بياخذ كل المساحة المتاحة من الحاوية */
+  height: 100%;
   border: 1px solid var(--border-color);
 }
 
-/* حاويات النماذج */
+/* --- Form Containers --- */
 .form-container {
   position: absolute;
   top: 0;
@@ -70,7 +79,6 @@
   transition: all 0.6s ease-in-out;
 }
 
-/* 5. تنسيق النماذج وتوسيط اللوجن */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -80,45 +88,137 @@
   box-sizing: border-box;
 }
 
-/* توسيط صفحة تسجيل الدخول فقط (لأنها قصيرة) */
 .sign-in-container .auth-form {
   justify-content: center;
 }
 
-/* جعل صفحة التسجيل تبدأ من الأعلى عشان ما ينقص الإيميل */
 .sign-up-container .auth-form {
   justify-content: flex-start;
 }
 
-.auth-header { 
+.auth-header {
   width: 100%;
-  text-align: center; 
-  margin-bottom: 24px; 
-  flex-shrink: 0; /* يمنع انضغاط الهيدر لما الشاشة تصغر */
+  text-align: center;
+  margin-bottom: 24px;
+  flex-shrink: 0;
 }
 
-/* سكرول داخلي لصفحة التسجيل مع التوسيط */
-/* 6. السكرول الداخلي لصفحة التسجيل (حل مشكلة القص) */
+/* --- Typography Helpers --- */
+.auth-header .logo {
+  font-size: 28px;
+  margin-bottom: 8px;
+  font-weight: 900;
+  color: var(--primary-color);
+}
+.auth-header .logo span {
+  color: var(--text-primary);
+}
+.auth-header h2 {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+}
+.auth-header p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* --- Scrollable Content --- */
 .form-scrollable-content {
-  flex: 1; /* يأخذ باقي المساحة المتاحة تحت الهيدر */
+  flex: 1;
   width: 100%;
-  overflow-y: auto;
-  padding-right: 8px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* هذا السطر هو اللي حل مشكلة قص الإيميل */
+  justify-content: flex-start;
   gap: 16px;
-  padding-bottom: 20px; /* مسافة أمان من تحت */
+  padding-bottom: 20px;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
-.input-group { 
-  width: 100%; /* عشان الحقول تاخذ العرض كامل وما تنكمش */
-  display: flex; 
-  flex-direction: column; 
-  gap: 6px; 
-  text-align: left; 
+/* --- Inputs & Buttons --- */
+.input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  margin-bottom: 12px;
 }
 
+.input-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.input-group input {
+  padding: 12px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px var(--tag-bg);
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.password-input-wrapper input {
+  padding-right: 45px;
+}
+.password-toggle-btn {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+.password-toggle-btn:hover {
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  width: 100%;
+}
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* --- Panels Animation & Visibility --- */
 .sign-in-container {
   left: 0;
   width: 50%;
@@ -145,53 +245,19 @@
 }
 
 @keyframes show {
-  0%, 49.99% { opacity: 0; z-index: 1; }
-  50%, 100% { opacity: 1; z-index: 5; }
+  0%,
+  49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+  50%,
+  100% {
+    opacity: 1;
+    z-index: 5;
+  }
 }
 
-/* تنسيق النماذج من الكود الخاص بك */
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  padding: 40px 50px;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-.auth-header .logo { font-size: 28px; margin-bottom: 8px; font-weight: 900; color: var(--primary-color);}
-.auth-header .logo span { color: var(--text-primary); }
-.auth-header h2 { font-size: 28px; font-weight: 800; margin: 0 0 8px 0; color: var(--text-primary); }
-.auth-header p { color: var(--text-secondary); font-size: 14px; margin: 0;}
-
-/* سكرول داخلي لصفحة التسجيل */
-.form-scrollable-content {
-  overflow-y: auto;
-  padding-right: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.form-scrollable-content::-webkit-scrollbar { width: 4px; }
-.form-scrollable-content::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-
-/* عناصر الإدخال من الكود الخاص بك */
-.input-group { display: flex; flex-direction: column; gap: 6px; text-align: left; margin-bottom: 12px;}
-.input-group label { font-size: 13px; font-weight: 600; color: var(--text-primary); }
-.input-group input { padding: 12px 16px; border: 2px solid var(--border-color); border-radius: 12px; background-color: var(--bg-color); color: var(--text-primary); font-size: 14px; transition: all 0.3s ease; width: 100%; box-sizing: border-box;}
-.input-group input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 4px var(--tag-bg); }
-
-.password-input-wrapper { position: relative; display: flex; align-items: center; }
-.password-input-wrapper input { padding-right: 45px; }
-.password-toggle-btn { position: absolute; right: 14px; background: none; border: none; cursor: pointer; color: var(--text-secondary); padding: 0; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s ease, transform 0.2s ease; }
-.password-toggle-btn:hover { color: var(--primary-color); transform: scale(1.1); }
-
-/* زر الإرسال */
-.submit-btn { background: linear-gradient(135deg, var(--primary-color), #8b5cf6); color: white; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 8px; transition: transform 0.3s, box-shadow 0.3s; width: 100%; }
-.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
-
-/* -------------------------------------
-   تصميم الطبقة المتحركة والأشكال (AuthVisuals)
--------------------------------------- */
+/* --- Auth Visuals (Overlay) --- */
 .overlay-container {
   position: absolute;
   top: 0;
@@ -203,7 +269,9 @@
   z-index: 100;
 }
 
-.auth-main-container.right-panel-active .overlay-container { transform: translateX(-100%); }
+.auth-main-container.right-panel-active .overlay-container {
+  transform: translateX(-100%);
+}
 
 .overlay {
   background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
@@ -216,7 +284,9 @@
   transition: transform 0.6s ease-in-out;
 }
 
-.auth-main-container.right-panel-active .overlay { transform: translateX(50%); }
+.auth-main-container.right-panel-active .overlay {
+  transform: translateX(50%);
+}
 
 .overlay-panel {
   position: absolute;
@@ -224,35 +294,96 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 0 60px; /* زدنا المساحة عشان النص يتنفس */
+  padding: 0 60px;
   text-align: center;
   top: 0;
   height: 100%;
   width: 50%;
-  box-sizing: border-box; /* 👈 السطر السحري اللي بيمنع تمدد العنصر */
+  box-sizing: border-box;
   transform: translateX(0);
   transition: transform 0.6s ease-in-out;
 }
 
-.overlay-left { transform: translateX(-20%); }
-.auth-main-container.right-panel-active .overlay-left { transform: translateX(0); }
+.overlay-left {
+  transform: translateX(-20%);
+}
+.auth-main-container.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
 
-.overlay-right { right: 0; transform: translateX(0); }
-.auth-main-container.right-panel-active .overlay-right { transform: translateX(20%); }
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+.auth-main-container.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
 
-.overlay-panel h2 { font-size: 32px; font-weight: 800; margin-bottom: 12px; line-height: 1.2;}
-.overlay-panel p { font-size: 15px; font-weight: 300; max-width: 300px; margin-bottom: 32px; line-height: 1.6; }
+.overlay-panel h2 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.overlay-panel p {
+  font-size: 15px;
+  font-weight: 300;
+  max-width: 300px;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
 
-.ghost-btn { background-color: transparent; color: white; border: 2px solid white; padding: 12px 32px; border-radius: 12px; font-weight: bold; font-size: 15px; cursor: pointer; transition: all 0.3s ease; }
-.ghost-btn:hover { background-color: white; color: var(--primary-color); transform: translateY(-2px); }
+.ghost-btn {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 12px 32px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.ghost-btn:hover {
+  background-color: white;
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
 
-/* الأشكال العائمة (من كودك) */
-.floating-shape { position: absolute; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 6s infinite ease-in-out alternate; backdrop-filter: blur(8px); }
-.shape-1 { width: 200px; height: 200px; top: -50px; right: -50px; }
-.shape-2 { width: 120px; height: 120px; bottom: 40px; left: -20px; animation-delay: 2s; }
-.shape-3 { width: 60px; height: 60px; top: 40%; left: 30%; animation-delay: 1s; }
+/* --- Floating Shapes Animation --- */
+.floating-shape {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: float 6s infinite ease-in-out alternate;
+  backdrop-filter: blur(8px);
+}
+.shape-1 {
+  width: 200px;
+  height: 200px;
+  top: -50px;
+  right: -50px;
+}
+.shape-2 {
+  width: 120px;
+  height: 120px;
+  bottom: 40px;
+  left: -20px;
+  animation-delay: 2s;
+}
+.shape-3 {
+  width: 60px;
+  height: 60px;
+  top: 40%;
+  left: 30%;
+  animation-delay: 1s;
+}
 
-@keyframes float { 
-  0% { transform: translateY(0) rotate(0deg); } 
-  100% { transform: translateY(-20px) rotate(15deg); } 
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-20px) rotate(15deg);
+  }
 }

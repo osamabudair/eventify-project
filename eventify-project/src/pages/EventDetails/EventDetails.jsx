@@ -1,3 +1,4 @@
+// --- Imports ---
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
@@ -7,6 +8,7 @@ import { getEventByIdApi, registerForEventApi } from '../../api/axiosInstance';
 import './EventDetails.css';
 
 const EventDetails = () => {
+  // --- Hooks & State ---
   const { id } = useParams();
   const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useTheme();
@@ -16,6 +18,7 @@ const EventDetails = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
 
+  // --- Side Effects ---
   useEffect(() => {
     window.scrollTo(0, 0);
     
@@ -24,7 +27,6 @@ const EventDetails = () => {
         const res = await getEventByIdApi(id);
         const data = res.data;
         
-        // تنسيق البيانات لتناسب التصميم
         const formattedEvent = {
           id: data._id,
           title: data.title,
@@ -53,6 +55,7 @@ const EventDetails = () => {
     fetchEventData();
   }, [id]);
 
+  // --- Handlers ---
   const handleRegister = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -70,6 +73,7 @@ const EventDetails = () => {
     }
   };
 
+  // --- Loading State ---
   if (isLoading) {
     return (
       <div className="event-details-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -78,6 +82,7 @@ const EventDetails = () => {
     );
   }
 
+  // --- Error State ---
   if (errorMsg || !event) {
     return (
       <div className="event-details-page" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: '20px' }}>
@@ -87,9 +92,11 @@ const EventDetails = () => {
     );
   }
 
+  // --- Main Render ---
   return (
     <div className="event-details-page">
-      {/* navbar */}
+      
+      {/* Navigation Bar */}
       <nav className="details-nav">
         <button className="back-btn" onClick={() => navigate(-1)}>
           <ArrowLeft size={20} /> Back
@@ -99,7 +106,7 @@ const EventDetails = () => {
         </button>
       </nav>
 
-      {/* image section */}
+      {/* Hero Header Section */}
       <header className="modern-hero animate-fade-in">
         <div className="hero-image-container">
           <img src={event.image} alt={event.title} className="hero-bg-image" />
@@ -116,11 +123,11 @@ const EventDetails = () => {
         </div>
       </header>
 
-      {/* main content below image */}
+      {/* Main Content Layout */}
       <main className="modern-main-content animate-slide-up">
         <div className="content-grid">
           
-          {/* Event Description Section */}
+          {/* Event Details Section */}
           <div className="event-description-section">
             <h2>About this event</h2>
             <div className="description-text">
@@ -128,7 +135,7 @@ const EventDetails = () => {
             </div>
           </div>
 
-          {/* Event Registration Card */}
+          {/* Sidebar / Registration Card */}
           <div className="event-sidebar">
             <EventRegistrationCard 
               event={event} 

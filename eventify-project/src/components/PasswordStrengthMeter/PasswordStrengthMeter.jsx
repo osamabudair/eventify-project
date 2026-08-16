@@ -1,14 +1,18 @@
+// --- Imports ---
 import React from 'react';
 import './PasswordStrengthMeter.css';
 
 const PasswordStrengthMeter = ({ password }) => {
+  // --- Logic & Helper Functions ---
   const getPasswordStrength = (pass) => {
     let score = 0;
     if (!pass) return score;
+    
     if (pass.length >= 8) score += 1;
     if (/[A-Z]/.test(pass) && /[a-z]/.test(pass)) score += 1;
     if (/\d/.test(pass)) score += 1;
     if (/[^A-Za-z0-9]/.test(pass)) score += 1;
+    
     return score;
   };
 
@@ -26,19 +30,28 @@ const PasswordStrengthMeter = ({ password }) => {
 
   const strengthData = getStrengthData();
 
+  // --- Early Return ---
   if (!password) return null;
 
+  // --- Main Render ---
   return (
     <div className="password-strength-container">
+      
+      {/* Strength Bar */}
       <div className="strength-bar-bg">
         <div 
           className="strength-bar-fill" 
           style={{ width: strengthData.width, backgroundColor: strengthData.color }}
         ></div>
       </div>
+      
+      {/* Strength Label */}
       <div className="strength-text">
-        <span style={{ color: strengthData.color, fontWeight: 'bold' }}>{strengthData.label}</span>
+        <span style={{ color: strengthData.color, fontWeight: 'bold' }}>
+          {strengthData.label}
+        </span>
       </div>
+      
     </div>
   );
 };

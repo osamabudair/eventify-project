@@ -1,4 +1,4 @@
-/* Main Section */
+/* --- Main Section Layout --- */
 .modern-view-section {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -18,7 +18,7 @@
   margin-bottom: 24px;
 }
 
-/* Table & Responsive Wrapper */
+/* --- Table Styles --- */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -52,7 +52,7 @@
   white-space: nowrap;
 }
 
-/* Actions Wrapper */
+/* --- Action Buttons --- */
 .actions-wrapper {
   display: flex;
   align-items: center;
@@ -60,7 +60,6 @@
   gap: 10px;
 }
 
-/* Action Buttons (Modern UI) */
 .action-btn {
   display: inline-flex;
   align-items: center;
@@ -79,7 +78,7 @@
 /* Approve Button (Green Theme) */
 .action-btn.approve {
   color: #10b981;
-  background-color: #ecfdf5; /* خلفية خضراء فاتحة جداً */
+  background-color: #ecfdf5; 
   border-color: #d1fae5;
 }
 
@@ -92,7 +91,7 @@
 /* Reject Button (Red Theme) */
 .action-btn.reject {
   color: #ef4444;
-  background-color: #fef2f2; /* خلفية حمراء فاتحة جداً */
+  background-color: #fef2f2; 
   border-color: #fee2e2;
 }
 
@@ -102,7 +101,7 @@
   border-color: #fca5a5;
 }
 
-/* Loading & Empty States */
+/* --- Loading & Empty States --- */
 .loading-container {
   display: flex;
   justify-content: center;

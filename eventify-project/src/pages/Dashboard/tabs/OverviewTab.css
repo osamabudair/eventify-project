@@ -1,4 +1,4 @@
-/* stats */
+/* --- Stats Grid --- */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -15,7 +15,9 @@
   align-items: center;
   gap: 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .stat-card:hover {
@@ -46,7 +48,7 @@
   font-size: 13px;
 }
 
-/* Overview Loading State */
+/* --- Loading State --- */
 .overview-loading-container {
   display: flex;
   justify-content: center;
@@ -54,15 +56,15 @@
   color: var(--primary-color);
 }
 
-/* Main Grid Layout (Table + Sidebar) */
+/* --- Main Grid Layout --- */
 .overview-main-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* ثلثين للجدول، وثلث للنشاطات */
+  grid-template-columns: 2fr 1fr;
   gap: 24px;
   align-items: start;
 }
 
-/* Modern View Section (Cards) */
+/* --- Section Cards --- */
 .modern-view-section {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -71,7 +73,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 }
 
-/* Section Header & View All Button */
+/* Section Header */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -104,7 +106,7 @@
   background-color: var(--tag-bg);
 }
 
-/* Table Styles */
+/* --- Events Table --- */
 .table-container {
   overflow-x: auto;
 }
@@ -144,15 +146,21 @@
   font-size: 12px;
   font-weight: bold;
 }
-.status-badge.active { background-color: rgba(16, 185, 129, 0.1); color: #10b981; }
-.status-badge.completed { background-color: rgba(99, 102, 241, 0.1); color: #6366f1; } 
+.status-badge.active {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+.status-badge.completed {
+  background-color: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+}
 
-/* Action Buttons (Edit/Delete) */
+/* Action Buttons */
 .actions-wrapper {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
-  gap: 10px; 
+  gap: 6px; 
 }
 
 .action-btn {
@@ -160,23 +168,36 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 8px 12px;
   border-radius: 8px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  border: 1px solid var(--border-color);
-  background-color: var(--card-bg);
+  border: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
-.action-btn.edit { color: var(--text-secondary); }
-.action-btn.edit:hover { background-color: var(--tag-bg); color: var(--primary-color); border-color: var(--primary-color); }
+.action-btn.edit {
+  color: var(--text-secondary);
+}
 
-.action-btn.delete { color: #ef4444; background-color: #fef2f2; border-color: #fee2e2; }
-.action-btn.delete:hover { background-color: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+.action-btn.edit:hover {
+  color: var(--primary-color) !important;
+  background-color: rgba(37, 99, 235, 0.1) !important;
+}
 
-/* Live Activity Feed */
+.action-btn.delete {
+  color: #ef4444 !important;
+}
+
+.action-btn.delete:hover {
+  color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;/
+}
+
+/* --- Live Activity Feed --- */
 .activity-feed {
   display: flex;
   flex-direction: column;
@@ -201,12 +222,11 @@
   flex-shrink: 0;
 }
 
-/* التعديلات هنا لتقليل الـ Gap بين الأسطر */
 .feed-content p {
   margin: 0;
   font-size: 0.9rem;
   color: var(--text-secondary);
-  line-height: 1.2; /* تقليل ارتفاع السطر */
+  line-height: 1.2;
 }
 
 .feed-content strong {
@@ -218,20 +238,20 @@
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--primary-color);
-  margin-top: 2px; /* مسافة أصغر */
-  line-height: 1.2; 
+  margin-top: 2px;
+  line-height: 1.2;
 }
 
 .feed-time {
   display: block;
   font-size: 0.75rem;
   color: var(--text-secondary);
-  margin-top: 2px; /* مسافة أصغر جداً */
+  margin-top: 2px;
 }
 
-/* Responsive Grid */
+/* --- Responsive Grid --- */
 @media (max-width: 1024px) {
   .overview-main-grid {
-    grid-template-columns: 1fr; /* بصيروا تحت بعض في الشاشات الصغيرة */
+    grid-template-columns: 1fr;
   }
 }

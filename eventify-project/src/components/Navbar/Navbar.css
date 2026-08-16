@@ -1,4 +1,4 @@
-/* Animations */
+/* --- Global Animations --- */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
@@ -27,7 +27,7 @@
   animation: fadeInDown 0.6s ease-out forwards;
 }
 
-/* navbar */
+/* --- Navbar Container Layout --- */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -40,6 +40,7 @@
   background-color: transparent;
 }
 
+/* --- Logo Styling --- */
 .logo {
   font-size: 28px;
   font-weight: 800;
@@ -51,12 +52,14 @@
   color: var(--text-primary);
 }
 
+/* --- Navigation Actions Section --- */
 .nav-actions {
   display: flex;
   gap: 16px;
   align-items: center;
 }
 
+/* --- Theme Toggle Button --- */
 .theme-toggle {
   background: transparent;
   border: 1px solid var(--border-color);
@@ -77,6 +80,7 @@
   transform: rotate(15deg);
 }
 
+/* --- Authentication Buttons --- */
 .login-btn {
   background: transparent;
   border: none;

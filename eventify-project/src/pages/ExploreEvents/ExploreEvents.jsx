@@ -1,3 +1,4 @@
+// --- Imports ---
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, CalendarX, Building2, X, Loader2 } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
@@ -6,13 +7,14 @@ import { getAllEventsApi } from '../../api/axiosInstance';
 import './ExploreEvents.css';
 
 const ExploreEvents = () => {
+  // --- State Management ---
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedClub, setSelectedClub] = useState('All');
-  
   const [allEvents, setAllEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // --- Side Effects ---
   useEffect(() => {
     document.title = "Explore Events - Eventify";
     window.scrollTo(0, 0);
@@ -44,6 +46,7 @@ const ExploreEvents = () => {
     fetchEvents();
   }, []);
 
+  // --- Data Filtering & Preparation ---
   const categories = ['All', 'Technology', 'Business', 'Sports', 'Art', 'Science', 'Other'];
   const clubs = ['All', ...new Set(allEvents.map(e => e.club))];
 
@@ -56,18 +59,21 @@ const ExploreEvents = () => {
     return matchesSearch && matchesCategory && matchesClub;
   });
 
+  // --- Render ---
   return (
     <div className="explore-page-container">
       <Navbar />
 
-      {/* header content */}
+      {/* --- Header Section --- */}
       <header className="explore-header animate-fade-in">
         <div className="explore-header-content">
           <h1>Explore Campus Events</h1>
           <p>Find the perfect activities to build your skills and network.</p>
 
+          {/* --- Interactive Filter Section --- */}
           <div className="interactive-filter-section">
             
+            {/* Search Bar */}
             <div className="modern-search-bar">
               <Search className="search-icon" size={20} />
               <input 
@@ -76,7 +82,6 @@ const ExploreEvents = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              {/* delete search button */}
               {searchQuery && (
                 <button className="clear-search-btn" onClick={() => setSearchQuery('')}>
                   <X size={16} />
@@ -84,8 +89,10 @@ const ExploreEvents = () => {
               )}
             </div>
             
-            {/* pills filter category */}
+            {/* Filter Pills Container */}
             <div className="modern-pills-container">
+              
+              {/* Category Pills */}
               <div className="pill-group">
                 <Filter size={18} className="group-icon" />
                 {categories.map(category => (
@@ -100,7 +107,8 @@ const ExploreEvents = () => {
               </div>
 
               <div className="pill-divider"></div>
-              {/* club filter */}
+              
+              {/* Club Select Pill */}
               <div className="pill-group">
                 <Building2 size={18} className="group-icon" />
                 <select 
@@ -114,13 +122,13 @@ const ExploreEvents = () => {
                   ))}
                 </select>
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
       </header>
       
-      {/* main content */}
+      {/* --- Main Content Section --- */}
       <main className="explore-main animate-slide-up">
         {isLoading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '40vh', color: '#6366f1' }}>

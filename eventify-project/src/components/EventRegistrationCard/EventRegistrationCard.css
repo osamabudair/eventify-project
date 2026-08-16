@@ -1,4 +1,4 @@
-/* div of Event Registration Card */
+/* --- Main Card Layout --- */
 .modern-registration-card {
   background-color: var(--card-bg);
   padding: 32px;
@@ -20,6 +20,7 @@
   padding-bottom: 16px;
 }
 
+/* --- Details List --- */
 .details-list {
   display: flex;
   flex-direction: column;
@@ -37,6 +38,7 @@
   transform: translateX(8px); 
 }
 
+/* --- Icon & Text Styles --- */
 .icon-wrapper {
   background-color: var(--tag-bg);
   color: var(--primary-color);
@@ -69,7 +71,7 @@
   color: var(--text-primary);
 }
 
-/* Register Button */
+/* --- Register Button --- */
 .register-btn-modern {
   width: 100%;
   padding: 16px;
@@ -99,6 +101,7 @@
   box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
 }
 
+/* --- Registered State --- */
 .register-btn-modern.registered {
   background: #10b981; 
   box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);

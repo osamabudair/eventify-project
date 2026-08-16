@@ -1,12 +1,15 @@
+// --- Imports ---
 import React, { useState, useEffect } from 'react';
 import { Save, Camera } from 'lucide-react';
-import { updateProfileApi } from '../..//../api/axiosInstance';
+import { updateProfileApi } from '../../../api/axiosInstance';
 import './ProfileTab.css';
 
 const ProfileTab = () => {
+  // --- State Management ---
   const [profileData, setProfileData] = useState({ fullName: '', email: '' });
   const [passwords, setPasswords] = useState({ current: '', new: '', confirm: '' });
 
+  // --- Side Effects ---
   useEffect(() => {
     const userString = localStorage.getItem('user');
     if (userString) {
@@ -18,6 +21,7 @@ const ProfileTab = () => {
     }
   }, []);
 
+  // --- Handlers ---
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name in profileData) {
@@ -29,6 +33,8 @@ const ProfileTab = () => {
 
   const handleSaveChanges = async (e) => {
     e.preventDefault();
+    
+    // --- Validation ---
     if (passwords.current || passwords.new || passwords.confirm) {
       if (passwords.new !== passwords.confirm) {
         alert("New passwords do not match!");
@@ -40,6 +46,7 @@ const ProfileTab = () => {
       }
     }
 
+    // --- API Call ---
     try {
       const res = await updateProfileApi({
         fullName: profileData.fullName,
@@ -48,11 +55,11 @@ const ProfileTab = () => {
       });
 
       localStorage.setItem('user', JSON.stringify(res.data.user));
-      
       window.dispatchEvent(new Event('storage'));
 
       alert(res.data.message);
       
+      // Reset password fields
       setPasswords({ current: '', new: '', confirm: '' });
 
     } catch (error) {
@@ -61,12 +68,15 @@ const ProfileTab = () => {
     }
   };
 
+  // --- Helpers ---
   const initials = profileData.fullName ? profileData.fullName.substring(0, 2).toUpperCase() : 'ST';
 
+  // --- Main Render ---
   return (
     <div className="animate-fade-in modern-profile-layout">
       <form className="single-profile-card" onSubmit={handleSaveChanges}>
         
+        {/* Profile Header */}
         <div className="profile-header-compact">
           <div className="avatar-wrapper">
             {initials}
@@ -82,51 +92,73 @@ const ProfileTab = () => {
 
         <hr className="form-divider" />
 
+        {/* Profile Form */}
         <div className="form-grid-compact">
+          
           <div className="input-group">
             <label>Full Name</label>
             <input 
-              type="text" name="fullName" value={profileData.fullName} 
-              onChange={handleChange} required 
+              type="text" 
+              name="fullName" 
+              value={profileData.fullName} 
+              onChange={handleChange} 
+              required 
             />
           </div>
+          
           <div className="input-group">
             <label>Email Address</label>
             <input 
-              type="email" name="email" value={profileData.email} 
-              disabled className="disabled-input" 
+              type="email" 
+              name="email" 
+              value={profileData.email} 
+              disabled 
+              className="disabled-input" 
             />
           </div>
 
           <div className="input-group full-width">
             <label>Current Password</label>
             <input 
-              type="password" name="current" placeholder="Enter current password" 
-              value={passwords.current} onChange={handleChange} 
+              type="password" 
+              name="current" 
+              placeholder="Enter current password" 
+              value={passwords.current} 
+              onChange={handleChange} 
             />
           </div>
 
           <div className="input-group">
             <label>New Password</label>
             <input 
-              type="password" name="new" placeholder="••••••••" 
-              value={passwords.new} onChange={handleChange} 
+              type="password" 
+              name="new" 
+              placeholder="••••••••" 
+              value={passwords.new} 
+              onChange={handleChange} 
             />
           </div>
+          
           <div className="input-group">
             <label>Confirm New Password</label>
             <input 
-              type="password" name="confirm" placeholder="••••••••" 
-              value={passwords.confirm} onChange={handleChange} 
+              type="password" 
+              name="confirm" 
+              placeholder="••••••••" 
+              value={passwords.confirm} 
+              onChange={handleChange} 
             />
           </div>
+          
         </div>
 
+        {/* Form Actions */}
         <div className="form-actions">
           <button type="submit" className="settings-save-btn">
             <Save size={18} /> Save Changes
           </button>
         </div>
+        
       </form>
     </div>
   );

@@ -1,3 +1,4 @@
+// --- Imports ---
 import React, { useState } from 'react';
 import { Eye, EyeOff, GraduationCap, Briefcase } from 'lucide-react';
 import PasswordStrengthMeter from '../../components/PasswordStrengthMeter/PasswordStrengthMeter';
@@ -5,6 +6,7 @@ import { registerApi } from '../../api/axiosInstance';
 import './RegistrationForm.css';
 
 const RegistrationForm = () => {
+  // --- State Management ---
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,6 +17,7 @@ const RegistrationForm = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // --- Handlers ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -26,7 +29,6 @@ const RegistrationForm = () => {
     setLoading(true);
 
     try {
-      // إرسال بيانات التسجيل للباك إند
       await registerApi({
         username,
         email,
@@ -35,7 +37,6 @@ const RegistrationForm = () => {
       });
 
       alert("Account registered successfully! Please Log In.");
-      // إرجاع المستخدم لصفحة تسجيل الدخول بعد النجاح
       window.location.reload(); 
     } catch (err) {
       setErrorMsg(err.response?.data?.message || 'Registration failed');
@@ -44,8 +45,10 @@ const RegistrationForm = () => {
     }
   };
 
+  // --- Render ---
   return (
     <form onSubmit={handleSubmit} className="auth-form">
+      
       <div className="auth-header">
         <h1 className="logo">Event<span>ify</span></h1>
         <h2>Create an Account</h2>
@@ -131,6 +134,7 @@ const RegistrationForm = () => {
           {loading ? 'Creating Account...' : 'Registration'}
         </button>
       </div>
+
     </form>
   );
 };

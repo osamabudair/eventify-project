@@ -1,4 +1,4 @@
-/* القسم الترحيبي (متوازن المسافات) */
+/* --- Hero Container Layout --- */
 .hero {
   text-align: center;
   padding: 40px 0 60px 0; 
@@ -6,6 +6,7 @@
   margin: 0 auto;
 }
 
+/* --- Hero Typography --- */
 .hero h2 {
   font-size: 52px;
   font-weight: 800;
@@ -26,13 +27,13 @@
   line-height: 1.6;
 }
 
+/* --- Hero Actions & Buttons --- */
 .hero-buttons {
   display: flex;
   justify-content: center;
   gap: 16px;
 }
 
-/* توحيد تصميم الزر الرئيسي مع صفحة Auth */
 .primary-btn {
   background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
   color: white;

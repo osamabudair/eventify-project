@@ -1,9 +1,12 @@
+// --- Imports ---
 import React, { useState, useEffect } from 'react';
 import { Calendar, Users, Clock, Loader2, Edit, Trash2, ArrowRight, UserPlus, Activity } from 'lucide-react';
 import StatCard from '../../../components/StatCard';
+import CreateEventModal from '../../../components/createEventModel/CreateEventModal'; 
 import { getMyEventsApi, deleteEventApi, getOrganizerRegistrationsApi } from '../../../api/axiosInstance';
 import './OverviewTab.css';
 
+// --- Helper Functions ---
 const getTimeAgo = (date) => {
   const seconds = Math.floor((new Date() - new Date(date)) / 1000);
   let interval = seconds / 31536000;
@@ -20,10 +23,16 @@ const getTimeAgo = (date) => {
 };
 
 const OverviewTab = ({ setActiveTab }) => {
+  // --- State Management ---
   const [events, setEvents] = useState([]);
-  const [recentRegistrations, setRecentRegistrations] = useState([]); 
+  const [allRegistrations, setAllRegistrations] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
 
+  // States for Edit Modal
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  // --- Side Effects ---
   useEffect(() => {
     const fetchOverviewData = async () => {
       try {
@@ -35,7 +44,7 @@ const OverviewTab = ({ setActiveTab }) => {
         setEvents(eventsRes.data);
         
         if (regsRes.data) {
-          setRecentRegistrations(regsRes.data.slice(0, 4));
+          setAllRegistrations(regsRes.data);
         }
       } catch (error) {
         console.error("Error fetching overview data:", error);
@@ -47,16 +56,16 @@ const OverviewTab = ({ setActiveTab }) => {
     fetchOverviewData();
   }, []);
 
+  // --- Data Calculations ---
   const totalEvents = events.length;
 
-  const totalRegistrations = events.reduce((sum, event) => {
-    return sum + (event.attendees?.length || 0);
-  }, 0);
+  const totalRegistrations = allRegistrations.filter(reg => reg.status === 'approved').length;
+  const pendingRequests = allRegistrations.filter(reg => reg.status === 'pending').length;
 
   const stats = [
     { title: 'Total Events', value: totalEvents.toString(), icon: <Calendar size={24} /> },
     { title: 'Total Registrations', value: totalRegistrations.toString(), icon: <Users size={24} /> },
-    { title: 'Pending Requests', value: '0', icon: <Clock size={24} /> },
+    { title: 'Pending Requests', value: pendingRequests.toString(), icon: <Clock size={24} /> },
   ];
 
   const recentEventsFormatted = events.slice(0, 3).map((event) => {
@@ -71,7 +80,13 @@ const OverviewTab = ({ setActiveTab }) => {
     };
   });
 
-  const handleEdit = (eventName) => alert(`Editing event: ${eventName}`);
+  // --- Handlers ---
+  const handleEdit = (fullEvent) => {
+    setIsEditModalOpen(true);
+    setTimeout(() => {
+      setSelectedEvent(fullEvent);
+    }, 50);
+  };
 
   const handleDelete = async (eventId, eventName) => {
     if (window.confirm(`Are you sure you want to delete "${eventName}"?`)) {
@@ -85,6 +100,7 @@ const OverviewTab = ({ setActiveTab }) => {
     }
   };
 
+  // --- Loading State ---
   if (isLoading) {
     return (
       <div className="overview-loading-container">
@@ -93,8 +109,11 @@ const OverviewTab = ({ setActiveTab }) => {
     );
   }
 
+  // --- Main Render ---
   return (
     <div className="animate-fade-in">
+      
+      {/* Stats Grid */}
       <div className="stats-grid">
         {stats.map((stat, index) => (
           <StatCard key={index} title={stat.title} value={stat.value} icon={stat.icon} />
@@ -103,6 +122,7 @@ const OverviewTab = ({ setActiveTab }) => {
 
       <div className="overview-main-grid">
         
+        {/* Main Column: Recent Events Table */}
         <div className="main-column">
           <div className="modern-view-section">
             <div className="section-header">
@@ -125,24 +145,28 @@ const OverviewTab = ({ setActiveTab }) => {
                 </thead>
                 <tbody>
                   {recentEventsFormatted.length > 0 ? (
-                    recentEventsFormatted.map((event) => (
-                      <tr key={event._id}>
-                        <td className="font-semibold">{event.title}</td>
-                        <td>{event.date}</td>
-                        <td>{event.attendeesCount} / {event.maxAttendees}</td>
-                        <td><span className={`status-badge ${event.status.toLowerCase()}`}>{event.status}</span></td>
-                        <td>
-                          <div className="actions-wrapper">
-                            <button className="action-btn edit" onClick={() => handleEdit(event.title)}>
-                              <Edit size={16} /> Edit
-                            </button>
-                            <button className="action-btn delete" onClick={() => handleDelete(event._id, event.title)}>
-                              <Trash2 size={16} /> Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
+                    recentEventsFormatted.map((formattedEvent) => {
+                      const originalEvent = events.find(e => e._id === formattedEvent._id);
+                      
+                      return (
+                        <tr key={formattedEvent._id}>
+                          <td className="font-semibold">{formattedEvent.title}</td>
+                          <td>{formattedEvent.date}</td>
+                          <td>{formattedEvent.attendeesCount} / {formattedEvent.maxAttendees}</td>
+                          <td><span className={`status-badge ${formattedEvent.status.toLowerCase()}`}>{formattedEvent.status}</span></td>
+                          <td>
+                            <div className="actions-wrapper">
+                              <button className="action-btn edit" onClick={() => handleEdit(originalEvent)}>
+                                <Edit size={16} /> Edit
+                              </button>
+                              <button className="action-btn delete" onClick={() => handleDelete(formattedEvent._id, formattedEvent.title)}>
+                                <Trash2 size={16} /> Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
                   ) : (
                     <tr>
                       <td colSpan="5" style={{ textAlign: 'center', padding: '20px', color: 'var(--text-secondary)' }}>
@@ -156,6 +180,7 @@ const OverviewTab = ({ setActiveTab }) => {
           </div>
         </div>
 
+        {/* Side Column: Live Activity Feed */}
         <div className="side-column">
           <div className="modern-view-section">
             <div className="section-header">
@@ -165,8 +190,8 @@ const OverviewTab = ({ setActiveTab }) => {
             </div>
             
             <div className="activity-feed">
-              {recentRegistrations.length > 0 ? (
-                recentRegistrations.map((reg) => (
+              {allRegistrations.length > 0 ? (
+                allRegistrations.slice(0, 4).map((reg) => (
                   <div key={reg._id} className="feed-item">
                     <div className="feed-icon">
                       <UserPlus size={16} />
@@ -196,6 +221,21 @@ const OverviewTab = ({ setActiveTab }) => {
         </div>
 
       </div>
+
+      {/* --- Edit Modal --- */}
+      <CreateEventModal 
+        isOpen={isEditModalOpen} 
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setTimeout(() => setSelectedEvent(null), 300);
+        }} 
+        eventData={selectedEvent} 
+        onEventUpdated={() => {
+          // التحديث الصامت للبيانات بعد التعديل
+          getMyEventsApi().then(res => setEvents(res.data)).catch(err => console.error(err));
+        }}
+      />
+
     </div>
   );
 };

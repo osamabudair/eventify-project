@@ -1,14 +1,18 @@
+// --- Imports ---
 import React from 'react';
 import { Calendar, MapPin, Clock, Users, CheckCircle } from 'lucide-react';
 import './EventRegistrationCard.css'; 
 
 const EventRegistrationCard = ({ event, isRegistered, onRegister }) => {
+  // --- Main Render ---
   return (
     <div className="modern-registration-card">
       <h3 className="card-title">Event Details</h3>
       
+      {/* Event Details List */}
       <div className="details-list">
         
+        {/* Date Row */}
         <div className="detail-row">
           <div className="icon-wrapper">
             <Calendar size={22} />
@@ -19,6 +23,7 @@ const EventRegistrationCard = ({ event, isRegistered, onRegister }) => {
           </div>
         </div>
         
+        {/* Time Row */}
         <div className="detail-row">
           <div className="icon-wrapper">
             <Clock size={22} />
@@ -29,6 +34,7 @@ const EventRegistrationCard = ({ event, isRegistered, onRegister }) => {
           </div>
         </div>
         
+        {/* Location Row */}
         <div className="detail-row">
           <div className="icon-wrapper">
             <MapPin size={22} />
@@ -39,6 +45,7 @@ const EventRegistrationCard = ({ event, isRegistered, onRegister }) => {
           </div>
         </div>
         
+        {/* Organizer Row */}
         <div className="detail-row">
           <div className="icon-wrapper">
             <Users size={22} />
@@ -51,6 +58,7 @@ const EventRegistrationCard = ({ event, isRegistered, onRegister }) => {
 
       </div>
 
+      {/* Registration Button */}
       <button 
         className={`register-btn-modern ${isRegistered ? 'registered' : ''}`}
         onClick={onRegister}

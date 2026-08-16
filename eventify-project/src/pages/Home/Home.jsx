@@ -1,3 +1,4 @@
+// --- Imports ---
 import React, { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
@@ -7,9 +8,11 @@ import { getAllEventsApi } from '../../api/axiosInstance';
 import './Home.css';
 
 const Home = () => {
+  // --- State Management ---
   const [featuredEvents, setFeaturedEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // --- Side Effects ---
   useEffect(() => { 
     document.title = "Home - Eventify"; 
     
@@ -17,6 +20,7 @@ const Home = () => {
       try {
         const res = await getAllEventsApi();
         
+        // Fetch and format the 3 most recent events
         const recent = res.data.slice(0, 3).map(ev => ({
           id: ev._id,
           title: ev.title,
@@ -39,6 +43,7 @@ const Home = () => {
     fetchRecentEvents();
   }, []);
 
+  // --- Render ---
   return (
     <div className="home-container">
       <Navbar />

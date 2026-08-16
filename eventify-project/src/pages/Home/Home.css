@@ -1,4 +1,4 @@
-/* إعدادات المتغيرات العامة */
+/* --- Global Variables --- */
 :root {
   --bg-color: #f9fafb;
   --text-primary: #111827;
@@ -11,6 +11,7 @@
   --tag-text: #1e40af;
 }
 
+/* --- Dark Mode Theme --- */
 body.dark-mode {
   --bg-color: #111827;
   --text-primary: #f9fafb;
@@ -23,6 +24,7 @@ body.dark-mode {
   --tag-text: #93c5fd;
 }
 
+/* --- Base Styles --- */
 body {
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
@@ -31,13 +33,14 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* --- Layout & Container --- */
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-/* قسم الفعاليات والبطاقات */
+/* --- Events Section --- */
 .events-section {
   padding: 20px 0 80px 0;
 }

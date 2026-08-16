@@ -1,3 +1,4 @@
+// --- Imports ---
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
@@ -8,21 +9,24 @@ import AuthVisuals from '../../components/AuthVisuals';
 import './Auth.css';
 
 const Auth = () => {
+  // --- State & Hooks ---
   const { isDarkMode, toggleTheme } = useTheme();
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
 
+  // --- Side Effects ---
   useEffect(() => {
     document.title = isLogin ? "Log In - Eventify" : "Registration - Eventify";
   }, [isLogin]);
 
+  // --- Render ---
   return (
     <div className="auth-page-wrapper">
       
-      {/* حاوية جديدة بتجمع الأزرار والبطاقة عشان يظلوا مرتبين مع بعض بالنص */}
+      {/* --- Main Content Wrapper --- */}
       <div className="auth-content-wrapper">
         
-        {/* الأزرار العلوية (فوق البطاقة مباشرة) */}
+        {/* --- Top Navigation --- */}
         <div className="top-nav-buttons">
           <button className="back-btn" onClick={() => navigate('/')}>
             <ArrowLeft size={20} /> Back to Home
@@ -32,21 +36,23 @@ const Auth = () => {
           </button>
         </div>
 
-        {/* الحاوية الرئيسية للأنيميشن (البطاقة) */}
+        {/* --- Auth Card Container --- */}
         <div className={`auth-main-container ${isLogin ? '' : 'right-panel-active'}`}>
           
+          {/* Registration Panel */}
           <div className="form-container sign-up-container">
             <RegistrationForm />
           </div>
 
+          {/* Login Panel */}
           <div className="form-container sign-in-container">
             <LoginForm />
           </div>
 
+          {/* Animated Visuals Overlay */}
           <AuthVisuals isLogin={isLogin} toggleView={() => setIsLogin(!isLogin)} />
           
         </div>
-        
       </div>
     </div>
   );

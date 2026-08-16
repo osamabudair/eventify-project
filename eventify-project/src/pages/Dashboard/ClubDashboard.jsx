@@ -1,3 +1,4 @@
+// --- Imports ---
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
@@ -8,9 +9,10 @@ import OverviewTab from './tabs/OverviewTab';
 import ManageEventsTab from './tabs/ManageEventsTab';
 import RegistrationsTab from './tabs/RegistrationsTab';
 import ProfileTab from '../StudentDashboard/tabs/ProfileTab'; 
-import './Dashboard.css';
+import './ClubDashboard.css'; // تم تغيير اسم الاستدعاء
 
-const Dashboard = () => {
+const ClubDashboard = () => {
+  // --- Hooks & State ---
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
@@ -18,8 +20,9 @@ const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userName, setUserName] = useState('Club Leader');
 
+  // --- Side Effects ---
   useEffect(() => { 
-    document.title = "Dashboard - Eventify"; 
+    document.title = "Club Dashboard - Eventify"; 
 
     const userString = localStorage.getItem('user');
     if (userString) {
@@ -28,12 +31,14 @@ const Dashboard = () => {
     }
   }, []);
 
+  // --- Handlers ---
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     navigate('/');
   };
 
+  // --- Tab Rendering Logic ---
   const renderContent = () => {
     switch (activeTab) {
       case 'overview': 
@@ -49,15 +54,21 @@ const Dashboard = () => {
     }
   };
 
+  // --- Main Render ---
   return (
     <div className="dashboard-layout">
+      
+      {/* --- Sidebar --- */}
       <Sidebar 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
         handleLogout={handleLogout} 
       />
 
+      {/* --- Main Content Area --- */}
       <main className="main-content">
+        
+        {/* --- Header --- */}
         <header className="dashboard-header">
           <div>
             <h2>Welcome back, {userName}</h2>
@@ -73,12 +84,13 @@ const Dashboard = () => {
           </div>
         </header>
 
-        {/* عرض محتوى التاب النشط */}
+        {/* --- Active Tab Content --- */}
         <div className="animate-fade-in">
           {renderContent()}
         </div>
       </main>
 
+      {/* --- Modals --- */}
       <CreateEventModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
@@ -87,4 +99,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default ClubDashboard;

@@ -1,4 +1,4 @@
-/* manage events section */
+/* --- Manage Events Section --- */
 .modern-view-section {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -9,7 +9,7 @@
 
 .section-heading {
   margin-top: 0;
-  margin-bottom: 8px; /* تقليل المسافة عشان الوصف يجي أقرب */
+  margin-bottom: 8px;
   font-size: 20px;
   color: var(--text-primary);
 }
@@ -18,10 +18,10 @@
   margin-bottom: 24px;
 }
 
-/* table */
+/* --- Table Layout --- */
 .table-responsive {
   width: 100%;
-  overflow-x: auto; /* إضافة سكرول أفقي في الشاشات الصغيرة */
+  overflow-x: auto;
 }
 
 .events-table {
@@ -52,7 +52,7 @@
   white-space: nowrap;
 }
 
-/* status badges */
+/* --- Status Badges --- */
 .status-badge {
   padding: 6px 12px;
   border-radius: 20px;
@@ -60,16 +60,25 @@
   font-weight: bold;
 }
 
-.status-badge.active { background-color: rgba(16, 185, 129, 0.1); color: #10b981; }
-.status-badge.draft { background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-.status-badge.completed { background-color: rgba(99, 102, 241, 0.1); color: #6366f1; } 
+.status-badge.active {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+.status-badge.draft {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+.status-badge.completed {
+  background-color: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+}
 
-/* actions wrapper */
+/* --- Action Buttons --- */
 .actions-wrapper {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
-  gap: 10px; 
+  gap: 6px; 
 }
 
 .action-btn {
@@ -77,37 +86,36 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 8px 12px;
   border-radius: 8px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  border: 1px solid var(--border-color);
-  background-color: var(--card-bg);
+  border: none !important; 
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .action-btn.edit {
   color: var(--text-secondary);
 }
+
 .action-btn.edit:hover {
-  background-color: var(--tag-bg);
-  color: var(--primary-color);
-  border-color: var(--primary-color);
+  color: var(--primary-color) !important;
+  background-color: rgba(37, 99, 235, 0.1) !important; 
 }
 
 .action-btn.delete {
-  color: #ef4444;
-  background-color: #fef2f2;
-  border-color: #fee2e2;
-}
-.action-btn.delete:hover {
-  background-color: #fee2e2;
-  color: #dc2626;
-  border-color: #fca5a5;
+  color: #ef4444 !important;
 }
 
-/* Loading & Empty States */
+.action-btn.delete:hover {
+  color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.1) !important; 
+}
+
+/* --- Loading & Empty States --- */
 .loading-container {
   display: flex;
   justify-content: center;
