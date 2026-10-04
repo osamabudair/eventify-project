@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
 import HeroSection from '../../components/HeroSection/HeroSection';
 import EventCard from '../../components/EventCard/EventCard'; 
-import { getAllEventsApi } from '../../api/axiosInstance';
+import { getUpcomingHighlightsApi } from '../../api/axiosInstance';
 import './Home.css';
 
 const Home = () => {
@@ -18,17 +18,14 @@ const Home = () => {
     
     const fetchRecentEvents = async () => {
       try {
-        const res = await getAllEventsApi();
+        const res = await getUpcomingHighlightsApi();
         
-        // Fetch and format the 3 most recent events
-        const recent = res.data.slice(0, 3).map(ev => ({
-          id: ev._id,
-          title: ev.title,
-          club: ev.organizer?.username || "University Club",
-          date: new Date(ev.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-          image: ev.image 
-            ? `http://localhost:5000${ev.image.startsWith('/') ? '' : '/'}${ev.image}` 
-            : "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
+        const recent = res.data.map(ev => ({
+          id: ev.id,
+          title: ev.name,
+          club: ev.organizerName || "University Club",
+          date: ev.date, 
+          image: ev.imageUrl || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
           tags: [ev.category]
         }));
 

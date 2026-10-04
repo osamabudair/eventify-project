@@ -24,15 +24,13 @@ const ExploreEvents = () => {
         const res = await getAllEventsApi();
         
         const formattedEvents = res.data.map(ev => ({
-          id: ev._id,
-          title: ev.title,
-          club: ev.organizer?.username || "University Club", 
-          date: new Date(ev.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+          id: ev.id,
+          title: ev.name || ev.title,
+          club: ev.organizerName || ev.organizer?.username || "University Club", 
+          date: ev.date,
           category: ev.category,
           tags: [ev.category], 
-          image: ev.image 
-            ? `http://localhost:5000${ev.image.startsWith('/') ? '' : '/'}${ev.image}` 
-            : "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
+          image: ev.imageUrl || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
         }));
 
         setAllEvents(formattedEvents);

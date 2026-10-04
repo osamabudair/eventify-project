@@ -350,6 +350,199 @@
   border-color: var(--primary-color);
 }
 
+/* --- Status Colors for Timeline --- */
+.activity-dot.pending { background-color: #f59e0b; }
+.activity-dot.approved { background-color: #10b981; }
+.activity-dot.rejected { background-color: #ef4444; }
+.activity-dot.cancelled { background-color: #64748b; }
+
+.status-text-pending { color: #f59e0b; }
+.status-text-approved { color: #10b981; }
+.status-text-rejected { color: #ef4444; }
+.status-text-cancelled { color: #64748b; }
+
+/* Capacity & Actions in Suggested Cards */
+.event-capacity-tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.full-badge {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.suggested-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.view-details-btn.secondary {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.view-details-btn.disabled-full {
+  background-color: var(--border-color);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+/* --- Equal Action Buttons with Hover Effects --- */
+.suggested-card-actions-equal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.action-btn-half {
+  padding: 11px 0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.btn-details {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-details:hover {
+  background-color: var(--card-bg);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-join {
+  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+  color: #ffffff;
+  border: none;
+}
+
+.btn-join:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+  filter: brightness(1.08);
+}
+
+.btn-join.disabled-full {
+  background: var(--border-color);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* --- Custom Confirmation Modal Styles --- */
+.confirm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.confirm-modal-card {
+  background: var(--card-bg);
+  width: 90%;
+  max-width: 420px;
+  border-radius: 18px;
+  padding: 28px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 25px 40px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: scaleUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.confirm-modal-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+}
+
+.confirm-modal-card h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+}
+
+.confirm-modal-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.confirm-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.btn-modal-cancel {
+  padding: 10px 16px;
+  border-radius: 10px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-modal-cancel:hover {
+  background-color: var(--border-color);
+}
+
+.btn-modal-confirm {
+  padding: 10px 16px;
+  border-radius: 10px;
+  background-color: #ef4444;
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-modal-confirm:hover {
+  background-color: #dc2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
 /* --- Responsive Adjustments --- */
 @media (max-width: 1024px) {
   .overview-main-grid {

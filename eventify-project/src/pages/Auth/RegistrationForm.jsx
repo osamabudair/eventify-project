@@ -33,6 +33,7 @@ const RegistrationForm = () => {
         username,
         email,
         password,
+        confirmPassword,
         role
       });
 

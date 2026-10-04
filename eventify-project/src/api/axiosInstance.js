@@ -1,40 +1,241 @@
-// --- Imports ---
 import axios from 'axios';
 
-// --- Axios Instance Setup ---
-const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:8080/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-// --- Request Interceptor (Attach Auth Token) ---
-API.interceptors.request.use((req) => {
+axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
-    req.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token}`;
   }
-  return req;
+  return config;
 });
 
-// --- Auth APIs ---
-export const loginApi = (data) => API.post('/auth/login', data);
-export const registerApi = (data) => API.post('/auth/register', data);
+const formatEvent = (ev) => {
+  if (!ev) return null;
+  const formattedTime = (ev.startTime && ev.endTime) 
+    ? `${ev.startTime} - ${ev.endTime}` 
+    : (ev.time || "10:00 AM - 02:00 PM");
 
-// --- Events APIs ---
-export const createEventApi = (data) => API.post('/events', data);
-export const getAllEventsApi = () => API.get('/events');
-export const getMyEventsApi = () => API.get('/events/me');
-export const deleteEventApi = (id) => API.delete(`/events/${id}`);
-export const getEventByIdApi = (id) => API.get(`/events/${id}`);
-export const registerForEventApi = (id) => API.post(`/events/${id}/register`);
-export const updateEventApi = (id, data) => API.put(`/events/${id}`, data); 
+  const attendeesNum = ev.approvedAttendees ?? ev.approvedCount ?? (Array.isArray(ev.attendees) ? ev.attendees.length : ev.attendees) ?? 0;
 
-// --- Registrations APIs ---
-export const getOrganizerRegistrationsApi = () => API.get('/events/registrations/manage');
-export const updateRegistrationStatusApi = (id, status) => API.put(`/events/registrations/${id}`, { status });
-export const getMyRegistrationsApi = () => API.get('/events/registrations/my-tickets');
-export const cancelRegistrationApi = (id) => API.delete(`/events/registrations/${id}`);
+  return {
+    ...ev,
+    _id: ev.id,
+    id: ev.id,
+    title: ev.name || ev.title,
+    name: ev.name || ev.title,
+    date: ev.date,
+    startTime: ev.startTime,
+    endTime: ev.endTime,
+    time: formattedTime,
+    approvedAttendees: attendeesNum,
+    approvedCount: attendeesNum,
+    attendees: attendeesNum,
+    maxAttendees: ev.capacity || ev.maxAttendees || 100,
+    capacity: ev.capacity || ev.maxAttendees || 100,
+    image: ev.imageUrl || ev.image || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
+    imageUrl: ev.imageUrl || ev.image,
+    organizer: {
+      username: ev.organizerName || ev.organizer?.username || "University Club",
+      name: ev.organizerName || ev.organizer?.username || "University Club"
+    },
+    organizerName: ev.organizerName || ev.organizer?.username || "University Club"
+  };
+};
 
-// --- Profile APIs ---
-export const updateProfileApi = (data) => API.put('/auth/profile', data);
+// ==================== 1. Auth ====================
+export const loginApi = async (credentials) => {
+  return await axiosInstance.post('/auth/login', credentials);
+};
 
-export default API;
+export const registerApi = async (userData) => {
+  return await axiosInstance.post('/auth/register', userData);
+};
+
+// ==================== 2. Events & Explore ====================
+export const getAllEventsApi = async () => {
+  const res = await axiosInstance.get('/events/explore');
+  return { ...res, data: Array.isArray(res.data) ? res.data.map(formatEvent) : [] };
+};
+
+export const getUpcomingHighlightsApi = async () => {
+  const res = await axiosInstance.get('/events/upcoming-highlights');
+  return { ...res, data: Array.isArray(res.data) ? res.data.map(formatEvent) : [] };
+};
+
+export const getEventByIdApi = async (id) => {
+  const res = await axiosInstance.get(`/events/${id}`);
+  const data = res.data;
+
+  const orgName = 
+    data.organizer?.name || 
+    data.organizer?.fullName || 
+    data.organizer?.username || 
+    data.organizerName || 
+    "University Club";
+
+  const formatted = {
+    ...data,
+    id: data.id,
+    _id: data.id,
+    title: data.name,
+    name: data.name,
+    club: orgName,
+    organizerName: orgName,
+    organizer: {
+      name: orgName,
+      username: orgName
+    }
+  };
+
+  return { ...res, data: formatted };
+};
+
+export const createEventApi = async (eventData) => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const organizerId = user.id || user._id;
+  return await axiosInstance.post('/events', {
+    ...eventData,
+    organizerId
+  });
+};
+
+export const updateEventApi = async (id, eventData) => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const organizerId = user.id || user._id;
+  return await axiosInstance.put(`/events/${id}`, {
+    ...eventData,
+    organizerId
+  });
+};
+
+export const deleteEventApi = async (id) => {
+  return await axiosInstance.delete(`/events/${id}`);
+};
+
+export const getMyEventsApi = async (organizerId) => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const id = organizerId || user.id || user._id;
+  const res = await axiosInstance.get(`/events/user/${id}`);
+  return { ...res, data: Array.isArray(res.data) ? res.data.map(formatEvent) : [] };
+};
+
+// ==================== 3. Leader Dashboard & Registrations ====================
+export const getOrganizerRegistrationsApi = async () => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const leaderId = user.id || user._id;
+
+  const res = await axiosInstance.get(`/registrations/leader/${leaderId}/pending`);
+  
+  const requests = (res.data || []).map(req => ({
+    _id: req.id || req.registrationId,
+    id: req.id || req.registrationId,
+    status: 'pending',
+    createdAt: req.appliedOn || req.registrationDate || new Date().toISOString(),
+    user: {
+      username: req.studentName || req.student?.name || 'Student'
+    },
+    event: {
+      title: req.eventName || req.event?.name || 'Event'
+    }
+  }));
+
+  return { ...res, data: requests };
+};
+
+export const getLeaderDashboardApi = async () => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const leaderId = user.id || user._id;
+  const res = await axiosInstance.get(`/leader/${leaderId}/dashboard`);
+  return res.data;
+};
+
+export const updateRegistrationStatusApi = async (registrationId, status) => {
+  const action = status.toLowerCase();
+  
+  if (action === 'approved' || action === 'approve') {
+    return await axiosInstance.put(`/registrations/${registrationId}/approve`);
+  } else if (action === 'rejected' || action === 'reject') {
+    return await axiosInstance.put(`/registrations/${registrationId}/reject`);
+  } else if (action === 'cancelled' || action === 'cancel') {
+    return await axiosInstance.put(`/registrations/${registrationId}/cancel`);
+  }
+};
+
+// ==================== 4. Student Portal & Tickets ====================
+export const registerForEventApi = async (eventId) => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const studentId = user.id || user._id;
+  return await axiosInstance.post(`/registrations/apply/${eventId}/student/${studentId}`);
+};
+
+export const getMyRegistrationsApi = async () => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const studentId = user.id || user._id;
+  const res = await axiosInstance.get(`/registrations/student/${studentId}/dashboard`);
+  
+  const formattedTickets = (res.data.tickets || []).map(t => {
+    const realAppliedOn = t.appliedOn || t.registrationDate || t.createdAt;
+
+    return {
+      _id: String(t.registrationId || t.id),
+      id: t.registrationId || t.id,
+      status: (t.status || 'APPROVED').toLowerCase(),
+      createdAt: realAppliedOn,
+      appliedOn: realAppliedOn,
+      event: {
+        _id: t.eventId,
+        id: t.eventId,
+        title: t.eventName,
+        name: t.eventName,
+        date: t.date || t.eventDate,
+        startTime: t.startTime,
+        endTime: t.endTime,
+        time: (t.startTime && t.endTime) ? `${t.startTime} - ${t.endTime}` : "10:00 AM - 02:00 PM",
+        location: t.location || "Amman",
+        category: t.category || "General",
+        organizerName: t.organizerName || "Club Leader"
+      }
+    };
+  });
+
+  return { ...res, data: formattedTickets };
+};
+
+export const cancelRegistrationApi = async (registrationId) => {
+  return await axiosInstance.put(`/registrations/${registrationId}/cancel`);
+};
+
+// ==================== 5. Profile ====================
+export const updateProfileApi = async (payload) => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userId = user.id || user._id;
+  
+  const requestBody = {
+    name: payload.fullName || payload.name,
+    currentPassword: payload.current || payload.currentPassword || null,
+    newPassword: payload.new || payload.newPassword || null,
+    confirmNewPassword: payload.confirm || payload.confirmNewPassword || payload.new || null
+  };
+
+  const res = await axiosInstance.put(`/users/${userId}/profile`, requestBody);
+  
+  return {
+    data: {
+      message: "Profile updated successfully!",
+      user: {
+        ...user,
+        username: res.data.name || requestBody.name,
+        name: res.data.name || requestBody.name,
+        email: res.data.email || user.email
+      }
+    }
+  };
+};
+
+export default axiosInstance;

@@ -27,17 +27,38 @@ const EventDetails = () => {
         const res = await getEventByIdApi(id);
         const data = res.data;
         
+        const formattedTime = (data.startTime && data.endTime) 
+          ? `${data.startTime} - ${data.endTime}` 
+          : (data.time || "10:00 AM - 02:00 PM");
+
+        let formattedDate = data.date;
+        if (data.date) {
+          const dateObj = new Date(data.date);
+          if (!isNaN(dateObj.getTime())) {
+            formattedDate = dateObj.toLocaleDateString('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric'
+            });
+          }
+        }
+
+        const organizerDisplayName = 
+          data.organizer?.name || 
+          data.organizer?.fullName || 
+          data.organizer?.username || 
+          data.organizerName || 
+          "University Club";
+
         const formattedEvent = {
-          id: data._id,
-          title: data.title,
-          club: data.organizer?.username || "University Club",
-          date: new Date(data.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-          time: data.time || "10:00 AM - 02:00 PM",
+          id: data.id || data._id,
+          title: data.name || data.title,
+          club: organizerDisplayName,
+          date: formattedDate,
+          time: formattedTime,
           location: data.location,
-          capacity: `${data.maxAttendees || 100} Attendees`,
-          image: data.image 
-            ? `http://localhost:5000${data.image.startsWith('/') ? '' : '/'}${data.image}`
-            : "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=1400",
+          capacity: `${data.capacity || data.maxAttendees || 100} Attendees`,
+          image: data.imageUrl || data.image || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1400",
           description: data.description,
           tags: [data.category]
         };
@@ -58,9 +79,16 @@ const EventDetails = () => {
   // --- Handlers ---
   const handleRegister = async () => {
     const token = localStorage.getItem('token');
-    if (!token) {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    if (!token || !user) {
       alert("You must be logged in to register for events!");
       navigate('/auth');
+      return;
+    }
+
+    if (user.role === 'CLUB_LEADER') {
+      alert("Club Leaders cannot register as attendees!");
       return;
     }
 

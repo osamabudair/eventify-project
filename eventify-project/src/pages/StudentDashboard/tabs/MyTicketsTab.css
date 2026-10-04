@@ -1,0 +1,61 @@
+.tickets-tab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ticket-category {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.ticket-card.pending-ticket {
+  border-style: dashed;
+  opacity: 0.9;
+}
+
+.ticket-card.archived-ticket {
+  opacity: 0.65;
+  filter: grayscale(40%);
+}
+
+.status-badge.cancelled {
+  background-color: rgba(148, 163, 184, 0.15);
+  color: #64748b;
+}
+
+.status-badge.rejected {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.ticket-footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ticket-cancel-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  background-color: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ticket-cancel-action:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+}

@@ -4,17 +4,14 @@ import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { getOrganizerRegistrationsApi, updateRegistrationStatusApi } from '../../../api/axiosInstance';
 import './RegistrationsTab.css';
 
-const RegistrationsTab = () => {
-  // --- State Management ---
+const RegistrationsTab = ({ showToast }) => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // --- Side Effects ---
   useEffect(() => {
     fetchPendingRegistrations();
   }, []);
 
-  // --- Data Fetching ---
   const fetchPendingRegistrations = async () => {
     try {
       const res = await getOrganizerRegistrationsApi();
@@ -27,14 +24,13 @@ const RegistrationsTab = () => {
     }
   };
 
-  // --- Handlers ---
   const handleApproveRequest = async (id, name) => {
     try {
       await updateRegistrationStatusApi(id, 'approved');
       setPendingRequests(pendingRequests.filter(req => req._id !== id));
-      alert(`Approved registration for ${name}`);
+      if (showToast) showToast(`Approved registration for ${name}`, 'success');
     } catch {
-      alert(`Failed to approve registration for ${name}`);
+      if (showToast) showToast(`Failed to approve registration for ${name}`, 'error');
     }
   };
 
@@ -42,13 +38,12 @@ const RegistrationsTab = () => {
     try {
       await updateRegistrationStatusApi(id, 'rejected');
       setPendingRequests(pendingRequests.filter(req => req._id !== id));
-      alert(`Rejected registration for ${name}`);
+      if (showToast) showToast(`Rejected registration for ${name}`, 'info');
     } catch {
-      alert(`Failed to reject registration for ${name}`);
+      if (showToast) showToast(`Failed to reject registration for ${name}`, 'error');
     }
   };
 
-  // --- Loading State ---
   if (loading) {
     return (
       <div className="modern-view-section loading-container">
@@ -57,28 +52,19 @@ const RegistrationsTab = () => {
     );
   }
 
-  // --- Main Render ---
   return (
     <div className="animate-fade-in modern-view-section">
-      
-      {/* --- Header Section --- */}
       <h3 className="section-heading">Pending Registrations</h3>
       <p className="text-secondary section-description">
         Review and approve student applications for your upcoming events.
       </p>
-      
-      {/* --- Content Area --- */}
+
       {pendingRequests.length === 0 ? (
-        
-        /* Empty State */
         <div className="empty-state-container">
           <CheckCircle size={48} className="empty-icon" />
           <p>All caught up! No pending requests.</p>
         </div>
-        
       ) : (
-        
-        /* Registrations Table */
         <div className="table-responsive">
           <table className="events-table">
             <thead>
@@ -90,8 +76,8 @@ const RegistrationsTab = () => {
               </tr>
             </thead>
             <tbody>
-              {pendingRequests.map((req) => (
-                <tr key={req._id}>
+              {pendingRequests.map((req, index) => (
+                <tr key={req._id || req.id || index}>
                   <td className="font-semibold">{req.user?.username || 'Unknown Student'}</td>
                   <td>{req.event?.title || 'Deleted Event'}</td>
                   <td>

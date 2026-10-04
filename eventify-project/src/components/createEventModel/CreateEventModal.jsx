@@ -1,79 +1,180 @@
 // --- Imports ---
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { X, Calendar, MapPin, Tag, Users, FileText, Sparkles, Image as ImageIcon, Clock, Upload } from 'lucide-react';
-import { createEventApi, updateEventApi } from '../../api/axiosInstance';
+import { createEventApi, updateEventApi, getEventByIdApi } from '../../api/axiosInstance';
 import './CreateEventModal.css';
 
-const CreateEventModal = ({ isOpen, onClose, onEventCreated, onEventUpdated, eventData }) => {
-  // --- State Management ---
+const normalizeDateForInput = (dateVal) => {
+  if (!dateVal) return '';
+  if (typeof dateVal === 'string') {
+    if (dateVal.includes('-')) {
+      const parts = dateVal.split('-');
+      if (parts[0].length === 4) {
+        return dateVal.split('T')[0];
+      } else if (parts.length === 3) {
+        const day = parts[0].padStart(2, '0');
+        const month = parts[1].padStart(2, '0');
+        const year = parts[2];
+        return `${year}-${month}-${day}`;
+      }
+    }
+  }
+  const d = new Date(dateVal);
+  if (isNaN(d.getTime())) return '';
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
+
+const timeToMinutes = (timeStr) => {
+  if (!timeStr) return -1;
+  const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)?/i);
+  if (!match) return -1;
+  let hours = parseInt(match[1], 10);
+  const minutes = parseInt(match[2], 10);
+  const modifier = match[3] ? match[3].toUpperCase() : '';
+
+  if (modifier === 'PM' && hours < 12) hours += 12;
+  if (modifier === 'AM' && hours === 12) hours = 0;
+
+  return hours * 60 + minutes;
+};
+
+const normalizeTimeForSelect = (timeStr) => {
+  if (!timeStr) return '';
+  const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)?/i);
+  if (!match) return timeStr;
+  let hours = parseInt(match[1], 10);
+  let minutes = match[2].padStart(2, '0');
+  let modifier = match[3] ? match[3].toUpperCase() : '';
+
+  if (!modifier) {
+    modifier = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+  }
+  return `${String(hours).padStart(2, '0')}:${minutes} ${modifier}`;
+};
+
+const CreateEventModal = ({ isOpen, onClose, onEventCreated, onEventUpdated, eventData, showToast }) => {
   const [formData, setFormData] = useState({
-    title: '', description: '', date: '', startTime: '', endTime: '', location: 'Amman', category: 'Technology', maxAttendees: 100
+    title: '',
+    description: '',
+    date: '',
+    startTime: '',
+    endTime: '',
+    location: 'Amman',
+    category: 'Technology',
+    maxAttendees: 100
   });
-  
-  const [imageFile, setImageFile] = useState(null); 
+
+  const [imageFile, setImageFile] = useState(null);
   const [fileName, setFileName] = useState('No file chosen');
-  
+  const [previewImage, setPreviewImage] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const isEditMode = Boolean(eventData);
 
-  // --- Side Effects (Populate data if Edit Mode) ---
+  const todayStr = useMemo(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  }, []);
+
+  const allTimeOptions = useMemo(() => {
+  const list = [];
+  const now = new Date();
+  const isSelectedToday = formData.date === todayStr;
+
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  for (let h = 8; h <= 23; h++) {
+    for (let m = 0; m < 60; m += 30) {
+      const slotMinutes = h * 60 + m;
+
+      if (isSelectedToday && slotMinutes <= currentMinutes + 30) {
+        continue;
+      }
+
+      const hour12 = h % 12 === 0 ? 12 : h % 12;
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      list.push(`${String(hour12).padStart(2, '0')}:${m === 0 ? '00' : '30'} ${ampm}`);
+    }
+  }
+  return list;
+}, [formData.date, todayStr]);
+
+  const filteredEndTimeOptions = useMemo(() => {
+    if (!formData.startTime) return allTimeOptions;
+    const startMins = timeToMinutes(formData.startTime);
+    return allTimeOptions.filter(t => timeToMinutes(t) > startMins);
+  }, [formData.startTime, allTimeOptions]);
+
   useEffect(() => {
-    if (isOpen) {
+    if (!isOpen) return;
+
+    const populate = async () => {
       if (isEditMode && eventData) {
-        const formattedDate = eventData.date ? new Date(eventData.date).toISOString().split('T')[0] : '';
-        
-        let startTime = '';
-        let endTime = '';
-        if (eventData.time && eventData.time.includes('-')) {
-          const times = eventData.time.split('-');
-          startTime = times[0].trim();
-          endTime = times[1].trim();
+        let fullEvent = eventData;
+        const targetId = eventData._id || eventData.id;
+
+        if (!eventData.description && targetId) {
+          try {
+            const res = await getEventByIdApi(targetId);
+            if (res.data) fullEvent = res.data;
+          } catch (err) {
+            console.error("Error loading description:", err);
+          }
         }
 
+        const formattedDate = normalizeDateForInput(fullEvent.date);
+        const normalizedStart = normalizeTimeForSelect(fullEvent.startTime);
+        const normalizedEnd = normalizeTimeForSelect(fullEvent.endTime);
+        const imgUrl = fullEvent.imageUrl || fullEvent.image || '';
+
         setFormData({
-          title: eventData.title || '',
-          description: eventData.description || '',
+          title: fullEvent.name || fullEvent.title || '',
+          description: fullEvent.description || '',
           date: formattedDate,
-          startTime: startTime,
-          endTime: endTime,
-          location: eventData.location || 'Amman',
-          category: eventData.category || 'Technology',
-          maxAttendees: eventData.maxAttendees || 100
+          startTime: normalizedStart,
+          endTime: normalizedEnd,
+          location: fullEvent.location || 'Amman',
+          category: fullEvent.category || 'Technology',
+          maxAttendees: fullEvent.capacity || fullEvent.maxAttendees || 100
         });
-        
-        setFileName(eventData.image ? 'Current Image Attached' : 'No file chosen');
+
+        setPreviewImage(imgUrl);
+        setFileName(imgUrl ? 'Current Image Attached' : 'No file chosen');
         setImageFile(null);
       } else {
-        setFormData({ title: '', description: '', date: '', startTime: '', endTime: '', location: 'Amman', category: 'Technology', maxAttendees: 100 });
+        setFormData({
+          title: '',
+          description: '',
+          date: '',
+          startTime: '',
+          endTime: '',
+          location: 'Amman',
+          category: 'Technology',
+          maxAttendees: 100
+        });
         setFileName('No file chosen');
         setImageFile(null);
+        setPreviewImage('');
       }
       setErrorMsg('');
-    }
+    };
+
+    populate();
   }, [isOpen, isEditMode, eventData]);
 
-
-  // --- Helper Functions ---
-  const today = new Date().toISOString().split('T')[0];
-
-  const generateTimeOptions = () => {
-    const times = [];
-    for (let i = 8; i <= 22; i++) { 
-      const hour = i === 12 ? 12 : i % 12;
-      const ampm = i >= 12 ? 'PM' : 'AM';
-      const formattedHour = hour.toString().padStart(2, '0');
-      times.push(`${formattedHour}:00 ${ampm}`);
-      times.push(`${formattedHour}:30 ${ampm}`);
-    }
-    return times;
-  };
-  const timeOptions = generateTimeOptions();
-
-  // --- Handlers ---
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'startTime') {
+      const newStartMins = timeToMinutes(value);
+      const currentEndMins = timeToMinutes(formData.endTime);
+      if (currentEndMins <= newStartMins) {
+        setFormData(prev => ({ ...prev, startTime: value, endTime: '' }));
+        return;
+      }
+    }
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e) => {
@@ -81,58 +182,68 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated, onEventUpdated, eve
     if (file) {
       setImageFile(file);
       setFileName(file.name);
-    } else {
-      setImageFile(null);
-      setFileName(isEditMode && eventData?.image ? 'Current Image Attached' : 'No file chosen');
+      setPreviewImage(URL.createObjectURL(file));
     }
   };
 
   const handleClose = () => {
-    setFormData({ title: '', description: '', date: '', startTime: '', endTime: '', location: 'Amman', category: 'Technology', maxAttendees: 100 });
-    setImageFile(null);
-    setFileName('No file chosen');
     setErrorMsg('');
     onClose();
   };
 
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); 
+    setLoading(true);
     setErrorMsg('');
-    
+
+    if (timeToMinutes(formData.endTime) <= timeToMinutes(formData.startTime)) {
+      setErrorMsg("End time must be after the start time.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const data = new FormData();
-      data.append('title', formData.title);
-      data.append('description', formData.description);
-      data.append('date', formData.date);
-      
-      const formattedTime = `${formData.startTime} - ${formData.endTime}`;
-      data.append('time', formattedTime);
-      
-      data.append('location', formData.location);
-      data.append('category', formData.category);
-      data.append('maxAttendees', Number(formData.maxAttendees));
-      
+      let finalImageUrl = previewImage || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1000";
       if (imageFile) {
-        data.append('image', imageFile);
+        finalImageUrl = await fileToBase64(imageFile);
       }
+
+      const payload = {
+        name: formData.title,
+        description: formData.description,
+        date: formData.date,
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+        location: formData.location,
+        category: formData.category,
+        capacity: Number(formData.maxAttendees),
+        imageUrl: finalImageUrl
+      };
 
       if (isEditMode) {
         const targetId = eventData._id || eventData.id;
-        const res = await updateEventApi(targetId, data);
+        const res = await updateEventApi(targetId, payload);
+        if (showToast) showToast(`"${formData.title}" updated successfully!`, 'success');
         if (onEventUpdated) onEventUpdated(res.data);
       } else {
-        const res = await createEventApi(data);
+        const res = await createEventApi(payload);
+        if (showToast) showToast(`Event "${formData.title}" created successfully!`, 'success');
         if (onEventCreated) onEventCreated(res.data);
       }
-      
+
       handleClose();
-      if (!isEditMode) {
-         window.location.reload(); 
-      }
-      
     } catch (err) {
-      setErrorMsg(err.response?.data?.message || `Failed to ${isEditMode ? 'update' : 'create'} event`);
+      const backendError = err.response?.data?.message || (typeof err.response?.data === 'string' ? err.response?.data : null);
+      setErrorMsg(backendError || `Failed to ${isEditMode ? 'update' : 'create'} event`);
     } finally {
       setLoading(false);
     }
@@ -140,28 +251,33 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated, onEventUpdated, eve
 
   if (!isOpen) return null;
 
-  // --- Render ---
   return (
     <div className="modal-overlay" onClick={handleClose}>
       <div className="modal-content-modern" onClick={(e) => e.stopPropagation()}>
-        
-        {/* Modal Header */}
         <div className="modal-header-modern">
           <div className="header-title">
             <Sparkles className="header-icon" size={22} />
             <h3>{isEditMode ? 'Edit Event' : 'Create New Event'}</h3>
           </div>
-          <button className="close-btn-modern" onClick={handleClose} type="button"><X size={20} /></button>
+          <button className="close-btn-modern" onClick={handleClose} type="button">
+            <X size={20} />
+          </button>
         </div>
-        
-        {/* Modal Body */}
+
         <form className="modal-body-modern" onSubmit={handleSubmit}>
           {errorMsg && <div className="error-banner">{errorMsg}</div>}
 
           <div className="form-row-two-cols">
             <div className="input-group-modern">
               <label><FileText size={16} /> Event Name</label>
-              <input type="text" name="title" placeholder="e.g. React Bootcamp" value={formData.title} onChange={handleChange} required />
+              <input
+                type="text"
+                name="title"
+                placeholder="e.g. Spring Boot Workshop"
+                value={formData.title}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div className="input-group-modern">
@@ -171,7 +287,13 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated, onEventUpdated, eve
                   <Upload size={14} /> Choose File
                 </label>
                 <span className="file-name-text">{fileName}</span>
-                <input id="file-upload" type="file" accept="image/*" onChange={handleImageChange} hidden />
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  hidden
+                />
               </div>
             </div>
           </div>
@@ -179,14 +301,21 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated, onEventUpdated, eve
           <div className="form-row-three-cols">
             <div className="input-group-modern">
               <label><Calendar size={16} /> Date</label>
-              <input type="date" name="date" min={today} value={formData.date} onChange={handleChange} required />
+              <input
+                type="date"
+                name="date"
+                min={todayStr}
+                value={formData.date}
+                onChange={handleChange}
+                required
+              />
             </div>
-            
+
             <div className="input-group-modern">
               <label><Clock size={16} /> Start Time</label>
               <select name="startTime" value={formData.startTime} onChange={handleChange} required>
                 <option value="" disabled>Select Start Time</option>
-                {timeOptions.map((time, index) => (
+                {allTimeOptions.map((time, index) => (
                   <option key={index} value={time}>{time}</option>
                 ))}
               </select>
@@ -194,9 +323,17 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated, onEventUpdated, eve
 
             <div className="input-group-modern">
               <label><Clock size={16} /> End Time</label>
-              <select name="endTime" value={formData.endTime} onChange={handleChange} required>
-                <option value="" disabled>Select End Time</option>
-                {timeOptions.map((time, index) => (
+              <select
+                name="endTime"
+                value={formData.endTime}
+                onChange={handleChange}
+                disabled={!formData.startTime}
+                required
+              >
+                <option value="" disabled>
+                  {formData.startTime ? "Select End Time" : "Choose Start Time First"}
+                </option>
+                {filteredEndTimeOptions.map((time, index) => (
                   <option key={index} value={time}>{time}</option>
                 ))}
               </select>
@@ -221,7 +358,7 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated, onEventUpdated, eve
                 <option value="Ma'an">Ma'an</option>
               </select>
             </div>
-            
+
             <div className="input-group-modern">
               <label><Tag size={16} /> Category</label>
               <select name="category" value={formData.category} onChange={handleChange}>
@@ -239,24 +376,38 @@ const CreateEventModal = ({ isOpen, onClose, onEventCreated, onEventUpdated, eve
 
             <div className="input-group-modern">
               <label><Users size={16} /> Capacity</label>
-              <input type="number" name="maxAttendees" min="1" value={formData.maxAttendees} onChange={handleChange} required/>
+              <input
+                type="number"
+                name="maxAttendees"
+                min="1"
+                value={formData.maxAttendees}
+                onChange={handleChange}
+                required
+              />
             </div>
           </div>
 
           <div className="input-group-modern">
             <label><FileText size={16} /> Description</label>
-            <textarea name="description" placeholder="Describe what this event is about..." value={formData.description} onChange={handleChange} rows="2" required />
+            <textarea
+              name="description"
+              placeholder="Describe what this event is about..."
+              value={formData.description}
+              onChange={handleChange}
+              rows="3"
+              required
+            />
           </div>
 
-          {/* Modal Actions */}
           <div className="modal-actions-modern">
-            <button type="button" className="cancel-btn-modern" onClick={handleClose}>Cancel</button>
+            <button type="button" className="cancel-btn-modern" onClick={handleClose}>
+              Cancel
+            </button>
             <button type="submit" className="submit-btn-modern" disabled={loading}>
               {loading ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Save Event')}
             </button>
           </div>
         </form>
-
       </div>
     </div>
   );

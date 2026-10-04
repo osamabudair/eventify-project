@@ -1,27 +1,31 @@
 // --- Imports ---
 import React, { useState, useEffect } from 'react';
-import { Save, Camera } from 'lucide-react';
+import { Save, Camera, Eye, EyeOff } from 'lucide-react';
 import { updateProfileApi } from '../../../api/axiosInstance';
+import PasswordStrengthMeter from '../../../components/PasswordStrengthMeter/PasswordStrengthMeter';
 import './ProfileTab.css';
 
-const ProfileTab = () => {
-  // --- State Management ---
+const ProfileTab = ({ showToast }) => {
   const [profileData, setProfileData] = useState({ fullName: '', email: '' });
   const [passwords, setPasswords] = useState({ current: '', new: '', confirm: '' });
 
-  // --- Side Effects ---
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  
   useEffect(() => {
     const userString = localStorage.getItem('user');
     if (userString) {
       const user = JSON.parse(userString);
       setProfileData({
-        fullName: user.username || 'Student',
+        fullName: user.name || user.username || 'Student',
         email: user.email || 'student@university.edu'
       });
     }
   }, []);
 
-  // --- Handlers ---
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name in profileData) {
@@ -33,45 +37,58 @@ const ProfileTab = () => {
 
   const handleSaveChanges = async (e) => {
     e.preventDefault();
-    
-    // --- Validation ---
+
     if (passwords.current || passwords.new || passwords.confirm) {
-      if (passwords.new !== passwords.confirm) {
-        alert("New passwords do not match!");
+      if (!passwords.current) {
+        if (showToast) showToast("Please enter current password to set a new one.", "error");
         return;
       }
-      if (!passwords.current) {
-        alert("Please enter your current password to set a new one.");
+      if (passwords.new !== passwords.confirm) {
+        if (showToast) showToast("New passwords do not match!", "error");
+        return;
+      }
+      if (passwords.new.length < 8) {
+        if (showToast) showToast("New password must be at least 8 characters.", "error");
         return;
       }
     }
 
-    // --- API Call ---
     try {
-      const res = await updateProfileApi({
-        fullName: profileData.fullName,
-        current: passwords.current,
-        new: passwords.new
-      });
+      const payload = {
+        name: profileData.fullName,
+        currentPassword: passwords.current || null,
+        newPassword: passwords.new || null,
+        confirmNewPassword: passwords.confirm || null
+      };
 
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      const res = await updateProfileApi(payload);
+
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const updatedUser = {
+        ...user,
+        username: profileData.fullName,
+        name: profileData.fullName,
+        email: profileData.email
+      };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
       window.dispatchEvent(new Event('storage'));
 
-      alert(res.data.message);
-      
-      // Reset password fields
-      setPasswords({ current: '', new: '', confirm: '' });
+      if (showToast) {
+        showToast(res.data.message || "Profile updated successfully!", "success");
+      }
 
+      setPasswords({ current: '', new: '', confirm: '' });
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to update profile. Please try again.");
+      const errMessage = error.response?.data?.message || "Failed to update profile. Please verify your data.";
+      if (showToast) {
+        showToast(errMessage, "error");
+      }
       setPasswords({ current: '', new: '', confirm: '' });
     }
   };
 
-  // --- Helpers ---
   const initials = profileData.fullName ? profileData.fullName.substring(0, 2).toUpperCase() : 'ST';
 
-  // --- Main Render ---
   return (
     <div className="animate-fade-in modern-profile-layout">
       <form className="single-profile-card" onSubmit={handleSaveChanges}>
@@ -94,7 +111,6 @@ const ProfileTab = () => {
 
         {/* Profile Form */}
         <div className="form-grid-compact">
-          
           <div className="input-group">
             <label>Full Name</label>
             <input 
@@ -105,7 +121,7 @@ const ProfileTab = () => {
               required 
             />
           </div>
-          
+
           <div className="input-group">
             <label>Email Address</label>
             <input 
@@ -117,39 +133,69 @@ const ProfileTab = () => {
             />
           </div>
 
+          {/* Current Password مع العين */}
           <div className="input-group full-width">
             <label>Current Password</label>
-            <input 
-              type="password" 
-              name="current" 
-              placeholder="Enter current password" 
-              value={passwords.current} 
-              onChange={handleChange} 
-            />
+            <div className="password-input-wrapper">
+              <input 
+                type={showCurrentPassword ? "text" : "password"} 
+                name="current" 
+                placeholder="Enter current password" 
+                value={passwords.current} 
+                onChange={handleChange} 
+              />
+              <button 
+                type="button" 
+                className="eye-toggle-btn"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+              >
+                {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
+          {/* New Password مع العين و PasswordStrengthMeter */}
           <div className="input-group">
             <label>New Password</label>
-            <input 
-              type="password" 
-              name="new" 
-              placeholder="••••••••" 
-              value={passwords.new} 
-              onChange={handleChange} 
-            />
+            <div className="password-input-wrapper">
+              <input 
+                type={showNewPassword ? "text" : "password"} 
+                name="new" 
+                placeholder="••••••••" 
+                value={passwords.new} 
+                onChange={handleChange} 
+              />
+              <button 
+                type="button" 
+                className="eye-toggle-btn"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+              >
+                {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            {passwords.new && <PasswordStrengthMeter password={passwords.new} />}
           </div>
-          
+
+          {/* Confirm New Password مع العين */}
           <div className="input-group">
             <label>Confirm New Password</label>
-            <input 
-              type="password" 
-              name="confirm" 
-              placeholder="••••••••" 
-              value={passwords.confirm} 
-              onChange={handleChange} 
-            />
+            <div className="password-input-wrapper">
+              <input 
+                type={showConfirmPassword ? "text" : "password"} 
+                name="confirm" 
+                placeholder="••••••••" 
+                value={passwords.confirm} 
+                onChange={handleChange} 
+              />
+              <button 
+                type="button" 
+                className="eye-toggle-btn"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
-          
         </div>
 
         {/* Form Actions */}
@@ -158,7 +204,6 @@ const ProfileTab = () => {
             <Save size={18} /> Save Changes
           </button>
         </div>
-        
       </form>
     </div>
   );

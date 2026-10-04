@@ -52,7 +52,7 @@ const EventRegistrationCard = ({ event, isRegistered, onRegister }) => {
           </div>
           <div className="detail-text">
             <span className="label">Organized By</span>
-            <span className="value">{event.club}</span>
+            <span className="value">{event.club || event.organizerName || event.organizer?.name || event.organizer?.fullName || event.organizer?.username || "University Club"}</span>
           </div>
         </div>
 
