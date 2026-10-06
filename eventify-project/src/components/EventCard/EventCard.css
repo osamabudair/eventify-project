@@ -92,16 +92,21 @@
   width: 100%;
   background-color: transparent;
   color: var(--primary-color);
-  border: 2px solid var(--primary-color);
-  padding: 12px;
+  border: 1.5px solid var(--primary-color);
+  padding: 11px 16px;
   border-radius: 10px;
-  font-weight: bold;
-  font-size: 15px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.01em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .details-btn:hover {
   background-color: var(--primary-color);
-  color: white;
+  color: #ffffff;
+  box-shadow: 0 2px 8px var(--primary-focus);
 }

@@ -1,27 +1,29 @@
 /* --- Global Variables --- */
 :root {
-  --bg-color: #f9fafb;
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
+  --bg-color: #f8fafc;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
   --card-bg: #ffffff;
-  --border-color: #e5e7eb;
-  --primary-color: #2563eb;
-  --primary-hover: #1d4ed8;
-  --tag-bg: #dbeafe;
-  --tag-text: #1e40af;
+  --border-color: #e2e8f0;
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-active: #3730a3;
+  --tag-bg: #eef2ff;
+  --tag-text: #4338ca;
 }
 
 /* --- Dark Mode Theme --- */
 body.dark-mode {
-  --bg-color: #111827;
-  --text-primary: #f9fafb;
-  --text-secondary: #9ca3af;
-  --card-bg: #1f2937;
-  --border-color: #374151;
-  --primary-color: #3b82f6;
-  --primary-hover: #2563eb;
-  --tag-bg: rgba(30, 58, 138, 0.3);
-  --tag-text: #93c5fd;
+  --bg-color: #0b0f19;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --card-bg: #131c2e;
+  --border-color: #1e293b;
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-active: #4338ca;
+  --tag-bg: rgba(99, 102, 241, 0.15);
+  --tag-text: #a5b4fc;
 }
 
 /* --- Base Styles --- */

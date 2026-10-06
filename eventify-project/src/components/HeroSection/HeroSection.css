@@ -35,37 +35,51 @@
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
-  color: white;
-  border: none;
-  padding: 16px 36px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border: 1px solid transparent;
+  padding: 13px 30px;
+  border-radius: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
-  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1), 0 3px 8px var(--primary-focus);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .primary-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+  background-color: var(--primary-hover);
+  box-shadow: 0 4px 14px var(--primary-focus);
+  transform: none;
+}
+
+.primary-btn:active {
+  background-color: var(--primary-active);
 }
 
 .secondary-btn {
-  background-color: transparent;
+  background-color: var(--card-bg);
   color: var(--text-primary);
-  border: 2px solid var(--border-color);
-  padding: 14px 32px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
+  border: 1px solid var(--border-color);
+  padding: 13px 30px;
+  border-radius: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .secondary-btn:hover {
-  border-color: var(--primary-color);
+  border-color: var(--border-hover);
+  background-color: var(--bg-color);
   color: var(--primary-color);
-  transform: translateY(-3px);
+  transform: none;
 }

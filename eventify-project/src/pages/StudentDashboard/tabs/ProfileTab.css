@@ -32,7 +32,7 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,7 +40,7 @@
   font-size: 28px;
   font-weight: 800;
   position: relative;
-  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 4px 12px var(--primary-focus);
 }
 
 .avatar-edit-btn {
@@ -63,7 +63,7 @@
 .avatar-edit-btn:hover {
   background-color: var(--primary-color);
   color: white;
-  transform: scale(1.1);
+  transform: none;
 }
 
 /* --- Profile Titles --- */
@@ -185,11 +185,14 @@
   justify-content: center;
   padding: 4px;
   border-radius: 6px;
-  transition: color 0.2s;
+  transform: none !important;
+  transition: color 0.2s ease;
 }
 
 .eye-toggle-btn:hover {
-  color: var(--primary-color);
+  color: var(--text-primary);
+  transform: none !important;
+  scale: 1 !important;
 }
 
 

@@ -115,3 +115,8 @@
 .btn-confirm-main.btn-primary {
   background-color: var(--primary-color);
 }
+
+.btn-confirm-main.btn-primary:hover {
+  background-color: var(--primary-hover);
+  box-shadow: 0 4px 12px var(--primary-focus);
+}

@@ -135,7 +135,7 @@
 
 /* --- Next Upcoming Event Card --- */
 .next-event-card {
-  background: linear-gradient(135deg, var(--primary-color), #8b5cf6) !important;
+  background: linear-gradient(145deg, #312e81 0%, #4338ca 50%, var(--primary-color) 100%) !important;
   color: white;
   display: flex;
   justify-content: space-between;

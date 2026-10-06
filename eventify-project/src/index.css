@@ -2,7 +2,181 @@
 @tailwind components;
 @tailwind utilities;
 
-/* تأثير انتقال سلس عند التبديل بين الوضع النهاري والليلي */
-html {
-  transition: background-color 0.3s ease, color 0.3s ease;
+/* ==========================================================================
+   EVENTIFY DESIGN SYSTEM - THEME TOKENS (LIGHT & DARK MODES)
+   ========================================================================== */
+
+:root {
+  /* Light Mode Palette - Crisp, modern, trustworthy event atmosphere */
+  --bg-color: #f8fafc;
+  --card-bg: #ffffff;
+  --card-hover: #ffffff;
+  --border-color: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+
+  /* Primary Event Accent - Refined Royal Indigo */
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-active: #3730a3;
+  --primary-light: #eef2ff;
+  --primary-focus: rgba(79, 70, 229, 0.2);
+
+  /* Status & Tags */
+  --tag-bg: #eef2ff;
+  --tag-text: #4338ca;
+  --success-color: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.1);
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --danger-bg: rgba(239, 68, 68, 0.1);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
+}
+
+body.dark-mode {
+  /* Dark Mode Palette - Deep obsidian slate, sleek, high-contrast */
+  --bg-color: #0b0f19;
+  --card-bg: #131c2e;
+  --card-hover: #19243a;
+  --border-color: #1e293b;
+  --border-hover: #334155;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Primary Event Accent - Luminous Indigo */
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-active: #4338ca;
+  --primary-light: rgba(99, 102, 241, 0.15);
+  --primary-focus: rgba(99, 102, 241, 0.25);
+
+  /* Status & Tags */
+  --tag-bg: rgba(99, 102, 241, 0.15);
+  --tag-text: #a5b4fc;
+  --success-color: #34d399;
+  --success-bg: rgba(52, 211, 153, 0.15);
+  --danger-color: #f87171;
+  --danger-hover: #ef4444;
+  --danger-bg: rgba(248, 113, 113, 0.15);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   GLOBAL THEME TOGGLE (SUN / MOON) - COMPLETELY TRANSPARENT, NO BACKGROUND
+   ========================================================================== */
+.theme-toggle,
+button.theme-toggle,
+.header-actions .theme-toggle,
+.top-nav-buttons .theme-toggle,
+.nav-actions .theme-toggle {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: var(--text-secondary) !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 8px !important;
+  transform: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.theme-toggle:hover,
+button.theme-toggle:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  color: var(--text-primary) !important;
+}
+
+/* ==========================================================================
+   GLOBAL BACK BUTTON - NO HOVER EFFECT (STATIC, NO SHIFT, NO BG JUMP)
+   ========================================================================== */
+.back-btn,
+button.back-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--text-secondary) !important;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transform: none !important;
+  transition: none !important;
+}
+
+.back-btn:hover,
+.back-btn:focus,
+.back-btn:active,
+button.back-btn:hover,
+button.back-btn:focus,
+button.back-btn:active {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ==========================================================================
+   GLOBAL PASSWORD TOGGLE BUTTON - NO HOVER ENLARGEMENT OR SCALE
+   ========================================================================== */
+.password-toggle-btn,
+.eye-toggle-btn,
+button.password-toggle-btn,
+button.eye-toggle-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.password-toggle-btn:hover,
+.eye-toggle-btn:hover,
+button.password-toggle-btn:hover,
+button.eye-toggle-btn:hover {
+  transform: none !important;
+  scale: 1 !important;
+  color: var(--text-primary) !important;
 }
