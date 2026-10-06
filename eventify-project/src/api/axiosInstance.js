@@ -96,6 +96,13 @@ export const getEventByIdApi = async (id) => {
   return { ...res, data: formatted };
 };
 
+export const getEventApprovedCountApi = async (eventId) => {
+  const res = await axiosInstance.get(`/registrations/event/${eventId}/approved`);
+  const data = res.data;
+  if (Array.isArray(data)) return data.length;
+  return data && typeof data === 'object' && (data.registrationId || data.id) ? 1 : 0;
+};
+
 export const createEventApi = async (eventData) => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const organizerId = user.id || user._id;

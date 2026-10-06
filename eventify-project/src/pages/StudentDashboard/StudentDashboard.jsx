@@ -145,7 +145,7 @@ const StudentDashboard = () => {
             {/* Notification Bell */}
             <div className="notif-wrapper" ref={notifRef}>
               <button 
-                className="theme-toggle notif-btn" 
+                className="theme-toggle notif-btn header-plain-btn" 
                 onClick={() => setShowNotifications(prev => !prev)}
                 title="Notifications"
               >
@@ -189,7 +189,7 @@ const StudentDashboard = () => {
               )}
             </div>
 
-            <button className="theme-toggle" onClick={toggleTheme}>
+            <button className="theme-toggle header-plain-btn" onClick={toggleTheme}>
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <button className="primary-btn add-event-btn" onClick={() => navigate('/explore')}>

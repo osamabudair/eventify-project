@@ -5,6 +5,57 @@ import { getMyRegistrationsApi, cancelRegistrationApi } from '../../../api/axios
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog';
 import './MyTicketsTab.css';
 
+// --- Helpers: فحص إذا الفعالية خلص وقتها ---
+const parseEventDate = (dateVal) => {
+  if (!dateVal) return null;
+  if (typeof dateVal === 'string' && dateVal.includes('-')) {
+    const parts = dateVal.split('-');
+    if (parts[0].length === 4) {
+      return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    }
+    if (parts.length === 3) {
+      return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+    }
+  }
+  const d = new Date(dateVal);
+  return isNaN(d.getTime()) ? null : d;
+};
+
+const parseTimeOnDate = (baseDate, timeStr, defaultHour, defaultMinute) => {
+  const d = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
+  if (!timeStr) {
+    d.setHours(defaultHour, defaultMinute, 0, 0);
+    return d;
+  }
+  const isPM = /pm/i.test(timeStr);
+  const isAM = /am/i.test(timeStr);
+  const cleaned = timeStr.replace(/(am|pm)/gi, '').trim();
+  const parts = cleaned.split(':');
+
+  let hours = parseInt(parts[0], 10) || 0;
+  let minutes = parseInt(parts[1], 10) || 0;
+
+  if (isPM && hours < 12) hours += 12;
+  if (isAM && hours === 12) hours = 0;
+
+  d.setHours(hours, minutes, 0, 0);
+  return d;
+};
+
+const isEventFinished = (event) => {
+  if (!event || !event.date) return false;
+  const baseDate = parseEventDate(event.date);
+  if (!baseDate) return false;
+
+  let endStr = event.endTime;
+  if (!endStr && event.time && event.time.includes('-')) {
+    endStr = event.time.split('-')[1]?.trim();
+  }
+
+  const endDateTime = parseTimeOnDate(baseDate, endStr, 23, 59);
+  return new Date() > endDateTime;
+};
+
 const MyTicketsTab = ({ showToast }) => {
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -63,8 +114,11 @@ const MyTicketsTab = ({ showToast }) => {
     );
   }
 
-  const activeTickets = registrations.filter(r => ['approved', 'pending'].includes(r.status?.toLowerCase()));
-  const archivedTickets = registrations.filter(r => ['cancelled', 'rejected'].includes(r.status?.toLowerCase()));
+  const isTicketArchived = (r) =>
+    ['cancelled', 'rejected'].includes(r.status?.toLowerCase()) || isEventFinished(r.event);
+
+  const activeTickets = registrations.filter(r => ['approved', 'pending'].includes(r.status?.toLowerCase()) && !isEventFinished(r.event));
+  const archivedTickets = registrations.filter(isTicketArchived);
 
   const currentDisplayList = activeSubTab === 'active' ? activeTickets : archivedTickets;
 
@@ -99,9 +153,9 @@ const MyTicketsTab = ({ showToast }) => {
       ) : (
         <div className="tickets-grid">
           {currentDisplayList.map((reg) => {
-            const isConfirmed = reg.status?.toLowerCase() === 'approved';
-            const isPending = reg.status?.toLowerCase() === 'pending';
-            const isArchived = ['cancelled', 'rejected'].includes(reg.status?.toLowerCase());
+            const isArchived = isTicketArchived(reg);
+            const isConfirmed = reg.status?.toLowerCase() === 'approved' && !isArchived;
+            const isPending = reg.status?.toLowerCase() === 'pending' && !isArchived;
             const eventTitle = reg.event?.title || reg.event?.name || 'Event Removed';
 
             return (

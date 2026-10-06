@@ -1,4 +1,4 @@
-/* --- Page Container --- */
+/* ==================== PAGE LAYOUT ==================== */
 .explore-page-container {
   min-height: 100vh;
   background-color: var(--bg-color);
@@ -6,52 +6,51 @@
   flex-direction: column;
 }
 
-/* --- Header Content --- */
 .explore-header {
   background-color: var(--bg-color);
-  padding: 80px 20px 60px;
+  padding: 60px 20px 40px;
   border-bottom: 1px solid var(--border-color);
   text-align: center;
 }
 
 .explore-header-content {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
 .explore-header h1 {
-  font-size: 42px;
+  font-size: 40px;
   font-weight: 800;
   color: var(--text-primary);
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
 }
 
 .explore-header p {
-  font-size: 18px;
+  font-size: 17px;
   color: var(--text-secondary);
-  margin: 0 0 40px 0;
+  margin: 0 0 32px 0;
 }
 
-/* --- Filter Section --- */
+/* ==================== FILTER SECTION ==================== */
 .interactive-filter-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
-  max-width: 700px;
-  margin: 0 auto 32px;
+  gap: 20px;
+  max-width: 850px;
+  margin: 0 auto;
 }
 
-/* --- Search Bar --- */
 .modern-search-bar {
   position: relative;
   width: 100%;
+  max-width: 650px;
   display: flex;
   align-items: center;
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 50px; 
-  padding: 8px 16px;
+  padding: 6px 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -65,15 +64,15 @@
 .search-icon {
   color: var(--text-secondary);
   margin-right: 12px;
-  margin-left: 8px;
+  margin-left: 6px;
 }
 
 .modern-search-bar input {
   flex: 1;
   border: none;
   background: transparent;
-  padding: 12px 0;
-  font-size: 16px;
+  padding: 10px 0;
+  font-size: 15px;
   color: var(--text-primary);
   outline: none;
 }
@@ -82,65 +81,40 @@
   background: var(--tag-bg);
   border: none;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-right: 4px;
 }
 
-.clear-search-btn:hover {
-  background: #ef4444;
-  color: white;
-}
-
-/* --- Pills Container --- */
-.modern-pills-container {
+/* ==================== CATEGORIES PILL GRID ==================== */
+.categories-pill-grid {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 16px;
-}
-
-.pill-group {
-  display: flex;
-  align-items: center;
   gap: 10px;
+  max-width: 800px;
 }
 
-.group-icon {
-  color: var(--text-secondary);
-}
-
-.pill-divider {
-  width: 1px;
-  height: 24px;
-  background-color: var(--border-color);
-}
-
-/* --- Filter Pills --- */
 .filter-pill {
-  background-color: transparent;
+  background-color: var(--card-bg);
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 50px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
 }
 
 .filter-pill:hover {
   border-color: var(--primary-color);
   color: var(--primary-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.1);
 }
 
 .filter-pill.active {
@@ -150,53 +124,50 @@
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
-/* --- Select Pill Override --- */
+.club-filter-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
 .select-pill {
   appearance: none;
   padding-right: 36px;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 12px center;
-  background-size: 16px;
+  background-size: 14px;
   outline: none;
 }
 
-.select-pill:focus {
-  border-color: var(--primary-color);
-}
-
-/* --- Main Content --- */
+/* ==================== MAIN CONTENT ==================== */
 .explore-main {
   flex: 1;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 60px 40px;
+  padding: 40px 24px;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* --- No Results State --- */
 .no-results {
   text-align: center;
-  padding: 80px 20px;
+  padding: 60px 20px;
   color: var(--text-secondary);
 }
 
 .no-results-icon {
   opacity: 0.3;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
-.no-results h3 {
-  font-size: 24px;
-  color: var(--text-primary);
-  margin: 0 0 12px 0;
+.secondary-btn {
+  background-color: var(--card-bg);
+  color: var(--primary-color);
+  border: 1px solid var(--border-color);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
 }
-
-.no-results p {
-  margin: 0 0 24px 0;
-}
-
-/* --- Animations --- */
-.animate-fade-in { animation: fadeIn 0.8s ease-out; }
-.animate-slide-up { animation: slideUp 0.6s ease-out forwards; }

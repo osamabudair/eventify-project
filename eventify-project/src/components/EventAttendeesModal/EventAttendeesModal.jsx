@@ -99,7 +99,9 @@ const EventAttendeesModal = ({ isOpen, onClose, event, onAttendeeRemoved, showTo
                 {attendees.map((attendee) => {
                   const regId = attendee.id || attendee.registrationId;
                   const studentName = attendee.studentName || attendee.student?.name || attendee.name || 'Student';
-                  const studentEmail = attendee.studentEmail || attendee.student?.email || attendee.email || (attendee.studentName ? `${attendee.studentName.replace(/\s+/g, '').toLowerCase()}@university.edu` : 'student@university.edu');
+                  // الباك إند بيرجع إيميل الطالب الحقيقي داخل حقل eventName
+                  const emailFromEventName = typeof attendee.eventName === 'string' && attendee.eventName.includes('@') ? attendee.eventName : null;
+                  const studentEmail = attendee.studentEmail || attendee.student?.email || attendee.email || emailFromEventName || 'No email available';
                   const appliedDate = attendee.appliedOn || attendee.createdAt || attendee.date;
 
                   return (

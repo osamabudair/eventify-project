@@ -29,7 +29,7 @@ const Auth = () => {
         {/* --- Top Navigation --- */}
         <div className="top-nav-buttons">
           <button className="back-btn" onClick={() => navigate('/')}>
-            <ArrowLeft size={20} /> Back to Home
+            <ArrowLeft size={20} /> Back
           </button>
           <button className="theme-toggle" onClick={toggleTheme}>
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}

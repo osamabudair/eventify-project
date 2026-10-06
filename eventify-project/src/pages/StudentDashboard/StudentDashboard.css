@@ -108,6 +108,18 @@
   position: relative;
 }
 
+/* --- Dark mode & Notifications buttons: بدون حواف وبدون hover --- */
+.header-actions .theme-toggle.header-plain-btn,
+.header-actions .theme-toggle.header-plain-btn:hover,
+.header-actions .theme-toggle.header-plain-btn:focus,
+.header-actions .theme-toggle.header-plain-btn:active {
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  transform: none;
+  box-shadow: none;
+}
+
 .notif-badge {
   position: absolute;
   top: 4px;
