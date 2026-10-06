@@ -1,6 +1,6 @@
 // --- Imports ---
 import React, { useState, useEffect } from 'react';
-import { Clock, CheckCircle, ArrowRight, Users, Loader2, CalendarCheck, Activity, MapPin, Trash2, Ticket, AlertTriangle, X } from 'lucide-react';
+import { Clock, CheckCircle, Users, Loader2, CalendarCheck, Activity, MapPin, Trash2, Ticket, AlertTriangle } from 'lucide-react';
 import StatCard from '../../../components/StatCard';
 import { useNavigate } from 'react-router-dom';
 import { getMyRegistrationsApi, getAllEventsApi, cancelRegistrationApi, registerForEventApi } from '../../../api/axiosInstance';
@@ -85,7 +85,6 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      // جلب أول فعالية مقبولة قادمة
       const upcoming = approvedRegs
         .map(reg => reg.event)
         .filter(event => {
@@ -117,7 +116,6 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
     fetchOverviewData();
   }, []);
 
-  // فتح نافذة التأكيد المخصصة
   const promptCancelRequest = (id, eventTitle) => {
     setConfirmModal({
       isOpen: true,

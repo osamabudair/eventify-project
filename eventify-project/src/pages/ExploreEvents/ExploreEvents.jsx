@@ -1,6 +1,6 @@
 // ==================== IMPORTS ====================
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, CalendarX, Building2, X, Loader2 } from 'lucide-react';
+import { Search, CalendarX, Building2, X, Loader2 } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
 import EventCard from '../../components/EventCard/EventCard';
 import { getAllEventsApi, getEventByIdApi } from '../../api/axiosInstance';
