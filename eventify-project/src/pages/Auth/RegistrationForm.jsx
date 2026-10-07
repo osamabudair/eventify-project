@@ -1,6 +1,7 @@
 // --- Imports ---
 import React, { useState } from 'react';
 import { Eye, EyeOff, GraduationCap, Briefcase } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import PasswordStrengthMeter from '../../components/PasswordStrengthMeter/PasswordStrengthMeter';
 import { registerApi } from '../../api/axiosInstance';
 import './RegistrationForm.css';
@@ -17,11 +18,13 @@ const RegistrationForm = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   // --- Handlers ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setErrorMsg("Passwords do not match!");
       return;
     }
     
@@ -29,7 +32,7 @@ const RegistrationForm = () => {
     setLoading(true);
 
     try {
-      await registerApi({
+      const response = await registerApi({
         username,
         email,
         password,
@@ -37,8 +40,21 @@ const RegistrationForm = () => {
         role
       });
 
-      alert("Account registered successfully! Please Log In.");
-      window.location.reload(); 
+      const token = response.data?.token;
+      if (token) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(response.data));
+      }
+
+      alert("Account registered successfully!");
+      const userRole = response.data?.role || role;
+      if (userRole === 'CLUB_LEADER') {
+        navigate('/club-dashboard');
+      } else if (userRole === 'STUDENT') {
+        navigate('/student-dashboard');
+      } else {
+        window.location.reload();
+      }
     } catch (err) {
       setErrorMsg(err.response?.data?.message || 'Registration failed');
     } finally {

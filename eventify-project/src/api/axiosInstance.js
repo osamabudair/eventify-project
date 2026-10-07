@@ -7,13 +7,47 @@ const axiosInstance = axios.create({
   },
 });
 
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+// Request Interceptor: automatically attaches Bearer token to outbound requests
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response Interceptor: handle 401/403 responses by clearing localStorage and redirecting to login
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      const url = error.config?.url || '';
+      const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/register');
+
+      // Do not clear and redirect on auth endpoint failures (e.g., incorrect credentials)
+      if (!isAuthEndpoint) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        const currentPath = window.location.pathname;
+
+        const isPublic = 
+          currentPath === '/' || 
+          currentPath === '/auth' || 
+          currentPath === '/explore' || 
+          currentPath.startsWith('/event/');
+
+        if (!isPublic) {
+          window.location.href = '/auth';
+        }
+      }
+    }
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
 const formatEvent = (ev) => {
   if (!ev) return null;
@@ -50,11 +84,21 @@ const formatEvent = (ev) => {
 
 // ==================== 1. Auth ====================
 export const loginApi = async (credentials) => {
-  return await axiosInstance.post('/auth/login', credentials);
+  const response = await axiosInstance.post('/auth/login', credentials);
+  if (response.data?.token) {
+    localStorage.setItem('token', response.data.token);
+    localStorage.setItem('user', JSON.stringify(response.data));
+  }
+  return response;
 };
 
 export const registerApi = async (userData) => {
-  return await axiosInstance.post('/auth/register', userData);
+  const response = await axiosInstance.post('/auth/register', userData);
+  if (response.data?.token) {
+    localStorage.setItem('token', response.data.token);
+    localStorage.setItem('user', JSON.stringify(response.data));
+  }
+  return response;
 };
 
 // ==================== 2. Events & Explore ====================
