@@ -6,6 +6,7 @@ import ClubDashboard from './pages/Dashboard/ClubDashboard';
 import EventDetails from './pages/EventDetails/EventDetails';
 import StudentDashboard from './pages/StudentDashboard/StudentDashboard';
 import ExploreEvents from './pages/ExploreEvents/ExploreEvents';
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -29,6 +30,14 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['CLUB_LEADER', 'ADMIN']}>
                 <ClubDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin-dashboard" 
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <AdminDashboard />
               </ProtectedRoute>
             } 
           />

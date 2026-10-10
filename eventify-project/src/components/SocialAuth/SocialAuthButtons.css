@@ -1,0 +1,123 @@
+/* --- Social Auth Component Styles --- */
+.social-auth-wrapper {
+  width: 100%;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Subtle Divider */
+.social-auth-divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-color, #e2e8f0);
+}
+
+.divider-text {
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary, #64748b);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* Row of small neat circles */
+.social-auth-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+/* Small neat circular button (42px x 42px) */
+.social-circle-btn {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  border-radius: 50%;
+  background-color: var(--bg-color, #ffffff);
+  border: 1.5px solid var(--border-color, #e2e8f0);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  outline: none;
+}
+
+.social-circle-btn .social-icon {
+  transition: transform 0.2s ease;
+}
+
+/* Hover & Active States */
+.social-circle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.social-circle-btn:active {
+  transform: translateY(0);
+}
+
+/* Brand-specific hover accents */
+.google-btn:hover {
+  border-color: #4285F4;
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
+}
+
+.facebook-btn:hover {
+  border-color: #1877F2;
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.2);
+}
+
+.apple-btn:hover {
+  border-color: var(--text-primary, #000000);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.github-btn:hover {
+  border-color: #24292e;
+  box-shadow: 0 4px 12px rgba(36, 41, 46, 0.2);
+}
+
+/* Apple & GitHub icons adapting to Dark / Light themes */
+.apple-icon {
+  fill: #000000;
+}
+
+body.dark-mode .apple-icon {
+  fill: #ffffff;
+}
+
+.github-icon {
+  fill: #24292e;
+}
+
+body.dark-mode .github-icon {
+  fill: #f0f6fc;
+}
+
+body.dark-mode .social-circle-btn {
+  background-color: var(--card-bg, #1e293b);
+  border-color: var(--border-color, #334155);
+}
+
+body.dark-mode .social-circle-btn:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+

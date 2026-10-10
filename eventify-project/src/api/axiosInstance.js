@@ -1,3 +1,4 @@
+// ==================== IMPORTS ====================
 import axios from 'axios';
 
 const axiosInstance = axios.create({
@@ -7,7 +8,7 @@ const axiosInstance = axios.create({
   },
 });
 
-// Request Interceptor: automatically attaches Bearer token to outbound requests
+// Request Interceptor: Attach token automatically
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -19,21 +20,23 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: handle 401/403 responses by clearing localStorage and redirecting to login
+// Response Interceptor: Proper Session Expiry Handling
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (error.response) {
+      const status = error.response.status;
       const url = error.config?.url || '';
       const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/register');
+      const isPendingApproval = error.response.data?.error === 'PENDING_APPROVAL';
 
-      // Do not clear and redirect on auth endpoint failures (e.g., incorrect credentials)
-      if (!isAuthEndpoint) {
+      // Only clear storage and redirect on actual 401 Unauthorized (Expired Session)
+      // Do NOT kick out user on 403 Forbidden or Pending Approval
+      if (status === 401 && !isAuthEndpoint && !isPendingApproval) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
 
         const currentPath = window.location.pathname;
-
         const isPublic = 
           currentPath === '/' || 
           currentPath === '/auth' || 
@@ -49,6 +52,7 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+// Helper: Standardize event object schema
 const formatEvent = (ev) => {
   if (!ev) return null;
   const formattedTime = (ev.startTime && ev.endTime) 
@@ -82,7 +86,7 @@ const formatEvent = (ev) => {
   };
 };
 
-// ==================== 1. Auth ====================
+// ==================== 1. AUTH APIS ====================
 export const loginApi = async (credentials) => {
   const response = await axiosInstance.post('/auth/login', credentials);
   if (response.data?.token) {
@@ -101,7 +105,7 @@ export const registerApi = async (userData) => {
   return response;
 };
 
-// ==================== 2. Events & Explore ====================
+// ==================== 2. EVENTS & EXPLORE ====================
 export const getAllEventsApi = async () => {
   const res = await axiosInstance.get('/events/explore');
   return { ...res, data: Array.isArray(res.data) ? res.data.map(formatEvent) : [] };
@@ -176,7 +180,7 @@ export const getMyEventsApi = async (organizerId) => {
   return { ...res, data: Array.isArray(res.data) ? res.data.map(formatEvent) : [] };
 };
 
-// ==================== 3. Leader Dashboard & Registrations ====================
+// ==================== 3. LEADER DASHBOARD & REGISTRATIONS ====================
 export const getOrganizerRegistrationsApi = async () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const leaderId = user.id || user._id;
@@ -218,7 +222,7 @@ export const updateRegistrationStatusApi = async (registrationId, status) => {
   }
 };
 
-// ==================== 4. Student Portal & Tickets ====================
+// ==================== 4. STUDENT PORTAL & TICKETS ====================
 export const registerForEventApi = async (eventId) => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const studentId = user.id || user._id;
@@ -262,7 +266,7 @@ export const cancelRegistrationApi = async (registrationId) => {
   return await axiosInstance.put(`/registrations/${registrationId}/cancel`);
 };
 
-// ==================== 5. Profile ====================
+// ==================== 5. PROFILE ====================
 export const updateProfileApi = async (payload) => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const userId = user.id || user._id;
@@ -287,6 +291,27 @@ export const updateProfileApi = async (payload) => {
       }
     }
   };
+};
+
+// ==================== 6. ADMIN PORTAL ====================
+export const getPendingLeadersApi = async () => {
+  return await axiosInstance.get('/admin/pending-leaders');
+};
+
+export const getAllLeadersApi = async () => {
+  return await axiosInstance.get('/admin/leaders');
+};
+
+export const approveLeaderApi = async (leaderId) => {
+  return await axiosInstance.put(`/admin/approve-leader/${leaderId}`);
+};
+
+export const rejectLeaderApi = async (leaderId) => {
+  return await axiosInstance.put(`/admin/reject-leader/${leaderId}`);
+};
+
+export const getAdminStatsApi = async () => {
+  return await axiosInstance.get('/admin/stats');
 };
 
 export default axiosInstance;
