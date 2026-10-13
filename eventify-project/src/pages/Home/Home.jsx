@@ -58,6 +58,26 @@ const isEventStartedOrFinished = (event) => {
   return now >= startDateTime;
 };
 
+// Check if an event has already ended (end date/time is in the past)
+const isEventEnded = (event) => {
+  if (!event) return false;
+  const eventDateVal = event.endDate || event.date;
+  if (!eventDateVal) return false;
+
+  const now = new Date();
+  const eventBaseDate = parseEventDate(eventDateVal);
+
+  let endStr = event.endTime;
+  if (!endStr && event.time && event.time.includes('-')) {
+    const timeParts = event.time.split('-');
+    endStr = timeParts[1]?.trim();
+  }
+
+  // End date time: default to 23:59 (end of day) if no specific end time is provided
+  const endDateTime = parseTimeOnDate(eventBaseDate, endStr, 23, 59);
+  return now > endDateTime;
+};
+
 // ==================== COMPONENT ====================
 const Home = () => {
   const [featuredEvents, setFeaturedEvents] = useState([]);
@@ -71,11 +91,21 @@ const Home = () => {
         const res = await getAllEventsApi();
         const allEvents = res.data || [];
         
+        // Check if user is an unauthenticated guest
+        const token = localStorage.getItem('token');
+        const userString = localStorage.getItem('user');
+        const isGuest = !token || !userString;
+
+        // When a guest visits, filter out events that have already ended
+        const visibleEvents = isGuest
+          ? allEvents.filter(ev => !isEventEnded(ev))
+          : allEvents;
+
         // القادمة أولاً (الأقرب فالأقرب)، وإذا أقل من 3 بنكمّل من باقي الفعاليات عشان يضلوا 3 دايماً
-        const upcoming = allEvents
+        const upcoming = visibleEvents
           .filter(ev => !isEventStartedOrFinished(ev))
           .sort((a, b) => parseEventDate(a.date) - parseEventDate(b.date));
-        const others = allEvents
+        const others = visibleEvents
           .filter(ev => isEventStartedOrFinished(ev))
           .sort((a, b) => parseEventDate(b.date) - parseEventDate(a.date));
 

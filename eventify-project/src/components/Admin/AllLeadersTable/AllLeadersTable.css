@@ -1,0 +1,8 @@
+/* --- All Leaders Table Specific Styles --- */
+/* Base table and card structures are inherited from shared Admin Dashboard styles */
+.all-leaders-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+

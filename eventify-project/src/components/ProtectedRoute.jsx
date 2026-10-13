@@ -19,6 +19,13 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return <Navigate to="/auth" replace />;
   }
 
+  // Prevent suspended Students from accessing dashboards directly
+  if (user.role === 'STUDENT' && user.approved === false) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    return <Navigate to="/auth" state={{ suspended: true }} replace />;
+  }
+
   // Check Role authorization
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     if (user.role === 'ADMIN') {

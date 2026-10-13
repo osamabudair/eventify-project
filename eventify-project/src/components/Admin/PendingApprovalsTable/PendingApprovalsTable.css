@@ -1,0 +1,7 @@
+/* --- Pending Approvals Table Specific Styles --- */
+.pending-approvals-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+

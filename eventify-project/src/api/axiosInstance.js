@@ -29,10 +29,11 @@ axiosInstance.interceptors.response.use(
       const url = error.config?.url || '';
       const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/register');
       const isPendingApproval = error.response.data?.error === 'PENDING_APPROVAL';
+      const isSuspended = error.response.data?.error === 'ACCOUNT_SUSPENDED';
 
-      // Only clear storage and redirect on actual 401 Unauthorized (Expired Session)
-      // Do NOT kick out user on 403 Forbidden or Pending Approval
-      if (status === 401 && !isAuthEndpoint && !isPendingApproval) {
+      // Only clear storage and redirect on actual 401 Unauthorized or when account is suspended
+      // Do NOT kick out user on standard 403 Forbidden or Pending Approval
+      if ((status === 401 || isSuspended) && !isAuthEndpoint && !isPendingApproval) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
 
@@ -302,12 +303,24 @@ export const getAllLeadersApi = async () => {
   return await axiosInstance.get('/admin/leaders');
 };
 
+export const getAllStudentsApi = async () => {
+  return await axiosInstance.get('/admin/students');
+};
+
 export const approveLeaderApi = async (leaderId) => {
   return await axiosInstance.put(`/admin/approve-leader/${leaderId}`);
 };
 
 export const rejectLeaderApi = async (leaderId) => {
   return await axiosInstance.put(`/admin/reject-leader/${leaderId}`);
+};
+
+export const suspendStudentApi = async (studentId) => {
+  return await axiosInstance.put(`/admin/students/${studentId}/suspend`);
+};
+
+export const cancelStudentApi = async (studentId) => {
+  return await axiosInstance.delete(`/admin/students/${studentId}`);
 };
 
 export const getAdminStatsApi = async () => {

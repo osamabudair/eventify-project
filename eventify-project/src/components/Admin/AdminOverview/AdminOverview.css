@@ -1,0 +1,72 @@
+/* --- Overview Tab Specific Styling --- */
+.role-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.role-avatar.admin-role {
+  background-color: rgba(37, 99, 235, 0.12);
+  color: var(--primary-color, #2563eb);
+}
+
+.role-avatar.leader-role {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+}
+
+.role-avatar.pending-role {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+}
+
+.role-avatar.student-role {
+  background-color: rgba(139, 92, 246, 0.12);
+  color: #8b5cf6;
+}
+
+.scope-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.account-count-badge {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.share-pill {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: var(--bg-color);
+  color: var(--text-secondary);
+}
+
+.view-all-link-btn {
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.view-all-link-btn:hover {
+  background-color: rgba(37, 99, 235, 0.08);
+}
+
