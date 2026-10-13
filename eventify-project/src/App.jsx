@@ -7,6 +7,7 @@ import EventDetails from './pages/EventDetails/EventDetails';
 import StudentDashboard from './pages/StudentDashboard/StudentDashboard';
 import ExploreEvents from './pages/ExploreEvents/ExploreEvents';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
+import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
             } 
           />
           <Route path="/explore" element={<ExploreEvents />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
         </Routes>
       </Router>
     </ThemeProvider>

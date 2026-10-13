@@ -4,6 +4,7 @@ import { Loader2 } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
 import HeroSection from '../../components/HeroSection/HeroSection';
 import EventCard from '../../components/EventCard/EventCard'; 
+import Footer from '../../components/Footer/Footer';
 import { getAllEventsApi } from '../../api/axiosInstance';
 import './Home.css';
 
@@ -132,6 +133,7 @@ const Home = () => {
   }, []);
 
   return (
+    <>
     <div className="home-container">
       <Navbar />
       <HeroSection />
@@ -155,6 +157,8 @@ const Home = () => {
         )}
       </section>
     </div>
+    <Footer />
+    </>
   );
 };
 

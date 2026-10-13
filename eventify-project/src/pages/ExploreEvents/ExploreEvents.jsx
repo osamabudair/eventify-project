@@ -1,8 +1,10 @@
 // ==================== IMPORTS ====================
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Search, CalendarX, Building2, X, Loader2 } from 'lucide-react';
 import Navbar from '../../components/Navbar/Navbar';
 import EventCard from '../../components/EventCard/EventCard';
+import Footer from '../../components/Footer/Footer';
 import { getAllEventsApi, getEventByIdApi } from '../../api/axiosInstance';
 import './ExploreEvents.css';
 
@@ -54,8 +56,18 @@ const compareDay = (a, b) => (a.y - b.y) || (a.m - b.m) || (a.d - b.d);
 
 // ==================== COMPONENT ====================
 const ExploreEvents = () => {
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category') || 'All';
+
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam);
+  const [prevCategoryParam, setPrevCategoryParam] = useState(categoryParam);
+
+  // Keep the filter in sync when the URL category changes (e.g. footer links clicked while on this page)
+  if (categoryParam !== prevCategoryParam) {
+    setPrevCategoryParam(categoryParam);
+    setSelectedCategory(categoryParam);
+  }
   const [selectedClub, setSelectedClub] = useState('All');
   const [allEvents, setAllEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -217,6 +229,7 @@ const ExploreEvents = () => {
           </div>
         )}
       </main>
+      <Footer />
     </div>
   );
 };
