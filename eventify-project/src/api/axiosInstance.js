@@ -89,7 +89,11 @@ const formatEvent = (ev) => {
 
 // ==================== 1. AUTH APIS ====================
 export const loginApi = async (credentials) => {
-  const response = await axiosInstance.post('/auth/login', credentials);
+  const normalizedCredentials = {
+    ...credentials,
+    email: (credentials?.email || '').trim().toLowerCase(),
+  };
+  const response = await axiosInstance.post('/auth/login', normalizedCredentials);
   if (response.data?.token) {
     localStorage.setItem('token', response.data.token);
     localStorage.setItem('user', JSON.stringify(response.data));
@@ -98,7 +102,11 @@ export const loginApi = async (credentials) => {
 };
 
 export const registerApi = async (userData) => {
-  const response = await axiosInstance.post('/auth/register', userData);
+  const normalizedUserData = {
+    ...userData,
+    email: (userData?.email || '').trim().toLowerCase(),
+  };
+  const response = await axiosInstance.post('/auth/register', normalizedUserData);
   if (response.data?.token) {
     localStorage.setItem('token', response.data.token);
     localStorage.setItem('user', JSON.stringify(response.data));

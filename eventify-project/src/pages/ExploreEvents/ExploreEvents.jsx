@@ -11,7 +11,7 @@ import './ExploreEvents.css';
 // ==================== HELPER FUNCTIONS (Jordan Time UTC+3) ====================
 const JORDAN_OFFSET_MS = 3 * 60 * 60 * 1000;
 
-// يرجّع مكونات التاريخ { y, m, d } بغض النظر عن صيغة الباك إند
+// Parses date values regardless of backend format into { y, m, d }
 const parseDateParts = (dateVal) => {
   if (!dateVal) return null;
   if (typeof dateVal === 'string' && dateVal.includes('-')) {
@@ -23,12 +23,12 @@ const parseDateParts = (dateVal) => {
       return { y: parseInt(parts[2], 10), m: parseInt(parts[1], 10) - 1, d: parseInt(parts[0], 10) };
     }
   }
-  const dt = new Date(dateVal); // مثل "October 5, 2026"
+  const dt = new Date(dateVal); // e.g., "October 5, 2026"
   if (isNaN(dt.getTime())) return null;
   return { y: dt.getFullYear(), m: dt.getMonth(), d: dt.getDate() };
 };
 
-// يحوّل "08:30 PM" أو "20:30" إلى { h, min }
+// Converts "08:30 PM" or "20:30" string format into { h, min }
 const parseTimeParts = (timeStr) => {
   if (!timeStr || typeof timeStr !== 'string') return null;
   const isPM = /pm/i.test(timeStr);
@@ -42,11 +42,11 @@ const parseTimeParts = (timeStr) => {
   return { h, min };
 };
 
-// اللحظة الفعلية (timestamp) لتاريخ ووقت بتوقيت الأردن
+// Returns UTC timestamp for a given date and time components adjusted for Jordan Time (UTC+3)
 const toJordanTimestamp = ({ y, m, d }, h = 0, min = 0) =>
   Date.UTC(y, m, d, h, min, 0, 0) - JORDAN_OFFSET_MS;
 
-// تاريخ اليوم حسب توقيت الأردن
+// Returns today's date in Jordan time zone (UTC+3)
 const getJordanToday = () => {
   const j = new Date(Date.now() + JORDAN_OFFSET_MS);
   return { y: j.getUTCFullYear(), m: j.getUTCMonth(), d: j.getUTCDate() };
@@ -76,6 +76,8 @@ const ExploreEvents = () => {
     document.title = "Explore Events - Eventify";
     window.scrollTo(0, 0);
 
+    let isMounted = true;
+
     const fetchEvents = async () => {
       try {
         const res = await getAllEventsApi();
@@ -87,21 +89,26 @@ const ExploreEvents = () => {
           if (!dateParts) return null;
 
           const dayDiff = compareDay(dateParts, today);
-          if (dayDiff < 0) return null; // يوم سابق => انتهت
-          if (dayDiff > 0) return ev;   // يوم قادم => لم تبدأ بعد
+          if (dayDiff < 0) return null; // Past day -> Event completed
+          if (dayDiff > 0) return ev;   // Future day -> Event is upcoming
 
-          // فعالية اليوم: لازم نعرف وقت البداية (الـ explore ما بيرجعه)
+          // Event is today: determine start time
           let startTime = ev.startTime;
+          if (!startTime && ev.time && ev.time.includes('-')) {
+            startTime = ev.time.split('-')[0]?.trim();
+          }
+
           if (!startTime) {
             try {
               const details = await getEventByIdApi(ev.id);
               startTime = details.data?.startTime;
             } catch {
-              return null;
+              return ev; // Keep event visible if detail lookup fails
             }
           }
+
           const t = parseTimeParts(startTime);
-          if (!t) return null;
+          if (!t) return ev;
 
           return nowTs < toJordanTimestamp(dateParts, t.h, t.min) ? ev : null;
         }));
@@ -118,15 +125,25 @@ const ExploreEvents = () => {
             image: ev.imageUrl || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
           }));
 
-        setAllEvents(validEvents);
-      } catch (error) {
-        console.error("Error fetching events:", error);
+        if (isMounted) {
+          setAllEvents(validEvents);
+        }
+      } catch {
+        if (isMounted) {
+          setAllEvents([]);
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchEvents();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const categories = [

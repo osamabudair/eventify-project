@@ -133,7 +133,7 @@ const ProfileTab = ({ showToast }) => {
             />
           </div>
 
-          {/* Current Password مع العين */}
+          {/* Current Password with visibility toggle */}
           <div className="input-group full-width">
             <label>Current Password</label>
             <div className="password-input-wrapper">
@@ -154,7 +154,7 @@ const ProfileTab = ({ showToast }) => {
             </div>
           </div>
 
-          {/* New Password مع العين و PasswordStrengthMeter */}
+          {/* New Password with visibility toggle and strength meter */}
           <div className="input-group">
             <label>New Password</label>
             <div className="password-input-wrapper">
@@ -176,7 +176,7 @@ const ProfileTab = ({ showToast }) => {
             {passwords.new && <PasswordStrengthMeter password={passwords.new} />}
           </div>
 
-          {/* Confirm New Password مع العين */}
+          {/* Confirm New Password with visibility toggle */}
           <div className="input-group">
             <label>Confirm New Password</label>
             <div className="password-input-wrapper">

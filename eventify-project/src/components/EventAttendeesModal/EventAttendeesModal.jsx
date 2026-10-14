@@ -12,34 +12,48 @@ const EventAttendeesModal = ({ isOpen, onClose, event, onAttendeeRemoved, showTo
   const [confirmData, setConfirmData] = useState({ isOpen: false, regId: null, name: '' });
 
   useEffect(() => {
+    let isMounted = true;
+
+    const fetchEventAttendees = async () => {
+      setLoading(true);
+      try {
+        const eventId = event._id || event.id;
+        const res = await axiosInstance.get(`/registrations/event/${eventId}/approved`);
+        if (isMounted) {
+          setAttendees(res.data || []);
+        }
+      } catch {
+        try {
+          const user = JSON.parse(localStorage.getItem('user') || '{}');
+          const leaderId = user.id || user._id;
+          const res = await axiosInstance.get(`/registrations/leader/${leaderId}/all`);
+          const eventId = event._id || event.id;
+          const filtered = (res.data || []).filter(
+            r => (r.eventId === eventId || r.event?.id === eventId) && r.status === 'APPROVED'
+          );
+          if (isMounted) {
+            setAttendees(filtered);
+          }
+        } catch {
+          if (isMounted) {
+            setAttendees([]);
+          }
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
     if (isOpen && event) {
       fetchEventAttendees();
     }
-  }, [isOpen, event]);
 
-  const fetchEventAttendees = async () => {
-    setLoading(true);
-    try {
-      const eventId = event._id || event.id;
-      const res = await axiosInstance.get(`/registrations/event/${eventId}/approved`);
-      setAttendees(res.data || []);
-    } catch {
-      try {
-        const user = JSON.parse(localStorage.getItem('user') || '{}');
-        const leaderId = user.id || user._id;
-        const res = await axiosInstance.get(`/registrations/leader/${leaderId}/all`);
-        const eventId = event._id || event.id;
-        const filtered = (res.data || []).filter(
-          r => (r.eventId === eventId || r.event?.id === eventId) && r.status === 'APPROVED'
-        );
-        setAttendees(filtered);
-      } catch {
-        setAttendees([]);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+    return () => {
+      isMounted = false;
+    };
+  }, [isOpen, event]);
 
   const executeCancel = async () => {
     const { regId, name } = confirmData;
@@ -99,7 +113,7 @@ const EventAttendeesModal = ({ isOpen, onClose, event, onAttendeeRemoved, showTo
                 {attendees.map((attendee) => {
                   const regId = attendee.id || attendee.registrationId;
                   const studentName = attendee.studentName || attendee.student?.name || attendee.name || 'Student';
-                  // الباك إند بيرجع إيميل الطالب الحقيقي داخل حقل eventName
+                  // Fallback: Check if attendee email was passed in eventName field or directly in studentEmail
                   const emailFromEventName = typeof attendee.eventName === 'string' && attendee.eventName.includes('@') ? attendee.eventName : null;
                   const studentEmail = attendee.studentEmail || attendee.student?.email || attendee.email || emailFromEventName || 'No email available';
                   const appliedDate = attendee.appliedOn || attendee.createdAt || attendee.date;

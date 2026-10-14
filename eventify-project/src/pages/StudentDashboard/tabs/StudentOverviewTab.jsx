@@ -73,7 +73,59 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
     eventTitle: ''
   });
 
-  const fetchOverviewData = async () => {
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchOverviewData = async () => {
+      try {
+        const regsRes = await getMyRegistrationsApi();
+        const myRegistrations = regsRes.data || [];
+        
+        const approvedRegs = myRegistrations.filter(reg => reg.status === 'approved');
+        const pendingCount = myRegistrations.filter(reg => reg.status === 'pending').length;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const upcoming = approvedRegs
+          .map(reg => reg.event)
+          .filter(event => {
+            if (!event || !event.date) return false;
+            return new Date(event.date) >= today && !isEventExpired(event);
+          })
+          .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+
+        const eventsRes = await getAllEventsApi();
+        const allEvents = eventsRes.data || [];
+
+        const availableEvents = allEvents.filter(event => {
+          const isRegistered = myRegistrations.some(reg => (reg.event?._id || reg.event?.id) === (event._id || event.id));
+          return !isRegistered && !isEventExpired(event);
+        });
+
+        if (isMounted) {
+          setStats({ approved: approvedRegs.length, pending: pendingCount });
+          setNextEvent(upcoming || (approvedRegs[0]?.event && !isEventExpired(approvedRegs[0].event) ? approvedRegs[0].event : null));
+          setRecentActivity(myRegistrations.slice(0, 5));
+          setSuggestedEvents(availableEvents.slice(0, 2));
+        }
+      } catch {
+        // Graceful error fallback
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchOverviewData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const refreshOverviewData = async () => {
     try {
       const regsRes = await getMyRegistrationsApi();
       const myRegistrations = regsRes.data || [];
@@ -105,16 +157,10 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
       });
 
       setSuggestedEvents(availableEvents.slice(0, 2));
-    } catch (error) {
-      console.error("Error fetching student overview:", error);
-    } finally {
-      setLoading(false);
+    } catch {
+      // Graceful fallback
     }
   };
-
-  useEffect(() => {
-    fetchOverviewData();
-  }, []);
 
   const promptCancelRequest = (id, eventTitle) => {
     setConfirmModal({
@@ -130,7 +176,7 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
       await cancelRegistrationApi(confirmModal.regId);
       if (showToast) showToast("Registration cancelled successfully", "info");
       setConfirmModal({ isOpen: false, regId: null, eventTitle: '' });
-      fetchOverviewData(); 
+      refreshOverviewData(); 
     } catch {
       if (showToast) showToast("Failed to cancel request", "error");
     }
@@ -148,7 +194,7 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
     try {
       await registerForEventApi(event._id || event.id);
       if (showToast) showToast(`Applied for "${event.title || event.name}" successfully!`, "success");
-      fetchOverviewData();
+      refreshOverviewData();
     } catch (err) {
       const msg = err.response?.data?.message || "Failed to register for this event";
       if (showToast) showToast(msg, "error");
@@ -267,7 +313,7 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
                         {isFull && <span className="full-badge">Full</span>}
                       </div>
 
-                      {/* أزرار متساوية الحجم بحركات hover أنيقة */}
+                      {/* Equal-width action buttons for details and registration */}
                       <div className="suggested-card-actions-equal">
                         <button 
                           className="action-btn-half btn-details" 

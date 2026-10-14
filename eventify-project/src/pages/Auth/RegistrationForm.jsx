@@ -42,9 +42,10 @@ const RegistrationForm = () => {
     setLoading(true);
 
     try {
+      const normalizedEmail = (email || '').trim().toLowerCase();
       const response = await registerApi({
         username,
-        email,
+        email: normalizedEmail,
         password,
         confirmPassword,
         role

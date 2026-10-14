@@ -23,16 +23,16 @@ const getTimeAgo = (dateStr) => {
   return `${Math.floor(seconds / 2592000)}mo ago`;
 };
 
-// --- دوال ضبط التواريخ والأوقات الدقيقة الموحدة ---
+// --- Date and Time Parsing Utilities ---
 const parseEventDate = (dateVal) => {
   if (!dateVal) return new Date();
   if (typeof dateVal === 'string' && dateVal.includes('-')) {
     const parts = dateVal.split('-');
-    // صيغة yyyy-MM-dd
+    // ISO format yyyy-MM-dd
     if (parts[0].length === 4) {
       return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
     }
-    // صيغة d-M-yyyy (اليوم-الشهر-السنة)
+    // d-M-yyyy format (day-month-year)
     if (parts.length === 3) {
       return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
     }
@@ -62,7 +62,7 @@ const parseTimeOnDate = (baseDate, timeStr, defaultHour, defaultMinute) => {
   return d;
 };
 
-// فحص الحالة الدقيقة
+// Calculates dynamic event status (Upcoming, Ongoing, Completed) based on date and time
 const getEventDynamicStatus = (event) => {
   if (!event || !event.date) return 'Upcoming';
 
@@ -78,7 +78,7 @@ const getEventDynamicStatus = (event) => {
     endStr = endStr || timeParts[1]?.trim();
   }
 
-  // إذا لم يتوفر وقت بداية محدد، يبدأ الفحص من 09:00 صباحاً
+  // Fallback: If no explicit start time is specified, default to 09:00 AM
   const startDateTime = parseTimeOnDate(eventBaseDate, startStr, 9, 0);
   const endDateTime = parseTimeOnDate(eventBaseDate, endStr, 23, 59);
 
@@ -117,7 +117,38 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
 
   const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, eventId: null, eventName: '' });
 
-  const fetchOverviewData = async () => {
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchOverviewData = async () => {
+      try {
+        const data = await getLeaderDashboardApi();
+        if (isMounted) {
+          setDashboardData({
+            totalEvents: data.totalEvents || 0,
+            totalRegistrations: data.totalRegistrations || 0,
+            pendingRequests: data.pendingRequests || 0,
+            recentEvents: data.recentEvents || [],
+            liveActivities: data.liveActivities || []
+          });
+        }
+      } catch {
+        // Fallback gracefully on fetch error
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchOverviewData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const refreshOverviewData = async () => {
     try {
       const data = await getLeaderDashboardApi();
       setDashboardData({
@@ -127,16 +158,10 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
         recentEvents: data.recentEvents || [],
         liveActivities: data.liveActivities || []
       });
-    } catch (error) {
-      console.error("Error fetching overview data:", error);
-    } finally {
-      setIsLoading(false);
+    } catch {
+      // Graceful fallback
     }
   };
-
-  useEffect(() => {
-    fetchOverviewData();
-  }, []);
 
   const stats = [
     { title: 'Total Events', value: dashboardData.totalEvents.toString(), icon: <Calendar size={24} /> },
@@ -341,7 +366,7 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
         eventData={selectedEvent}
         showToast={showToast}
         onEventUpdated={() => {
-          fetchOverviewData();
+          refreshOverviewData();
         }}
       />
 
@@ -354,7 +379,7 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
         event={viewAttendeesEvent}
         showToast={showToast}
         onAttendeeRemoved={() => {
-          fetchOverviewData();
+          refreshOverviewData();
         }}
       />
     </div>

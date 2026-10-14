@@ -18,12 +18,29 @@ const EventDetails = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
+  const toastTimerRef = React.useRef(null);
+
   const showToast = (message, type = 'success') => {
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current);
+    }
     setToast({ show: true, message, type });
-    setTimeout(() => setToast(prev => ({ ...prev, show: false })), 4000);
+    toastTimerRef.current = setTimeout(() => {
+      setToast(prev => ({ ...prev, show: false }));
+    }, 4000);
   };
 
   useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) {
+        clearTimeout(toastTimerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
     const fetchEventData = async () => {
       try {
         const res = await getEventByIdApi(id);
@@ -52,12 +69,12 @@ const EventDetails = () => {
           data.organizerName || 
           "University Club";
 
-        // العدد الحقيقي للحضور المقبولين (الـ endpoint تبع الفعالية ما بيرجع العدد)
+        // Fetch verified count of approved attendees
         let currentAttendees = data.approvedAttendees ?? data.approvedCount ?? 0;
         try {
           currentAttendees = await getEventApprovedCountApi(data.id || id);
-        } catch (countError) {
-          console.error("Error fetching attendees count:", countError);
+        } catch {
+          // Fallback to existing count
         }
         const totalCapacity = data.capacity || data.maxAttendees || 100;
 
@@ -76,17 +93,26 @@ const EventDetails = () => {
           tags: [data.category || 'General']
         };
 
-        setEvent(formattedEvent);
-        document.title = `${formattedEvent.title} - Eventify`;
-      } catch (error) {
-        console.error("Error fetching event details:", error);
-        setErrorMsg("Failed to load event details. Please try again.");
+        if (isMounted) {
+          setEvent(formattedEvent);
+          document.title = `${formattedEvent.title} - Eventify`;
+        }
+      } catch {
+        if (isMounted) {
+          setErrorMsg("Failed to load event details. Please try again.");
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchEventData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   const handleRegister = async () => {

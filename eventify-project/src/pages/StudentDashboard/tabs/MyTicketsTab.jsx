@@ -5,7 +5,7 @@ import { getMyRegistrationsApi, cancelRegistrationApi } from '../../../api/axios
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog';
 import './MyTicketsTab.css';
 
-// --- Helpers: فحص إذا الفعالية خلص وقتها ---
+// --- Helpers: Check if event has concluded ---
 const parseEventDate = (dateVal) => {
   if (!dateVal) return null;
   if (typeof dateVal === 'string' && dateVal.includes('-')) {
@@ -63,20 +63,41 @@ const MyTicketsTab = ({ showToast }) => {
 
   const [cancelConfirm, setCancelConfirm] = useState({ isOpen: false, regId: null, title: '' });
 
-  const fetchMyTickets = async () => {
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchMyTickets = async () => {
+      try {
+        const res = await getMyRegistrationsApi();
+        if (isMounted) {
+          setRegistrations(res.data || []);
+        }
+      } catch {
+        if (isMounted) {
+          setRegistrations([]);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchMyTickets();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const refreshMyTickets = async () => {
     try {
       const res = await getMyRegistrationsApi();
       setRegistrations(res.data || []);
-    } catch (error) {
-      console.error("Error fetching tickets:", error);
-    } finally {
-      setLoading(false);
+    } catch {
+      // Graceful fallback
     }
   };
-
-  useEffect(() => {
-    fetchMyTickets();
-  }, []);
 
   const promptCancel = (regId, eventTitle) => {
     setCancelConfirm({ isOpen: true, regId, title: eventTitle });
@@ -88,7 +109,7 @@ const MyTicketsTab = ({ showToast }) => {
     try {
       await cancelRegistrationApi(regId);
       if (showToast) showToast(`Ticket for "${title}" has been cancelled`, 'info');
-      fetchMyTickets();
+      refreshMyTickets();
     } catch {
       if (showToast) showToast("Failed to cancel ticket", 'error');
     }

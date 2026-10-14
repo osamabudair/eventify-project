@@ -1,4 +1,4 @@
-// داخل StudentDashboard.jsx
+// --- Student Dashboard Component ---
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
@@ -16,27 +16,42 @@ const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [userName, setUserName] = useState('Student');
 
-  // Toast
+  // Toast notification state and timer cleanup
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  const toastTimerRef = useRef(null);
+
   const showToast = (message, type = 'success') => {
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current);
+    }
     setToast({ show: true, message, type });
-    setTimeout(() => {
+    toastTimerRef.current = setTimeout(() => {
       setToast(prev => ({ ...prev, show: false }));
     }, 4000);
   };
 
-  // Smart Notifications مع حفظ المقروء في localStorage
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) {
+        clearTimeout(toastTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Smart Notifications with persisted read IDs in localStorage
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const notifRef = useRef(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchEventAlerts = async () => {
       try {
         const res = await getMyRegistrationsApi();
         const approvedTickets = (res.data || []).filter(r => r.status === 'approved' && r.event);
         
-        // جلب قائمة المعرفات المقروءة مسبقاً
+        // Retrieve previously read notification IDs
         const readIds = JSON.parse(localStorage.getItem('read_notifications') || '[]');
         const todayStr = new Date().toISOString().split('T')[0];
 
@@ -45,7 +60,7 @@ const StudentDashboard = () => {
           const ticketId = String(ticket._id || ticket.id);
           const evDate = ticket.event.date;
           
-          // إذا كانت الفعالية اليوم ولم تكن مقروءة مسبقاً
+          // Check if event is scheduled for today and unread
           if (evDate && evDate.startsWith(todayStr) && !readIds.includes(ticketId)) {
             alerts.push({
               id: ticketId,
@@ -55,13 +70,21 @@ const StudentDashboard = () => {
             });
           }
         });
-        setNotifications(alerts);
-      } catch (err) {
-        console.error("Error fetching notifications:", err);
+        if (isMounted) {
+          setNotifications(alerts);
+        }
+      } catch {
+        if (isMounted) {
+          setNotifications([]);
+        }
       }
     };
 
     fetchEventAlerts();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleMarkAllAsRead = () => {

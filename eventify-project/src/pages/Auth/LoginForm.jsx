@@ -46,8 +46,10 @@ const LoginForm = () => {
     setErrorMsg('');
     setLoading(true);
 
+    const normalizedEmail = (email || '').trim().toLowerCase();
+
     try {
-      const response = await loginApi({ email, password });
+      const response = await loginApi({ email: normalizedEmail, password });
       
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data));

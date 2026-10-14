@@ -87,6 +87,8 @@ const Home = () => {
   useEffect(() => { 
     document.title = "Home - Eventify"; 
     
+    let isMounted = true;
+
     const fetchRecentEvents = async () => {
       try {
         const res = await getAllEventsApi();
@@ -102,7 +104,7 @@ const Home = () => {
           ? allEvents.filter(ev => !isEventEnded(ev))
           : allEvents;
 
-        // القادمة أولاً (الأقرب فالأقرب)، وإذا أقل من 3 بنكمّل من باقي الفعاليات عشان يضلوا 3 دايماً
+        // Upcoming events prioritized first (closest date), falling back to other events to maintain 3 items
         const upcoming = visibleEvents
           .filter(ev => !isEventStartedOrFinished(ev))
           .sort((a, b) => parseEventDate(a.date) - parseEventDate(b.date));
@@ -121,15 +123,25 @@ const Home = () => {
             tags: [ev.category || "General"]
           }));
 
-        setFeaturedEvents(upcomingSorted);
-      } catch (error) {
-        console.error("Error fetching home events:", error);
+        if (isMounted) {
+          setFeaturedEvents(upcomingSorted);
+        }
+      } catch {
+        if (isMounted) {
+          setFeaturedEvents([]);
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchRecentEvents();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (

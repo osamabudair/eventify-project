@@ -91,20 +91,41 @@ const ManageEventsTab = ({ showToast }) => {
 
   const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, eventId: null, eventName: '' });
 
-  const fetchMyEvents = async () => {
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchMyEvents = async () => {
+      try {
+        const res = await getMyEventsApi();
+        if (isMounted) {
+          setEvents(res.data || []);
+        }
+      } catch {
+        if (isMounted) {
+          setEvents([]);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchMyEvents();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const refreshEvents = async () => {
     try {
       const res = await getMyEventsApi();
       setEvents(res.data || []);
-    } catch (error) {
-      console.error("Error fetching my events:", error);
-    } finally {
-      setIsLoading(false);
+    } catch {
+      setEvents([]);
     }
   };
-
-  useEffect(() => {
-    fetchMyEvents();
-  }, []);
 
   const handleEdit = async (event, e) => {
     e.stopPropagation();
@@ -165,7 +186,7 @@ const ManageEventsTab = ({ showToast }) => {
           </p>
         </div>
 
-        {/* أزرار التبديل للأرشيف */}
+        {/* View toggle filter for active and archived events */}
         <div className="archive-toggle-group">
           <button
             className={`archive-toggle-btn ${viewFilter === 'active' ? 'active' : ''}`}
@@ -265,7 +286,7 @@ const ManageEventsTab = ({ showToast }) => {
         eventData={selectedEvent} 
         showToast={showToast}
         onEventUpdated={() => {
-          fetchMyEvents();
+          refreshEvents();
         }}
       />
 
@@ -278,7 +299,7 @@ const ManageEventsTab = ({ showToast }) => {
         event={viewAttendeesEvent}
         showToast={showToast}
         onAttendeeRemoved={() => {
-          fetchMyEvents();
+          refreshEvents();
         }}
       />
 

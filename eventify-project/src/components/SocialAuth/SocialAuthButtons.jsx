@@ -5,8 +5,6 @@ const SocialAuthButtons = ({ onSocialClick }) => {
   const handleSocialClick = (provider) => {
     if (onSocialClick) {
       onSocialClick(provider);
-    } else {
-      console.log(`Social sign-in clicked: ${provider}`);
     }
   };
 
