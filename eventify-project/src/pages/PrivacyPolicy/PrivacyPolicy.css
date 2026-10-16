@@ -57,3 +57,27 @@
   text-decoration: underline;
 }
 
+@media (max-width: 768px) {
+  .privacy-container {
+    padding: 0 16px;
+  }
+
+  .privacy-main {
+    padding: 20px 0 48px;
+  }
+
+  .privacy-header h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .privacy-container {
+    padding: 0 12px;
+  }
+
+  .privacy-header h1 {
+    font-size: 24px;
+  }
+}
+

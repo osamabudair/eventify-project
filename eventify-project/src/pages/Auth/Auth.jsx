@@ -38,20 +38,15 @@ const Auth = () => {
 
         {/* --- Auth Card Container --- */}
         <div className={`auth-main-container ${isLogin ? '' : 'right-panel-active'}`}>
-          
-          {/* Registration Panel */}
           <div className="form-container sign-up-container">
-            <RegistrationForm />
+            <RegistrationForm onToggleMode={() => setIsLogin(true)} />
           </div>
 
-          {/* Login Panel */}
           <div className="form-container sign-in-container">
-            <LoginForm />
+            <LoginForm onToggleMode={() => setIsLogin(false)} />
           </div>
 
-          {/* Animated Visuals Overlay */}
           <AuthVisuals isLogin={isLogin} toggleView={() => setIsLogin(!isLogin)} />
-          
         </div>
       </div>
     </div>

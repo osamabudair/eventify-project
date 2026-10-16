@@ -80,8 +80,7 @@ const RecentStudentsTable = ({
 
                 return (
                   <tr key={student.id} className="admin-table-row">
-                    {/* 1. Student Name & Avatar */}
-                    <td>
+                    <td className="cell-title">
                       <div className="applicant-cell">
                         <div
                           className={`applicant-avatar student-avatar ${isSuspended ? 'avatar-suspended' : ''}`}
@@ -95,13 +94,11 @@ const RecentStudentsTable = ({
                       </div>
                     </td>
 
-                    {/* 2. Email Address */}
-                    <td>
+                    <td className="cell-meta" data-label="Email">
                       <span className="email-text">{student.email}</span>
                     </td>
 
-                    {/* 3. Signed Up Date (Exact Original Creation Timestamp) */}
-                    <td>
+                    <td className="cell-meta" data-label="Signed Up Date">
                       <div className="date-cell">
                         <span className="date-main">{formatDate(student.createdAt)}</span>
                         {formatExactTime(student.createdAt) && (
@@ -112,8 +109,7 @@ const RecentStudentsTable = ({
                       </div>
                     </td>
 
-                    {/* 4. Account Status */}
-                    <td>
+                    <td className="cell-status">
                       {isSuspended ? (
                         <span className="status-badge suspended">
                           <Ban size={13} /> Suspended
@@ -125,8 +121,7 @@ const RecentStudentsTable = ({
                       )}
                     </td>
 
-                    {/* 5. Actions (Matching RegisteredStudentsTable buttons & handlers) */}
-                    <td className="action-col-cell">
+                    <td className="action-col-cell cell-actions">
                       <div className="admin-row-actions">
                         {isSuspended ? (
                           <button

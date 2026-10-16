@@ -8,7 +8,7 @@ import SocialAuthButtons from '../../components/SocialAuth/SocialAuthButtons';
 import ApprovalAlertModal from '../../components/ApprovalAlertModal/ApprovalAlertModal';
 import './RegistrationForm.css';
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ onToggleMode }) => {
   // --- State Management ---
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -177,8 +177,16 @@ const RegistrationForm = () => {
             {loading ? 'Creating Account...' : 'Register'}
           </button>
 
-          {/* Circular Social Auth Buttons */}
           <SocialAuthButtons />
+
+          {onToggleMode && (
+            <div className="mobile-auth-switch">
+              Already have an account?{' '}
+              <button type="button" onClick={onToggleMode}>
+                Log In
+              </button>
+            </div>
+          )}
         </div>
 
       </form>

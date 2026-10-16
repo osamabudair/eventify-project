@@ -298,3 +298,31 @@ body.dark-mode .dropdown-status-tag {
   margin: 0;
 }
 
+@media (max-width: 768px) {
+  .admin-header {
+    margin-bottom: 20px;
+  }
+
+  .notification-bell-container {
+    position: static;
+  }
+
+  .notifications-dropdown {
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: calc(100vw - 28px);
+    z-index: 9995;
+  }
+}
+
+@media (max-width: 480px) {
+  .notifications-dropdown {
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: calc(100vw - 24px);
+  }
+}
+

@@ -136,6 +136,8 @@ export const getEventByIdApi = async (id) => {
     data.organizerName || 
     "University Club";
 
+  const attendeesNum = data.approvedAttendees ?? data.approvedCount ?? (Array.isArray(data.attendees) ? data.attendees.length : data.attendees) ?? 0;
+
   const formatted = {
     ...data,
     id: data.id,
@@ -147,17 +149,29 @@ export const getEventByIdApi = async (id) => {
     organizer: {
       name: orgName,
       username: orgName
-    }
+    },
+    approvedAttendees: attendeesNum,
+    approvedCount: attendeesNum
   };
 
   return { ...res, data: formatted };
 };
 
 export const getEventApprovedCountApi = async (eventId) => {
-  const res = await axiosInstance.get(`/registrations/event/${eventId}/approved`);
-  const data = res.data;
-  if (Array.isArray(data)) return data.length;
-  return data && typeof data === 'object' && (data.registrationId || data.id) ? 1 : 0;
+  try {
+    const res = await axiosInstance.get(`/registrations/event/${eventId}/count`);
+    if (typeof res.data === 'number') return res.data;
+  } catch {
+    // Proceed to fallback
+  }
+  try {
+    const res = await axiosInstance.get(`/registrations/event/${eventId}/approved`);
+    const data = res.data;
+    if (Array.isArray(data)) return data.length;
+    return data && typeof data === 'object' && (data.registrationId || data.id) ? 1 : 0;
+  } catch {
+    return 0;
+  }
 };
 
 export const createEventApi = async (eventData) => {

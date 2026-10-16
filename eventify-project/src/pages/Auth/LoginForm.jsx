@@ -7,7 +7,7 @@ import SocialAuthButtons from '../../components/SocialAuth/SocialAuthButtons';
 import ApprovalAlertModal from '../../components/ApprovalAlertModal/ApprovalAlertModal';
 import SuspendedAlertModal from '../../components/SuspendedAlertModal/SuspendedAlertModal';
 
-const LoginForm = () => {
+const LoginForm = ({ onToggleMode }) => {
   // --- State Management ---
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -143,9 +143,16 @@ const LoginForm = () => {
           {loading ? 'Logging in...' : 'Log In'}
         </button>
 
-        {/* Circular Social Auth Buttons */}
         <SocialAuthButtons />
 
+        {onToggleMode && (
+          <div className="mobile-auth-switch">
+            Don't have an account?{' '}
+            <button type="button" onClick={onToggleMode}>
+              Sign Up
+            </button>
+          </div>
+        )}
       </form>
 
       {/* Styled Approval Alert Modal for Club Leaders */}

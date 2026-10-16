@@ -110,3 +110,48 @@
   color: #ffffff;
   box-shadow: 0 2px 8px var(--primary-focus);
 }
+
+@media (max-width: 768px) {
+  .events-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .card-image {
+    height: 190px;
+  }
+
+  .card-content {
+    padding: 18px;
+  }
+
+  .card-content h4 {
+    font-size: 19px;
+    margin-bottom: 12px;
+  }
+
+  .event-meta {
+    margin-bottom: 18px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-image {
+    height: 160px;
+  }
+
+  .card-content {
+    padding: 16px;
+  }
+
+  .card-content h4 {
+    font-size: 18px;
+  }
+
+  .event-meta {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+}

@@ -52,3 +52,15 @@
   color: var(--primary-color);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
 }
+
+@media (max-width: 480px) {
+  .role-options {
+    gap: 8px;
+  }
+
+  .role-box {
+    padding: 12px 8px;
+    font-size: 13px;
+    gap: 6px;
+  }
+}

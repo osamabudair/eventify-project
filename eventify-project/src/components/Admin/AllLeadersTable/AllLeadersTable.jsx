@@ -94,7 +94,7 @@ const AllLeadersTable = ({
                   const isProcessing = actionLoadingId === leader.id;
                   return (
                     <tr key={leader.id}>
-                      <td>
+                      <td className="cell-title">
                         <div className="applicant-cell">
                           <div
                             className={`applicant-avatar ${leader.approved ? 'approved' : 'pending'}`}
@@ -107,10 +107,10 @@ const AllLeadersTable = ({
                           </div>
                         </div>
                       </td>
-                      <td>
+                      <td className="cell-meta" data-label="Email">
                         <span className="email-text">{leader.email}</span>
                       </td>
-                      <td>
+                      <td className="cell-meta" data-label="Registered Date">
                         <div className="date-cell">
                           <span className="date-main">{formatDate(leader.createdAt)}</span>
                           {formatExactTime(leader.createdAt) && (
@@ -120,7 +120,7 @@ const AllLeadersTable = ({
                           )}
                         </div>
                       </td>
-                      <td>
+                      <td className="cell-status">
                         {leader.approved ? (
                           <span className="status-badge approved">
                             <CheckCircle2 size={13} /> Approved
@@ -131,7 +131,7 @@ const AllLeadersTable = ({
                           </span>
                         )}
                       </td>
-                      <td className="action-col-cell">
+                      <td className="action-col-cell cell-actions">
                         <div className="admin-row-actions">
                           {!leader.approved && (
                             <button

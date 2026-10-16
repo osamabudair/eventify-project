@@ -83,3 +83,50 @@
   color: var(--primary-color);
   transform: none;
 }
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 30px 16px 40px;
+  }
+
+  .hero h2 {
+    font-size: 34px;
+    margin-bottom: 16px;
+  }
+
+  .hero p {
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    padding: 11px 22px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 24px 12px 32px;
+  }
+
+  .hero h2 {
+    font-size: 27px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+  }
+}

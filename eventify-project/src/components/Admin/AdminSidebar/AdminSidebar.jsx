@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Shield,
   Clock,
@@ -6,6 +6,8 @@ import {
   GraduationCap,
   LayoutDashboard,
   LogOut,
+  Menu,
+  X,
 } from 'lucide-react';
 import './AdminSidebar.css';
 
@@ -19,78 +21,138 @@ const AdminSidebar = ({
   currentUser = {},
   onLogout,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+          setIsOpen(false);
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isOpen]);
+
+  const handleNavClick = (tab) => {
+    setActiveTab(tab);
+    setIsOpen(false);
+  };
+
+  const handleLogoutClick = () => {
+    setIsOpen(false);
+    onLogout();
+  };
+
   return (
-    <aside className="sidebar admin-sidebar">
-      <div className="sidebar-header">
-        <h1 className="logo">
-          Event<span>ify</span>
-        </h1>
-        <span className="admin-badge">ADMIN CONSOLE</span>
-      </div>
-
-      {/* Sidebar Navigation */}
-      <nav className="sidebar-nav">
+    <>
+      <div className="mobile-top-bar">
         <button
-          className={`nav-item ${activeTab === 'stats' ? 'active' : ''}`}
-          onClick={() => setActiveTab('stats')}
+          className="mobile-menu-btn"
+          onClick={() => setIsOpen(true)}
+          aria-label="Open navigation menu"
         >
-          <LayoutDashboard size={18} />
-          <span>Overview & Stats</span>
-          <span className="sidebar-nav-counter">{stats.totalUsersCount}</span>
+          <Menu size={24} />
         </button>
-
-        <button
-          className={`nav-item ${activeTab === 'all-leaders' ? 'active' : ''}`}
-          onClick={() => setActiveTab('all-leaders')}
-        >
-          <Users size={18} />
-          <span>All Club Leaders</span>
-          <span className="sidebar-nav-counter">{leadersCount}</span>
-        </button>
-
-        <button
-          className={`nav-item ${activeTab === 'students' ? 'active' : ''}`}
-          onClick={() => setActiveTab('students')}
-        >
-          <GraduationCap size={18} />
-          <span>Registered Students</span>
-          <span className="sidebar-nav-counter">{studentsCount}</span>
-        </button>
-
-        <button
-          className={`nav-item ${activeTab === 'approvals' ? 'active' : ''}`}
-          onClick={() => setActiveTab('approvals')}
-        >
-          <Clock size={18} />
-          <span>Pending Approval</span>
-          <span
-            className={`sidebar-nav-counter ${pendingCount > 0 ? 'pending-active' : ''}`}
-          >
-            {pendingCount}
-          </span>
-        </button>
-      </nav>
-
-      {/* Sidebar Footer */}
-      <div className="sidebar-footer">
-        <div className="admin-user-info">
-          <div className="admin-avatar">
-            <Shield size={18} />
-          </div>
-          <div className="admin-user-details">
-            <span className="admin-user-name">
-              {currentUser.name || 'System Admin'}
-            </span>
-            <span className="admin-user-email">
-              {currentUser.email || 'admin@eventify.com'}
-            </span>
-          </div>
+        <div className="mobile-bar-brand">
+          <h1 className="logo">
+            Event<span>ify</span>
+          </h1>
+          <span className="admin-badge">ADMIN</span>
         </div>
-        <button className="logout-btn" onClick={onLogout}>
-          <LogOut size={18} /> Logout
-        </button>
+        <div className="mobile-bar-spacer" />
       </div>
-    </aside>
+
+      <div
+        className={`sidebar-drawer-overlay ${isOpen ? 'show' : ''}`}
+        onClick={() => setIsOpen(false)}
+        aria-hidden={!isOpen}
+      />
+
+      <aside className={`sidebar admin-sidebar ${isOpen ? 'drawer-open' : ''}`}>
+        <div className="sidebar-header">
+          <div>
+            <h1 className="logo">
+              Event<span>ify</span>
+            </h1>
+            <span className="admin-badge">ADMIN CONSOLE</span>
+          </div>
+          <button
+            className="sidebar-close-btn"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <X size={22} />
+          </button>
+        </div>
+
+        <nav className="sidebar-nav">
+          <button
+            className={`nav-item ${activeTab === 'stats' ? 'active' : ''}`}
+            onClick={() => handleNavClick('stats')}
+          >
+            <LayoutDashboard size={18} />
+            <span>Overview & Stats</span>
+            <span className="sidebar-nav-counter">{stats.totalUsersCount}</span>
+          </button>
+
+          <button
+            className={`nav-item ${activeTab === 'all-leaders' ? 'active' : ''}`}
+            onClick={() => handleNavClick('all-leaders')}
+          >
+            <Users size={18} />
+            <span>All Club Leaders</span>
+            <span className="sidebar-nav-counter">{leadersCount}</span>
+          </button>
+
+          <button
+            className={`nav-item ${activeTab === 'students' ? 'active' : ''}`}
+            onClick={() => handleNavClick('students')}
+          >
+            <GraduationCap size={18} />
+            <span>Registered Students</span>
+            <span className="sidebar-nav-counter">{studentsCount}</span>
+          </button>
+
+          <button
+            className={`nav-item ${activeTab === 'approvals' ? 'active' : ''}`}
+            onClick={() => handleNavClick('approvals')}
+          >
+            <Clock size={18} />
+            <span>Pending Approval</span>
+            <span
+              className={`sidebar-nav-counter ${pendingCount > 0 ? 'pending-active' : ''}`}
+            >
+              {pendingCount}
+            </span>
+          </button>
+        </nav>
+
+        <div className="sidebar-footer">
+          <div className="admin-user-info">
+            <div className="admin-avatar">
+              <Shield size={18} />
+            </div>
+            <div className="admin-user-details">
+              <span className="admin-user-name">
+                {currentUser.name || 'System Admin'}
+              </span>
+              <span className="admin-user-email">
+                {currentUser.email || 'admin@eventify.com'}
+              </span>
+            </div>
+          </div>
+          <button className="logout-btn" onClick={handleLogoutClick}>
+            <LogOut size={18} /> Logout
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 

@@ -33,7 +33,7 @@ const RoleDistributionTable = ({ stats = {} }) => {
           </thead>
           <tbody>
             <tr>
-              <td>
+              <td className="cell-title">
                 <div className="applicant-cell">
                   <div className="role-avatar admin-role">
                     <Shield size={18} />
@@ -44,22 +44,22 @@ const RoleDistributionTable = ({ stats = {} }) => {
                   </div>
                 </div>
               </td>
-              <td>
+              <td className="cell-meta cell-meta-stack" data-label="Access Scope">
                 <span className="scope-text">
                   Full management console, leader approvals, and security controls
                 </span>
               </td>
-              <td>
+              <td className="cell-meta" data-label="Total Accounts">
                 <span className="account-count-badge">1 Account</span>
               </td>
-              <td>
+              <td className="cell-meta" data-label="Platform Share">
                 <span className="share-pill">
                   {totalUsers > 0
                     ? `${Math.max(1, Math.round((1 / totalUsers) * 100))}%`
                     : '100%'}
                 </span>
               </td>
-              <td>
+              <td className="cell-status">
                 <span className="status-badge approved">
                   <CheckCircle2 size={13} /> Active
                 </span>
@@ -67,7 +67,7 @@ const RoleDistributionTable = ({ stats = {} }) => {
             </tr>
 
             <tr>
-              <td>
+              <td className="cell-title">
                 <div className="applicant-cell">
                   <div className="role-avatar leader-role">
                     <Users size={18} />
@@ -78,24 +78,24 @@ const RoleDistributionTable = ({ stats = {} }) => {
                   </div>
                 </div>
               </td>
-              <td>
+              <td className="cell-meta cell-meta-stack" data-label="Access Scope">
                 <span className="scope-text">
                   Club dashboard, event publishing, and attendee applications management
                 </span>
               </td>
-              <td>
+              <td className="cell-meta" data-label="Total Accounts">
                 <span className="account-count-badge">
                   {approvedLeaders} Accounts
                 </span>
               </td>
-              <td>
+              <td className="cell-meta" data-label="Platform Share">
                 <span className="share-pill">
                   {totalUsers > 0
                     ? `${Math.round((approvedLeaders / totalUsers) * 100)}%`
                     : '0%'}
                 </span>
               </td>
-              <td>
+              <td className="cell-status">
                 <span className="status-badge approved">
                   <CheckCircle2 size={13} /> Active
                 </span>
@@ -103,7 +103,7 @@ const RoleDistributionTable = ({ stats = {} }) => {
             </tr>
 
             <tr>
-              <td>
+              <td className="cell-title">
                 <div className="applicant-cell">
                   <div className="role-avatar pending-role">
                     <Clock size={18} />
@@ -114,24 +114,24 @@ const RoleDistributionTable = ({ stats = {} }) => {
                   </div>
                 </div>
               </td>
-              <td>
+              <td className="cell-meta cell-meta-stack" data-label="Access Scope">
                 <span className="scope-text">
                   Restricted access until administrator approval and account verification
                 </span>
               </td>
-              <td>
+              <td className="cell-meta" data-label="Total Accounts">
                 <span className="account-count-badge">
                   {pendingLeaders} Accounts
                 </span>
               </td>
-              <td>
+              <td className="cell-meta" data-label="Platform Share">
                 <span className="share-pill">
                   {totalUsers > 0
                     ? `${Math.round((pendingLeaders / totalUsers) * 100)}%`
                     : '0%'}
                 </span>
               </td>
-              <td>
+              <td className="cell-status">
                 <span className="status-badge pending">
                   <Clock size={13} /> Pending
                 </span>
@@ -139,7 +139,7 @@ const RoleDistributionTable = ({ stats = {} }) => {
             </tr>
 
             <tr>
-              <td>
+              <td className="cell-title">
                 <div className="applicant-cell">
                   <div className="role-avatar student-role">
                     <GraduationCap size={18} />
@@ -150,24 +150,24 @@ const RoleDistributionTable = ({ stats = {} }) => {
                   </div>
                 </div>
               </td>
-              <td>
+              <td className="cell-meta cell-meta-stack" data-label="Access Scope">
                 <span className="scope-text">
                   Event discovery, registration booking, ticket access, and attendee profile
                 </span>
               </td>
-              <td>
+              <td className="cell-meta" data-label="Total Accounts">
                 <span className="account-count-badge">
                   {totalStudents} Accounts
                 </span>
               </td>
-              <td>
+              <td className="cell-meta" data-label="Platform Share">
                 <span className="share-pill">
                   {totalUsers > 0
                     ? `${Math.round((totalStudents / totalUsers) * 100)}%`
                     : '0%'}
                 </span>
               </td>
-              <td>
+              <td className="cell-status">
                 <span className="status-badge approved">
                   <CheckCircle2 size={13} /> Active
                 </span>

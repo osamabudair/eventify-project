@@ -120,3 +120,21 @@
   background-color: var(--primary-hover);
   box-shadow: 0 4px 12px var(--primary-focus);
 }
+
+@media (max-width: 480px) {
+  .confirm-modal-box {
+    width: 94%;
+    padding: 20px 16px;
+  }
+
+  .confirm-modal-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-confirm-secondary,
+  .btn-confirm-main {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}

@@ -234,3 +234,56 @@
 .btn-mark-read:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+  .tickets-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .ticket-header {
+    padding: 18px;
+  }
+
+  .ticket-body {
+    padding: 18px;
+  }
+
+  .ticket-footer {
+    padding: 14px 18px;
+  }
+
+  .notif-wrapper {
+    position: static;
+  }
+
+  .notif-dropdown {
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: calc(100vw - 28px);
+    z-index: 9995;
+  }
+}
+
+@media (max-width: 480px) {
+  .notif-dropdown {
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: calc(100vw - 24px);
+  }
+
+  .ticket-header {
+    padding: 14px;
+  }
+
+  .ticket-body {
+    padding: 14px;
+  }
+
+  .ticket-footer {
+    padding: 12px 14px;
+  }
+}

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { ArrowLeft, Sun, Moon, Loader2, Calendar, Clock, MapPin, Users, CheckCircle2 } from 'lucide-react';
-import { getEventByIdApi, registerForEventApi, getEventApprovedCountApi } from '../../api/axiosInstance';
+import { getEventByIdApi, registerForEventApi, getEventApprovedCountApi, getMyRegistrationsApi } from '../../api/axiosInstance';
 import './EventDetails.css';
 
 // ==================== COMPONENT ====================
@@ -69,14 +69,36 @@ const EventDetails = () => {
           data.organizerName || 
           "University Club";
 
-        // Fetch verified count of approved attendees
         let currentAttendees = data.approvedAttendees ?? data.approvedCount ?? 0;
-        try {
-          currentAttendees = await getEventApprovedCountApi(data.id || id);
-        } catch {
-          // Fallback to existing count
+        if (currentAttendees === 0) {
+          try {
+            const count = await getEventApprovedCountApi(data.id || id);
+            if (count > 0) {
+              currentAttendees = count;
+            }
+          } catch (err) {
+            void err;
+          }
         }
         const totalCapacity = data.capacity || data.maxAttendees || 100;
+
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (token && user?.role === 'STUDENT') {
+          try {
+            const regRes = await getMyRegistrationsApi();
+            const myRegs = regRes.data || [];
+            const isUserRegistered = myRegs.some(
+              r => (r.eventId === Number(id) || r.event?.id === Number(id) || r.event?._id === Number(id)) &&
+                   r.status?.toLowerCase() !== 'cancelled' && r.status?.toLowerCase() !== 'rejected'
+            );
+            if (isMounted && isUserRegistered) {
+              setIsRegistered(true);
+            }
+          } catch (err) {
+            void err;
+          }
+        }
 
         const formattedEvent = {
           id: data.id || data._id,

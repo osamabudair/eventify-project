@@ -514,3 +514,39 @@
     gap: 24px;
   }
 }
+
+@media (max-width: 768px) {
+  .student-overview-container {
+    gap: 24px;
+  }
+
+  .suggested-events-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .section-heading {
+    font-size: 1.25rem;
+  }
+
+  .suggested-event-card {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .confirm-modal-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .suggested-event-card {
+    padding: 14px;
+  }
+}

@@ -78,14 +78,14 @@ const RegistrationsTab = ({ showToast }) => {
             <tbody>
               {pendingRequests.map((req, index) => (
                 <tr key={req._id || req.id || index}>
-                  <td className="font-semibold">{req.user?.username || 'Unknown Student'}</td>
-                  <td>{req.event?.title || 'Deleted Event'}</td>
-                  <td>
+                  <td className="font-semibold cell-title cell-title-full">{req.user?.username || 'Unknown Student'}</td>
+                  <td className="cell-meta" data-label="Requested Event">{req.event?.title || 'Deleted Event'}</td>
+                  <td className="cell-meta" data-label="Applied On">
                     {new Date(req.createdAt).toLocaleDateString('en-US', { 
                       month: 'short', day: 'numeric', year: 'numeric' 
                     })}
                   </td>
-                  <td>
+                  <td className="cell-actions">
                     <div className="actions-wrapper">
                       <button className="action-btn approve" onClick={() => handleApproveRequest(req._id, req.user?.username)}>
                         <CheckCircle size={16} /> Approve

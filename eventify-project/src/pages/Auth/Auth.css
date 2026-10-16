@@ -438,3 +438,113 @@
     transform: translateY(-20px) rotate(15deg);
   }
 }
+
+.mobile-auth-switch {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .auth-page-wrapper {
+    height: auto;
+    min-height: 100vh;
+    padding: 20px 16px;
+    overflow-y: auto;
+    align-items: flex-start;
+  }
+
+  .auth-content-wrapper {
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    max-height: none;
+  }
+
+  .auth-main-container {
+    height: auto;
+    min-height: auto;
+    border-radius: 20px;
+    overflow: visible;
+  }
+
+  .overlay-container {
+    display: none !important;
+  }
+
+  .form-container {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    z-index: 10 !important;
+    animation: none !important;
+  }
+
+  .sign-in-container {
+    display: block !important;
+  }
+
+  .sign-up-container {
+    display: none !important;
+  }
+
+  .auth-main-container.right-panel-active .sign-in-container {
+    display: none !important;
+  }
+
+  .auth-main-container.right-panel-active .sign-up-container {
+    display: block !important;
+  }
+
+  .auth-form {
+    padding: 32px 24px;
+    height: auto;
+  }
+
+  .form-scrollable-content {
+    overflow-y: visible;
+    padding-bottom: 0;
+  }
+
+  .mobile-auth-switch {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+  }
+
+  .mobile-auth-switch button {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0 4px;
+    font-size: 13.5px;
+  }
+
+  .mobile-auth-switch button:hover {
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-page-wrapper {
+    padding: 16px 12px;
+  }
+
+  .auth-form {
+    padding: 24px 16px;
+  }
+
+  .auth-header h2 {
+    font-size: 24px;
+  }
+
+  .auth-header p {
+    font-size: 13px;
+  }
+}

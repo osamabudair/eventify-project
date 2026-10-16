@@ -182,3 +182,69 @@
   background-color: var(--bg-color);
   border-color: var(--border-hover);
 }
+
+@media (max-width: 768px) {
+  .explore-header {
+    padding: 36px 16px 24px;
+  }
+
+  .explore-header h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .explore-header p {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  .interactive-filter-section {
+    gap: 14px;
+    width: 100%;
+  }
+
+  .modern-search-bar {
+    max-width: 100%;
+  }
+
+  .categories-pill-grid {
+    gap: 8px;
+  }
+
+  .filter-pill {
+    padding: 6px 14px;
+    font-size: 12.5px;
+  }
+
+  .explore-main {
+    padding: 24px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .explore-header {
+    padding: 28px 12px 20px;
+  }
+
+  .explore-header h1 {
+    font-size: 24px;
+  }
+
+  .explore-header p {
+    font-size: 13.5px;
+    margin-bottom: 16px;
+  }
+
+  .modern-search-bar {
+    padding: 4px 12px;
+  }
+
+  .filter-pill {
+    padding: 5px 11px;
+    font-size: 12px;
+  }
+
+  .explore-main {
+    padding: 18px 12px;
+  }
+}

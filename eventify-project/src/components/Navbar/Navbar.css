@@ -131,3 +131,43 @@
 .register-btn:active {
   background-color: var(--primary-active);
 }
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 16px 20px;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  .nav-actions {
+    gap: 10px;
+  }
+
+  .login-btn,
+  .register-btn {
+    padding: 7px 14px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px 14px;
+  }
+
+  .logo {
+    font-size: 21px;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .login-btn,
+  .register-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}

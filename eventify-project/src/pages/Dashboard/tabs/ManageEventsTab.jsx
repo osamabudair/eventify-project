@@ -237,19 +237,19 @@ const ManageEventsTab = ({ showToast }) => {
                     onClick={() => handleOpenAttendees(event)}
                     title="Click to view and manage approved attendees"
                   >
-                    <td className="font-semibold">{eventName}</td>
-                    <td>{formattedDate}</td>
-                    <td>
+                    <td className="font-semibold cell-title">{eventName}</td>
+                    <td className="cell-meta" data-label="Date">{formattedDate}</td>
+                    <td className="cell-meta" data-label="Attendees">
                       <span className="attendees-badge-click">
                         <Users size={14} /> {attendeesCount} / {maxCapacity}
                       </span>
                     </td>
-                    <td>
+                    <td className="cell-status">
                       <span className={`status-badge ${dynamicStatus.toLowerCase()}`}>
                         {dynamicStatus}
                       </span>
                     </td>
-                    <td>
+                    <td className="cell-actions">
                       <div className="actions-wrapper">
                         {isCompleted ? (
                           <span className="action-disabled-tag" title="Completed event is locked">

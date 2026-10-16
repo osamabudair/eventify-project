@@ -376,3 +376,233 @@
   gap: 16px;
   background-color: var(--bg-color);
 }
+
+@media (max-width: 768px) {
+  .event-details-page {
+    height: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
+  }
+
+  .details-nav {
+    padding: 14px 18px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .details-hero-section {
+    height: auto;
+    padding: 0 16px 28px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .details-hero-card {
+    height: auto;
+    min-height: auto;
+    border-radius: 22px;
+    background-color: #0f172a;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .hero-cover-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .hero-dark-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.92) 200px, #0f172a 300px, #0f172a 100%) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    z-index: 2;
+  }
+
+  .hero-inner-content {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+    padding: 24px 18px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    position: relative;
+    z-index: 3;
+    margin-top: 10px;
+  }
+
+  .hero-left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-height: none;
+    height: auto;
+  }
+
+  .category-pill-badge {
+    align-self: flex-start;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 50px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    letter-spacing: 0.03em;
+  }
+
+  .hero-event-name {
+    font-size: 24px !important;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.3;
+    margin: 0;
+    word-break: break-word;
+  }
+
+  .hero-desc-scroll {
+    max-height: none;
+    overflow-y: visible;
+    padding-right: 0;
+  }
+
+  .hero-desc-scroll p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0;
+  }
+
+  .hero-right-column {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .glassmorphic-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-radius: 20px;
+    padding: 22px 18px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .glass-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .glass-rows-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 22px;
+    width: 100%;
+  }
+
+  .glass-row-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .capacity-progress-container {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 22px;
+  }
+
+  .progress-track {
+    width: 100% !important;
+    height: 8px;
+    border-radius: 9999px;
+  }
+
+  .modern-register-btn {
+    width: 100% !important;
+    min-height: 48px;
+    padding: 13px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px) {
+  .details-nav {
+    padding: 10px 14px;
+  }
+
+  .details-hero-section {
+    padding: 0 12px 20px;
+  }
+
+  .details-hero-card {
+    border-radius: 18px;
+  }
+
+  .hero-inner-content {
+    padding: 20px 14px !important;
+    gap: 20px !important;
+    margin-top: 6px;
+  }
+
+  .hero-event-name {
+    font-size: 21px !important;
+  }
+
+  .hero-desc-scroll p {
+    font-size: 14px;
+  }
+
+  .glassmorphic-card {
+    padding: 18px 14px !important;
+    border-radius: 16px;
+  }
+
+  .glass-row-item {
+    gap: 10px;
+  }
+
+  .glass-icon-wrapper {
+    width: 32px;
+    height: 32px;
+  }
+
+  .glass-row-text strong {
+    font-size: 13px;
+  }
+
+  .modern-register-btn {
+    min-height: 46px;
+    padding: 12px;
+    font-size: 14.5px;
+  }
+}

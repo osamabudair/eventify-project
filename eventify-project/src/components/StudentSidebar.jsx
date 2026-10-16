@@ -1,53 +1,107 @@
-// --- Imports ---
-import React from 'react';
-import { LayoutDashboard, Ticket, User, LogOut } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { LayoutDashboard, Ticket, User, LogOut, Menu, X } from 'lucide-react';
 
 const StudentSidebar = ({ activeTab, setActiveTab, handleLogout }) => {
-  // --- Main Render ---
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+          setIsOpen(false);
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isOpen]);
+
+  const handleNavClick = (tab) => {
+    setActiveTab(tab);
+    setIsOpen(false);
+  };
+
+  const handleLogoutClick = () => {
+    setIsOpen(false);
+    handleLogout();
+  };
+
   return (
-    <aside className="sidebar">
-      
-      {/* Sidebar Header / Logo */}
-      <div className="sidebar-header">
-        <h1 className="logo">
-          Event<span>ify</span>
-        </h1>
+    <>
+      <div className="mobile-top-bar">
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setIsOpen(true)}
+          aria-label="Open navigation menu"
+        >
+          <Menu size={24} />
+        </button>
+        <div className="mobile-bar-brand">
+          <h1 className="logo">
+            Event<span>ify</span>
+          </h1>
+        </div>
+        <div className="mobile-bar-spacer" />
       </div>
-      
-      {/* Navigation Links */}
-      <nav className="sidebar-nav">
-        
-        <button 
-          className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
-          onClick={() => setActiveTab('overview')}
-        >
-          <LayoutDashboard size={18} /> Overview
-        </button>
-        
-        <button 
-          className={`nav-item ${activeTab === 'tickets' ? 'active' : ''}`}
-          onClick={() => setActiveTab('tickets')}
-        >
-          <Ticket size={18} /> My Tickets
-        </button>
-        
-        <button 
-          className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`}
-          onClick={() => setActiveTab('profile')}
-        >
-          <User size={18} /> Profile
-        </button>
-        
-      </nav>
-      
-      {/* Sidebar Footer / Logout */}
-      <div className="sidebar-footer">
-        <button className="logout-btn" onClick={handleLogout}>
-          <LogOut size={18} /> Logout
-        </button>
-      </div>
-      
-    </aside>
+
+      <div
+        className={`sidebar-drawer-overlay ${isOpen ? 'show' : ''}`}
+        onClick={() => setIsOpen(false)}
+        aria-hidden={!isOpen}
+      />
+
+      <aside className={`sidebar ${isOpen ? 'drawer-open' : ''}`}>
+        <div className="sidebar-header">
+          <h1 className="logo">
+            Event<span>ify</span>
+          </h1>
+          <button
+            className="sidebar-close-btn"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <X size={22} />
+          </button>
+        </div>
+
+        <nav className="sidebar-nav">
+          <button
+            className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
+            onClick={() => handleNavClick('overview')}
+          >
+            <LayoutDashboard size={18} />
+            <span>Overview</span>
+          </button>
+
+          <button
+            className={`nav-item ${activeTab === 'tickets' ? 'active' : ''}`}
+            onClick={() => handleNavClick('tickets')}
+          >
+            <Ticket size={18} />
+            <span>My Tickets</span>
+          </button>
+
+          <button
+            className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`}
+            onClick={() => handleNavClick('profile')}
+          >
+            <User size={18} />
+            <span>Profile</span>
+          </button>
+        </nav>
+
+        <div className="sidebar-footer">
+          <button className="logout-btn" onClick={handleLogoutClick}>
+            <LogOut size={18} />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 

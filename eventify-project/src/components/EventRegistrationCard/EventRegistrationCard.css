@@ -111,3 +111,41 @@
 .register-btn-modern.registered:hover {
   transform: none;
 }
+
+@media (max-width: 768px) {
+  .modern-registration-card {
+    padding: 24px 20px;
+    border-radius: 18px;
+    gap: 20px;
+  }
+
+  .card-title {
+    font-size: 20px;
+    padding-bottom: 12px;
+  }
+
+  .details-list {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modern-registration-card {
+    padding: 20px 16px;
+  }
+
+  .icon-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+  }
+
+  .detail-text .value {
+    font-size: 14.5px;
+  }
+
+  .register-btn-modern {
+    padding: 13px;
+    font-size: 14.5px;
+  }
+}

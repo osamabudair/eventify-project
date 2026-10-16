@@ -167,8 +167,7 @@ const RegisteredStudentsTable = ({
 
                   return (
                     <tr key={student.id} className="admin-table-row">
-                      {/* Student Name & Avatar */}
-                      <td>
+                      <td className="cell-title">
                         <div className="applicant-cell">
                           <div className={`applicant-avatar student-avatar ${isSuspended ? 'avatar-suspended' : ''}`}>
                             {student.name ? student.name.charAt(0).toUpperCase() : 'S'}
@@ -180,13 +179,11 @@ const RegisteredStudentsTable = ({
                         </div>
                       </td>
 
-                      {/* Email Address */}
-                      <td>
+                      <td className="cell-meta" data-label="Email">
                         <span className="email-text">{student.email}</span>
                       </td>
 
-                      {/* Exact Original Creation Timestamp - No re-render recalculation */}
-                      <td>
+                      <td className="cell-meta" data-label="Signed Up Date">
                         <div className="date-cell">
                           <span className="date-main">{formatDate(student.createdAt)}</span>
                           {formatExactTime(student.createdAt) && (
@@ -197,8 +194,7 @@ const RegisteredStudentsTable = ({
                         </div>
                       </td>
 
-                      {/* Account Status Badge */}
-                      <td>
+                      <td className="cell-status">
                         {isSuspended ? (
                           <span className="status-badge suspended">
                             <Ban size={13} /> Suspended
@@ -210,8 +206,7 @@ const RegisteredStudentsTable = ({
                         )}
                       </td>
 
-                      {/* Action Column: Suspend or Cancel suspicious students */}
-                      <td className="action-col-cell">
+                      <td className="action-col-cell cell-actions">
                         <div className="admin-row-actions">
                           {isSuspended ? (
                             <button

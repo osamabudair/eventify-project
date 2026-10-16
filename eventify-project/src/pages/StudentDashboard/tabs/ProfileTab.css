@@ -199,7 +199,32 @@
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
+  .single-profile-card {
+    padding: 24px 18px;
+  }
+
+  .profile-header-compact {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+  }
+
   .form-grid-compact {
     grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .settings-save-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .single-profile-card {
+    padding: 18px 14px;
   }
 }

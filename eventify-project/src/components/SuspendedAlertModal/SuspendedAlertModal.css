@@ -306,3 +306,10 @@ body.dark-mode .suspended-step-icon.help {
 .suspended-confirm-btn:active {
   transform: translateY(0);
 }
+
+@media (max-width: 480px) {
+  .suspended-modal-box {
+    width: 100%;
+    padding: 24px 16px 20px;
+  }
+}

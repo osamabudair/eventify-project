@@ -124,3 +124,19 @@
   margin: 0 auto 16px auto;
   display: block;
 }
+
+@media (max-width: 768px) {
+  .modern-view-section {
+    padding: 18px;
+  }
+
+  .actions-wrapper {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .modern-view-section {
+    padding: 14px;
+  }
+}

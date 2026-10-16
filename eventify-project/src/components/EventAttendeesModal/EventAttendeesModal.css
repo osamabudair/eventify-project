@@ -136,3 +136,43 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+@media (max-width: 768px) {
+  .attendees-modal-card {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .attendees-modal-header {
+    padding: 14px 18px;
+  }
+
+  .attendees-modal-body {
+    padding: 16px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .attendees-modal-card {
+    width: 96%;
+  }
+
+  .attendees-modal-header {
+    padding: 12px 14px;
+  }
+
+  .attendees-modal-body {
+    padding: 14px 12px;
+  }
+
+  .attendee-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .attendee-cancel-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -130,8 +130,7 @@ const PendingApprovalsTable = ({
                   const isProcessing = actionLoadingId === leader.id;
                   return (
                     <tr key={leader.id} className="admin-table-row">
-                      {/* Applicant Name & Avatar */}
-                      <td>
+                      <td className="cell-title">
                         <div className="applicant-cell">
                           <div className="applicant-avatar">
                             {leader.name ? leader.name.charAt(0).toUpperCase() : 'L'}
@@ -143,18 +142,15 @@ const PendingApprovalsTable = ({
                         </div>
                       </td>
 
-                      {/* Email */}
-                      <td>
+                      <td className="cell-meta" data-label="Email">
                         <span className="email-text">{leader.email}</span>
                       </td>
 
-                      {/* Role */}
-                      <td>
+                      <td className="cell-meta" data-label="Role">
                         <span className="role-tag leader">Club Leader</span>
                       </td>
 
-                      {/* Exact Original Creation Timestamp - No re-render recalculation */}
-                      <td>
+                      <td className="cell-meta" data-label="Submitted Date">
                         <div className="date-cell">
                           <span className="date-main">{formatDate(leader.createdAt)}</span>
                           {formatExactTime(leader.createdAt) && (
@@ -165,15 +161,13 @@ const PendingApprovalsTable = ({
                         </div>
                       </td>
 
-                      {/* Status Badge: Shows only "Pending" */}
-                      <td>
+                      <td className="cell-status">
                         <span className="status-badge pending">
                           <Clock size={13} /> Pending
                         </span>
                       </td>
 
-                      {/* Action Buttons: Centered, clean, borderless */}
-                      <td className="action-col-cell">
+                      <td className="action-col-cell cell-actions">
                         <div className="admin-row-actions">
                           <button
                             className="btn-action-accept"

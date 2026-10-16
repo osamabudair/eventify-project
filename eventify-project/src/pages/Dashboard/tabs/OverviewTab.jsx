@@ -270,19 +270,19 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
                           onClick={() => handleOpenAttendees(event)}
                           title="Click to view approved attendees list"
                         >
-                          <td className="font-semibold">{event.name}</td>
-                          <td>{formatDisplayDate(event.date)}</td>
-                          <td>
+                          <td className="font-semibold cell-title">{event.name}</td>
+                          <td className="cell-meta" data-label="Date">{formatDisplayDate(event.date)}</td>
+                          <td className="cell-meta" data-label="Attendees">
                             <span className="attendees-badge-click">
                               <Users size={13} /> {event.approvedAttendees ?? 0} / {event.capacity}
                             </span>
                           </td>
-                          <td>
+                          <td className="cell-status">
                             <span className={`status-badge ${dynamicStatus.toLowerCase()}`}>
                               {dynamicStatus}
                             </span>
                           </td>
-                          <td>
+                          <td className="cell-actions">
                             <div className="actions-wrapper">
                               {isCompleted ? (
                                 <span className="action-disabled-tag" title="Completed event is locked">
@@ -305,7 +305,7 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
                       );
                     })
                   ) : (
-                    <tr>
+                    <tr className="empty-table-row">
                       <td colSpan="5" style={{ textAlign: 'center', padding: '20px', color: 'var(--text-secondary)' }}>
                         No events found.
                       </td>
