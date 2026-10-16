@@ -134,40 +134,62 @@
 
 @media (max-width: 768px) {
   .navbar {
-    padding: 16px 20px;
+    padding: 16px 4px;
+    gap: 8px;
+    flex-wrap: nowrap;
   }
 
   .logo {
-    font-size: 24px;
+    font-size: 22px;
+    flex-shrink: 0;
   }
 
   .nav-actions {
-    gap: 10px;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .nav-actions .theme-toggle {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    padding: 6px !important;
   }
 
   .login-btn,
   .register-btn {
-    padding: 7px 14px;
+    padding: 8px 13px;
     font-size: 13px;
+    border-radius: 9px;
+    white-space: nowrap;
   }
 }
 
 @media (max-width: 480px) {
   .navbar {
-    padding: 12px 14px;
+    padding: 14px 2px;
+    gap: 6px;
   }
 
   .logo {
-    font-size: 21px;
+    font-size: 20px;
   }
 
   .nav-actions {
     gap: 6px;
   }
 
+  .nav-actions .theme-toggle {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    padding: 5px !important;
+  }
+
   .login-btn,
   .register-btn {
-    padding: 6px 10px;
-    font-size: 12px;
+    padding: 7px 11px;
+    font-size: 12.5px;
+    border-radius: 8px;
   }
 }

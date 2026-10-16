@@ -57,9 +57,6 @@ const Footer = () => {
               Your premier campus platform to discover, organize, and attend
               university events seamlessly.
             </p>
-            <p className="footer-copyright">
-              © {CURRENT_YEAR} Eventify. All rights reserved.
-            </p>
           </div>
 
           {/* 2. Quick Links Column */}
