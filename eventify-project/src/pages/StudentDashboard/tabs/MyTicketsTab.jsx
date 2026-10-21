@@ -1,5 +1,8 @@
 // --- Imports ---
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import EmptyState from '../../../components/common/EmptyState';
+import { EventCardSkeleton } from '../../../components/common/Skeletons';
 import { MapPin, Clock, Calendar as CalendarIcon, CheckCircle, Loader2, XCircle, Ban, Archive, Ticket, X } from 'lucide-react';
 import { getMyRegistrationsApi, cancelRegistrationApi } from '../../../api/axiosInstance'; 
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog';
@@ -57,6 +60,7 @@ const isEventFinished = (event) => {
 };
 
 const MyTicketsTab = ({ showToast }) => {
+  const navigate = useNavigate();
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeSubTab, setActiveSubTab] = useState('active'); 
@@ -129,8 +133,18 @@ const MyTicketsTab = ({ showToast }) => {
 
   if (loading) {
     return (
-      <div className="tickets-loading-container">
-        <Loader2 className="animate-spin loader-burgundy" size={40} />
+      <div className="modern-view-section">
+        <div className="tickets-tab-header">
+          <div>
+            <h3 className="section-heading">My Tickets & Registrations</h3>
+            <p className="text-secondary">Manage your event passes and review registration history.</p>
+          </div>
+        </div>
+        <div className="tickets-grid">
+          <EventCardSkeleton />
+          <EventCardSkeleton />
+          <EventCardSkeleton />
+        </div>
       </div>
     );
   }
@@ -168,9 +182,21 @@ const MyTicketsTab = ({ showToast }) => {
       </div>
 
       {currentDisplayList.length === 0 ? (
-        <div className="empty-state-container">
-          <p>{activeSubTab === 'active' ? "You don't have any active tickets right now." : "No archived or rejected tickets."}</p>
-        </div>
+        activeSubTab === 'active' ? (
+          <EmptyState
+            icon={<Ticket size={24} />}
+            title="No registrations yet"
+            description="You haven't signed up for any events or workshops yet. Browse the community schedule to reserve your spot."
+            actionText="Explore Events"
+            onAction={() => navigate('/explore')}
+          />
+        ) : (
+          <EmptyState
+            icon={<Archive size={24} />}
+            title="No archived tickets"
+            description="Your past attendances and cancelled registrations will be preserved here."
+          />
+        )
       ) : (
         <div className="tickets-grid">
           {currentDisplayList.map((reg) => {

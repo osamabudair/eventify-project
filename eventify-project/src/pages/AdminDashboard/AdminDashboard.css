@@ -484,3 +484,23 @@ body.dark-mode .btn-action-remove:hover:not(:disabled) {
     padding: 14px 10px;
   }
 }
+
+/* --- Admin Loading Shimmer Skeleton --- */
+.admin-skeleton-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.admin-skeleton-table-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg, 12px);
+  padding: 1.5rem;
+}

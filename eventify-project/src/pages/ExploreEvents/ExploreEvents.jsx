@@ -1,7 +1,10 @@
 // ==================== IMPORTS ====================
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, CalendarX, Building2, X, Loader2 } from 'lucide-react';
+import { Search, CalendarX, Building2, X } from 'lucide-react';
+import EmptyState from '../../components/common/EmptyState';
+import { EventCardSkeleton } from '../../components/common/Skeletons';
+import { useToast } from '../../context/ToastContext';
 import Navbar from '../../components/Navbar/Navbar';
 import EventCard from '../../components/EventCard/EventCard';
 import Footer from '../../components/Footer/Footer';
@@ -56,6 +59,7 @@ const compareDay = (a, b) => (a.y - b.y) || (a.m - b.m) || (a.d - b.d);
 
 // ==================== COMPONENT ====================
 const ExploreEvents = () => {
+  const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get('category') || 'All';
 
@@ -134,6 +138,7 @@ const ExploreEvents = () => {
       } catch {
         if (isMounted) {
           setAllEvents([]);
+          toast.error('Unable to load events. Please try again.');
         }
       } finally {
         if (isMounted) {
@@ -229,8 +234,13 @@ const ExploreEvents = () => {
       
       <main className="explore-main animate-slide-up">
         {isLoading ? (
-          <div className="explore-loading-container">
-             <Loader2 className="animate-spin" size={48} />
+          <div className="events-grid">
+            <EventCardSkeleton />
+            <EventCardSkeleton />
+            <EventCardSkeleton />
+            <EventCardSkeleton />
+            <EventCardSkeleton />
+            <EventCardSkeleton />
           </div>
         ) : filteredEvents.length > 0 ? (
           <div className="events-grid">
@@ -239,14 +249,17 @@ const ExploreEvents = () => {
             ))}
           </div>
         ) : (
-          <div className="no-results">
-            <CalendarX size={64} className="no-results-icon" />
-            <h3>No events found</h3>
-            <p>We couldn't find any upcoming active events matching your criteria.</p>
-            <button className="secondary-btn" onClick={() => {setSearchQuery(''); setSelectedCategory('All'); setSelectedClub('All');}}>
-              Clear Filters
-            </button>
-          </div>
+          <EmptyState
+            icon={<Search size={24} />}
+            title="No events match your criteria"
+            description="Try resetting your filters or searching with different keywords."
+            actionText="Reset Filters"
+            onAction={() => {
+              setSearchQuery('');
+              setSelectedCategory('All');
+              setSelectedClub('All');
+            }}
+          />
         )}
       </main>
       <Footer />

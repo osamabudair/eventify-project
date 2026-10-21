@@ -1,6 +1,6 @@
 // ==================== IMPORTS ====================
 import React, { useState, useEffect } from 'react';
-import { Loader2 } from 'lucide-react';
+import { EventCardSkeleton } from '../../components/common/Skeletons';
 import Navbar from '../../components/Navbar/Navbar';
 import HeroSection from '../../components/HeroSection/HeroSection';
 import EventCard from '../../components/EventCard/EventCard'; 
@@ -180,8 +180,10 @@ const Home = () => {
         </div>
         
         {isLoading ? (
-          <div className="home-loading-container">
-            <Loader2 className="animate-spin" size={40} />
+          <div className="events-grid animate-slide-up-delayed-more">
+            <EventCardSkeleton />
+            <EventCardSkeleton />
+            <EventCardSkeleton />
           </div>
         ) : (
           <div className="events-grid animate-slide-up-delayed-more">

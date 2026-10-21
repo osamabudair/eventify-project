@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './context/ToastContext';
 import Home from './pages/Home/Home';
 import Auth from './pages/Auth/Auth';
 import ClubDashboard from './pages/Dashboard/ClubDashboard';
@@ -13,6 +14,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <ThemeProvider>
+      <ToastProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -46,6 +48,7 @@ function App() {
           <Route path="/privacy" element={<PrivacyPolicy />} />
         </Routes>
       </Router>
+      </ToastProvider>
     </ThemeProvider>
   );
 }

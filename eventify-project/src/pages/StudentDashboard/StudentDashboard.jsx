@@ -16,27 +16,15 @@ const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [userName, setUserName] = useState('Student');
 
-  // Toast notification state and timer cleanup
-  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
-  const toastTimerRef = useRef(null);
+  const { toast } = useToast();
 
   const showToast = (message, type = 'success') => {
-    if (toastTimerRef.current) {
-      clearTimeout(toastTimerRef.current);
-    }
-    setToast({ show: true, message, type });
-    toastTimerRef.current = setTimeout(() => {
-      setToast(prev => ({ ...prev, show: false }));
-    }, 4000);
+    if (type === 'error') toast.error(message);
+    else if (type === 'info') toast.info(message);
+    else toast.success(message);
   };
 
-  useEffect(() => {
-    return () => {
-      if (toastTimerRef.current) {
-        clearTimeout(toastTimerRef.current);
-      }
-    };
-  }, []);
+  
 
   // Smart Notifications with persisted read IDs in localStorage
   const [notifications, setNotifications] = useState([]);
@@ -137,19 +125,7 @@ const StudentDashboard = () => {
 
   return (
     <div className="dashboard-layout">
-      {toast.show && (
-        <div className={`toast-notification ${toast.type}`}>
-          <div className="toast-icon">
-            {toast.type === 'success' && <CheckCircle2 size={18} />}
-            {toast.type === 'error' && <AlertCircle size={18} />}
-            {toast.type === 'info' && <Info size={18} />}
-          </div>
-          <span className="toast-message">{toast.message}</span>
-          <button className="toast-close" onClick={() => setToast(prev => ({ ...prev, show: false }))}>
-            <X size={14} />
-          </button>
-        </div>
-      )}
+      
 
       <StudentSidebar 
         activeTab={activeTab} 

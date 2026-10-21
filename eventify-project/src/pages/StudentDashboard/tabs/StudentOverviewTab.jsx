@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, CheckCircle, Users, Loader2, CalendarCheck, Activity, MapPin, Trash2, Ticket, AlertTriangle } from 'lucide-react';
 import StatCard from '../../../components/StatCard';
+import { StatCardSkeleton } from '../../../components/common/Skeletons';
 import { useNavigate } from 'react-router-dom';
 import { getMyRegistrationsApi, getAllEventsApi, cancelRegistrationApi, registerForEventApi } from '../../../api/axiosInstance';
 import './StudentOverviewTab.css';
@@ -203,8 +204,31 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
 
   if (loading) {
     return (
-      <div className="student-loading-container">
-        <Loader2 className="animate-spin loader-burgundy" size={40} />
+      <div className="student-overview-container">
+        <div className="stats-grid">
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+        <div className="overview-main-grid" style={{ marginTop: '24px' }}>
+          <div className="main-column">
+            <div className="modern-view-section">
+              <div className="skeleton-box" style={{ width: '150px', height: '22px', marginBottom: '16px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div className="skeleton-box" style={{ width: '100%', height: '70px', borderRadius: '12px' }} />
+                <div className="skeleton-box" style={{ width: '100%', height: '70px', borderRadius: '12px' }} />
+              </div>
+            </div>
+          </div>
+          <div className="side-column">
+            <div className="modern-view-section">
+              <div className="skeleton-box" style={{ width: '150px', height: '22px', marginBottom: '16px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div className="skeleton-box" style={{ width: '100%', height: '50px', borderRadius: '10px' }} />
+                <div className="skeleton-box" style={{ width: '100%', height: '50px', borderRadius: '10px' }} />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

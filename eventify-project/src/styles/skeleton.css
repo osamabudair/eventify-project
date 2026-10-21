@@ -1,0 +1,180 @@
+/* ==========================================================================
+   EVENTIFY - ARCHITECTURAL SHIMMER SKELETON LOADERS
+   ========================================================================== */
+
+/* Shimmer Animation Base */
+.skeleton-box {
+  display: block;
+  background-color: #E5E7EB;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 1.6s infinite ease-in-out;
+  border-radius: 8px;
+}
+
+body.dark-mode .skeleton-box,
+[data-theme="dark"] .skeleton-box {
+  background-color: rgba(255, 255, 255, 0.05);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.09) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ==========================================================================
+   1. EVENT CARD SKELETON
+   ========================================================================== */
+.event-card-skeleton {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-shadow: var(--shadow-sm);
+}
+
+.skeleton-media-wrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-media-wrapper .skeleton-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.skeleton-content {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-chip {
+  width: 72px;
+  height: 22px;
+  border-radius: 6px;
+}
+
+.skeleton-title {
+  width: 85%;
+  height: 20px;
+  border-radius: 6px;
+}
+
+.skeleton-subtitle {
+  width: 55%;
+  height: 14px;
+  border-radius: 5px;
+}
+
+.skeleton-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.skeleton-meta-chip {
+  width: 90px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.skeleton-btn-pill {
+  width: 100px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+/* ==========================================================================
+   2. METRIC STAT BOX SKELETON
+   ========================================================================== */
+.stat-card-skeleton {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+}
+
+.skeleton-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.skeleton-stat-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.skeleton-stat-value {
+  width: 60px;
+  height: 24px;
+  border-radius: 6px;
+}
+
+.skeleton-stat-label {
+  width: 110px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   3. TABLE ROWS SKELETON
+   ========================================================================== */
+.table-skeleton-row td {
+  padding: 16px !important;
+  vertical-align: middle;
+}
+
+.skeleton-cell-text {
+  height: 16px;
+  border-radius: 4px;
+  width: 75%;
+}
+
+.skeleton-cell-pill {
+  height: 22px;
+  width: 70px;
+  border-radius: 12px;
+}
+
+.skeleton-cell-action {
+  height: 28px;
+  width: 60px;
+  border-radius: 6px;
+}
+

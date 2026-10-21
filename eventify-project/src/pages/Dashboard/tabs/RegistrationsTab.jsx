@@ -1,6 +1,8 @@
 // --- Imports ---
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
+import { TableRowSkeleton } from '../../../components/common/Skeletons';
+import EmptyState from '../../../components/common/EmptyState';
 import { getOrganizerRegistrationsApi, updateRegistrationStatusApi } from '../../../api/axiosInstance';
 import './RegistrationsTab.css';
 
@@ -46,8 +48,26 @@ const RegistrationsTab = ({ showToast }) => {
 
   if (loading) {
     return (
-      <div className="modern-view-section loading-container">
-        <Loader2 className="animate-spin" size={40} />
+      <div className="animate-fade-in modern-view-section">
+        <h3 className="section-heading">Pending Registrations</h3>
+        <p className="text-secondary section-description">
+          Review and approve student applications for your upcoming events.
+        </p>
+        <div className="table-responsive">
+          <table className="events-table">
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Requested Event</th>
+                <th>Applied On</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <TableRowSkeleton rows={4} columns={4} />
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }
@@ -60,10 +80,12 @@ const RegistrationsTab = ({ showToast }) => {
       </p>
 
       {pendingRequests.length === 0 ? (
-        <div className="empty-state-container">
-          <CheckCircle size={48} className="empty-icon" />
-          <p>All caught up! No pending requests.</p>
-        </div>
+        <EmptyState
+          icon={CheckCircle}
+          title="All caught up!"
+          description="There are no pending registrations requiring your review."
+          compact
+        />
       ) : (
         <div className="table-responsive">
           <table className="events-table">

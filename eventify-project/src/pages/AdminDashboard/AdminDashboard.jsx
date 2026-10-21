@@ -22,9 +22,9 @@ import {
   AllLeadersTable,
   PendingApprovalsTable,
   RegisteredStudentsTable,
-  ToastNotification,
 } from '../../components/Admin';
-import { Loader2 } from 'lucide-react';
+import { StatCardSkeleton, TableRowSkeleton } from '../../components/common/Skeletons';
+import { useToast } from '../../context/ToastContext';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -64,18 +64,14 @@ const AdminDashboard = () => {
   // Action Loading tracking
   const [actionLoadingId, setActionLoadingId] = useState(null);
 
-  // Toast Notifications
-  const [toast, setToast] = useState({
-    show: false,
-    message: '',
-    type: 'success',
-  });
-
+  // Global Toast Notifications
+  const { toast } = useToast();
   const showToast = (message, type = 'success') => {
-    setToast({ show: true, message, type });
-    setTimeout(() => {
-      setToast((prev) => ({ ...prev, show: false }));
-    }, 4000);
+    if (toast[type]) {
+      toast[type](message);
+    } else {
+      toast.info(message);
+    }
   };
 
   // Close notification dropdown when clicking outside
@@ -385,8 +381,16 @@ const AdminDashboard = () => {
   const renderTabContent = () => {
     if (loading) {
       return (
-        <div className="admin-loading-container">
-          <Loader2 className="animate-spin" size={40} />
+        <div className="admin-skeleton-wrapper">
+          <div className="admin-skeleton-grid">
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+          </div>
+          <div className="admin-skeleton-table-card">
+            <TableRowSkeleton rows={5} columns={4} />
+          </div>
         </div>
       );
     }
@@ -449,11 +453,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="dashboard-layout admin-layout">
-      {/* Toast Notification */}
-      <ToastNotification
-        toast={toast}
-        onClose={() => setToast((prev) => ({ ...prev, show: false }))}
-      />
+
 
       {/* Confirmation Dialog */}
       <ConfirmDialog

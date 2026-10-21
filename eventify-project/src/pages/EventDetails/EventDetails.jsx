@@ -2,7 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import { ArrowLeft, Sun, Moon, Loader2, Calendar, Clock, MapPin, Users, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Sun, Moon, Calendar, Clock, MapPin, Users, CheckCircle2 } from 'lucide-react';
+import { useToast } from '../../context/ToastContext';
+import EmptyState from '../../components/common/EmptyState';
+import '../../styles/skeleton.css';
 import { getEventByIdApi, registerForEventApi, getEventApprovedCountApi, getMyRegistrationsApi } from '../../api/axiosInstance';
 import './EventDetails.css';
 
@@ -16,27 +19,7 @@ const EventDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
-  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
-
-  const toastTimerRef = React.useRef(null);
-
-  const showToast = (message, type = 'success') => {
-    if (toastTimerRef.current) {
-      clearTimeout(toastTimerRef.current);
-    }
-    setToast({ show: true, message, type });
-    toastTimerRef.current = setTimeout(() => {
-      setToast(prev => ({ ...prev, show: false }));
-    }, 4000);
-  };
-
-  useEffect(() => {
-    return () => {
-      if (toastTimerRef.current) {
-        clearTimeout(toastTimerRef.current);
-      }
-    };
-  }, []);
+  const { toast } = useToast();
 
   useEffect(() => {
     let isMounted = true;
@@ -143,44 +126,80 @@ const EventDetails = () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     if (!token || !user) {
-      showToast("You must be logged in to register for events!", "error");
+      toast.error("You must be logged in to register for events!");
       setTimeout(() => navigate('/auth'), 1500);
       return;
     }
 
     if (user.role === 'CLUB_LEADER') {
-      showToast("Club Leaders cannot register as attendees!", "error");
+      toast.error("Club Leaders cannot register as attendees!");
       return;
     }
 
     if (event.isFull) {
-      showToast("This event has reached full capacity!", "error");
+      toast.error("This event has reached full capacity!");
       return;
     }
 
     try {
       await registerForEventApi(id);
       setIsRegistered(true);
-      showToast("Registration submitted! Waiting for approval.", "success");
+      toast.success("Registration submitted! Waiting for approval.");
     } catch (error) {
       const msg = error.response?.data?.message || "Failed to register. Please try again.";
-      showToast(msg, "error");
+      toast.error(msg);
     }
   };
 
   if (isLoading) {
     return (
-      <div className="event-details-loading">
-        <Loader2 className="animate-spin text-primary" size={48} />
+      <div className="event-details-page">
+        <nav className="details-nav">
+          <button className="back-btn" onClick={() => navigate(-1)}>
+            <ArrowLeft size={18} /> Back
+          </button>
+          <button className="theme-toggle" onClick={toggleTheme}>
+            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+        </nav>
+        <div className="details-hero-section">
+          <div className="details-skeleton-card">
+            <div className="details-skeleton-left">
+              <div className="skeleton-box details-skeleton-pill" />
+              <div className="skeleton-box details-skeleton-title" />
+              <div className="skeleton-box details-skeleton-desc-1" />
+              <div className="skeleton-box details-skeleton-desc-2" />
+              <div className="skeleton-box details-skeleton-desc-3" />
+            </div>
+            <div className="details-skeleton-right">
+              <div className="skeleton-box details-skeleton-box" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (errorMsg || !event) {
     return (
-      <div className="event-details-loading">
-        <h2 className="event-error-heading">{errorMsg || "Event not found"}</h2>
-        <button onClick={() => navigate(-1)} className="back-btn"><ArrowLeft size={18} /> Go Back</button>
+      <div className="event-details-page">
+        <nav className="details-nav">
+          <button className="back-btn" onClick={() => navigate(-1)}>
+            <ArrowLeft size={18} /> Back
+          </button>
+          <button className="theme-toggle" onClick={toggleTheme}>
+            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+        </nav>
+        <div className="event-details-empty-wrapper">
+          <EmptyState
+            icon={Calendar}
+            title={errorMsg || "Event not found"}
+            description="The event you are looking for may have been removed, or there was an issue retrieving its details."
+            actionLabel="Go Back"
+            onAction={() => navigate(-1)}
+          />
+        </div>
       </div>
     );
   }
@@ -192,11 +211,7 @@ const EventDetails = () => {
 
   return (
     <div className="event-details-page">
-      {toast.show && (
-        <div className={`toast-notification ${toast.type}`}>
-          <span className="toast-message">{toast.message}</span>
-        </div>
-      )}
+
 
       {/* Navigation Bar */}
       <nav className="details-nav">

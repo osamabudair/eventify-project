@@ -1,6 +1,8 @@
 // --- Imports ---
 import React, { useState, useEffect } from 'react';
-import { Edit, Trash2, Loader2, Users, Archive, CalendarDays, Lock } from 'lucide-react';
+import { Edit, Trash2, Users, Archive, CalendarDays, Lock } from 'lucide-react';
+import { TableRowSkeleton } from '../../../components/common/Skeletons';
+import EmptyState from '../../../components/common/EmptyState';
 import { getMyEventsApi, deleteEventApi, getEventByIdApi } from '../../../api/axiosInstance';
 import CreateEventModal from '../../../components/createEventModel/CreateEventModal';
 import EventAttendeesModal from '../../../components/EventAttendeesModal/EventAttendeesModal';
@@ -204,8 +206,21 @@ const ManageEventsTab = ({ showToast }) => {
       </div>
 
       {isLoading ? (
-        <div className="loading-container">
-          <Loader2 className="animate-spin" size={32} />
+        <div className="table-responsive">
+          <table className="events-table">
+            <thead>
+              <tr>
+                <th>Event Name</th>
+                <th>Date</th>
+                <th>Attendees</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <TableRowSkeleton rows={4} columns={5} />
+            </tbody>
+          </table>
         </div>
       ) : displayedEvents.length > 0 ? (
         <div className="table-responsive">
@@ -272,9 +287,15 @@ const ManageEventsTab = ({ showToast }) => {
           </table>
         </div>
       ) : (
-        <div className="empty-state-container">
-          <p>{viewFilter === 'archived' ? 'No completed events in the archive.' : 'No active events currently.'}</p>
-        </div>
+        <EmptyState
+          icon={viewFilter === 'archived' ? Archive : CalendarDays}
+          title={viewFilter === 'archived' ? 'No archived events' : 'No active events'}
+          description={
+            viewFilter === 'archived'
+              ? 'Completed events will appear here once finished.'
+              : 'You do not have any active events scheduled at the moment.'
+          }
+        />
       )}
 
       <CreateEventModal 

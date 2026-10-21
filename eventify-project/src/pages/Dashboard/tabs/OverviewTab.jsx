@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Users, Clock, Loader2, Edit, Trash2, UserPlus, Activity, Lock } from 'lucide-react';
 import StatCard from '../../../components/StatCard';
+import EmptyState from '../../../components/common/EmptyState';
+import { StatCardSkeleton, TableRowSkeleton } from '../../../components/common/Skeletons';
 import CreateEventModal from '../../../components/createEventModel/CreateEventModal'; 
 import EventAttendeesModal from '../../../components/EventAttendeesModal/EventAttendeesModal';
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog';
@@ -213,8 +215,44 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
 
   if (isLoading) {
     return (
-      <div className="overview-loading-container">
-        <Loader2 className="animate-spin" size={36} />
+      <div className="animate-fade-in">
+        <div className="stats-grid">
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+        <div className="overview-main-grid">
+          <div className="main-column">
+            <div className="modern-view-section">
+              <div className="section-header">
+                <div className="skeleton-box" style={{ width: '130px', height: '22px' }} />
+                <div className="skeleton-box" style={{ width: '60px', height: '18px' }} />
+              </div>
+              <div className="table-container">
+                <table className="events-table">
+                  <tbody>
+                    <TableRowSkeleton columns={5} />
+                    <TableRowSkeleton columns={5} />
+                    <TableRowSkeleton columns={5} />
+                    <TableRowSkeleton columns={5} />
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div className="side-column">
+            <div className="modern-view-section">
+              <div className="section-header">
+                <div className="skeleton-box" style={{ width: '120px', height: '22px' }} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div className="skeleton-box" style={{ width: '100%', height: '48px', borderRadius: '10px' }} />
+                <div className="skeleton-box" style={{ width: '100%', height: '48px', borderRadius: '10px' }} />
+                <div className="skeleton-box" style={{ width: '100%', height: '48px', borderRadius: '10px' }} />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -307,7 +345,14 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
                   ) : (
                     <tr className="empty-table-row">
                       <td colSpan="5" className="table-empty-cell">
-                        No events found.
+                        <EmptyState
+                          compact
+                          icon={<Calendar size={22} />}
+                          title="No events scheduled"
+                          description="Get started by publishing your first workshop, sports meetup, or community session."
+                          actionText="Create Event"
+                          onAction={() => setIsEditModalOpen(true)}
+                        />
                       </td>
                     </tr>
                   )}
