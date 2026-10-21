@@ -13,13 +13,15 @@ const AllLeadersTable = ({
   allLeaders = [],
   formatDate = () => 'Recent',
   formatExactTime = () => '',
-  onApprove,
   onReject,
   actionLoadingId = null,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredLeaders = allLeaders.filter((leader) => {
+  // Filter to ONLY include verified/approved leaders (status === 'APPROVED' / approved === true)
+  const approvedLeaders = allLeaders.filter((l) => l.approved === true);
+
+  const filteredLeaders = approvedLeaders.filter((leader) => {
     const query = searchQuery.toLowerCase();
     const nameMatch = leader.name?.toLowerCase().includes(query);
     const emailMatch = leader.email?.toLowerCase().includes(query);
@@ -121,37 +123,20 @@ const AllLeadersTable = ({
                         </div>
                       </td>
                       <td className="cell-status">
-                        {leader.approved ? (
-                          <span className="status-badge approved">
-                            <CheckCircle2 size={13} /> Approved
-                          </span>
-                        ) : (
-                          <span className="status-badge pending">
-                            <Clock size={13} /> Pending
-                          </span>
-                        )}
+                        <span className="status-indicator status-approved">
+                          Approved
+                        </span>
                       </td>
                       <td className="action-col-cell cell-actions">
                         <div className="admin-row-actions">
-                          {!leader.approved && (
-                            <button
-                              className="btn-action-accept"
-                              onClick={() => onApprove(leader.id, leader.name)}
-                              disabled={isProcessing}
-                              title="Approve leader"
-                            >
-                              <Check size={15} />
-                              <span>Accept</span>
-                            </button>
-                          )}
                           <button
                             className="btn-action-remove"
                             onClick={() => onReject(leader.id, leader.name)}
                             disabled={isProcessing}
-                            title={leader.approved ? 'Remove leader' : 'Reject application'}
+                            title="Remove leader"
                           >
                             <X size={15} />
-                            <span>{leader.approved ? 'Remove' : 'Reject'}</span>
+                            <span>Remove</span>
                           </button>
                         </div>
                       </td>

@@ -1,3 +1,4 @@
+import './RoleDistributionTable.css';
 import React from 'react';
 import { Shield, Users, Clock, GraduationCap, CheckCircle2 } from 'lucide-react';
 
@@ -21,7 +22,7 @@ const RoleDistributionTable = ({ stats = {} }) => {
       </div>
 
       <div className="table-container">
-        <table className="events-table admin-table">
+        <table className="events-table admin-table distribution-table">
           <thead>
             <tr>
               <th>Role Type</th>
@@ -52,16 +53,16 @@ const RoleDistributionTable = ({ stats = {} }) => {
               <td className="cell-meta" data-label="Total Accounts">
                 <span className="account-count-badge">1 Account</span>
               </td>
-              <td className="cell-meta" data-label="Platform Share">
-                <span className="share-pill">
+              <td className="cell-meta text-center" data-label="Platform Share">
+                <span className="share-text">
                   {totalUsers > 0
                     ? `${Math.max(1, Math.round((1 / totalUsers) * 100))}%`
                     : '100%'}
                 </span>
               </td>
-              <td className="cell-status">
-                <span className="status-badge approved">
-                  <CheckCircle2 size={13} /> Active
+              <td className="cell-status text-center">
+                <span className="status-indicator status-approved">
+                  Active
                 </span>
               </td>
             </tr>
@@ -88,16 +89,16 @@ const RoleDistributionTable = ({ stats = {} }) => {
                   {approvedLeaders} Accounts
                 </span>
               </td>
-              <td className="cell-meta" data-label="Platform Share">
-                <span className="share-pill">
+              <td className="cell-meta text-center" data-label="Platform Share">
+                <span className="share-text">
                   {totalUsers > 0
                     ? `${Math.round((approvedLeaders / totalUsers) * 100)}%`
                     : '0%'}
                 </span>
               </td>
-              <td className="cell-status">
-                <span className="status-badge approved">
-                  <CheckCircle2 size={13} /> Active
+              <td className="cell-status text-center">
+                <span className="status-indicator status-approved">
+                  Active
                 </span>
               </td>
             </tr>
@@ -124,16 +125,16 @@ const RoleDistributionTable = ({ stats = {} }) => {
                   {pendingLeaders} Accounts
                 </span>
               </td>
-              <td className="cell-meta" data-label="Platform Share">
-                <span className="share-pill">
+              <td className="cell-meta text-center" data-label="Platform Share">
+                <span className="share-text">
                   {totalUsers > 0
                     ? `${Math.round((pendingLeaders / totalUsers) * 100)}%`
                     : '0%'}
                 </span>
               </td>
-              <td className="cell-status">
-                <span className="status-badge pending">
-                  <Clock size={13} /> Pending
+              <td className="cell-status text-center">
+                <span className="status-indicator status-pending">
+                  Pending
                 </span>
               </td>
             </tr>
@@ -160,16 +161,16 @@ const RoleDistributionTable = ({ stats = {} }) => {
                   {totalStudents} Accounts
                 </span>
               </td>
-              <td className="cell-meta" data-label="Platform Share">
-                <span className="share-pill">
+              <td className="cell-meta text-center" data-label="Platform Share">
+                <span className="share-text">
                   {totalUsers > 0
                     ? `${Math.round((totalStudents / totalUsers) * 100)}%`
                     : '0%'}
                 </span>
               </td>
-              <td className="cell-status">
-                <span className="status-badge approved">
-                  <CheckCircle2 size={13} /> Active
+              <td className="cell-status text-center">
+                <span className="status-indicator status-approved">
+                  Active
                 </span>
               </td>
             </tr>

@@ -1,20 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import {
   Clock,
-  CheckCircle2,
-  GraduationCap,
-  Users,
   Search,
   ShieldCheck,
   Check,
   X,
 } from 'lucide-react';
-import StatCard from '../../StatCard';
 import './PendingApprovalsTable.css';
 
 const PendingApprovalsTable = ({
   pendingLeaders = [],
-  stats = {},
   formatDate = () => 'N/A',
   formatExactTime = () => '',
   onApprove,
@@ -36,30 +31,6 @@ const PendingApprovalsTable = ({
 
   return (
     <div className="admin-tab-content">
-      {/* Stat Cards Grid with Safe Access */}
-      <div className="stats-grid">
-        <StatCard
-          title="Pending Requests"
-          value={(stats?.pendingLeadersCount ?? 0).toString()}
-          icon={<Clock size={24} className="stat-icon-amber" />}
-        />
-        <StatCard
-          title="Approved Leaders"
-          value={(stats?.approvedLeadersCount ?? 0).toString()}
-          icon={<CheckCircle2 size={24} className="stat-icon-green" />}
-        />
-        <StatCard
-          title="Registered Students"
-          value={(stats?.totalStudentsCount ?? 0).toString()}
-          icon={<GraduationCap size={24} className="stat-icon-blue" />}
-        />
-        <StatCard
-          title="Total System Users"
-          value={(stats?.totalUsersCount ?? 0).toString()}
-          icon={<Users size={24} className="stat-icon-purple" />}
-        />
-      </div>
-
       {/* Approval Management Section */}
       <div className="admin-section-card">
         <div className="admin-section-header">
@@ -147,7 +118,7 @@ const PendingApprovalsTable = ({
                       </td>
 
                       <td className="cell-meta" data-label="Role">
-                        <span className="role-tag leader">Club Leader</span>
+                        <span className="role-text">Club Leader</span>
                       </td>
 
                       <td className="cell-meta" data-label="Submitted Date">
@@ -162,8 +133,8 @@ const PendingApprovalsTable = ({
                       </td>
 
                       <td className="cell-status">
-                        <span className="status-badge pending">
-                          <Clock size={13} /> Pending
+                        <span className="status-indicator status-pending">
+                          Pending
                         </span>
                       </td>
 

@@ -1,3 +1,4 @@
+import './RecentStudentsTable.css';
 import React, { useMemo } from 'react';
 import {
   GraduationCap,
@@ -17,7 +18,7 @@ const RecentStudentsTable = ({
   onCancel,
   actionLoadingId = null,
   onViewAll,
-  maxItems = 5,
+  maxItems = 3,
 }) => {
   // Parse date safely to timestamp for accurate newest-first ordering
   const getTime = (dateVal) => {
@@ -30,7 +31,7 @@ const RecentStudentsTable = ({
     return isNaN(t) ? 0 : t;
   };
 
-  // Get the most recently signed-up students (latest 3-5 students, newest first)
+  // Get the most recently signed-up students (latest 3 students, newest first)
   const recentStudents = useMemo(() => {
     return [...students]
       .sort((a, b) => getTime(b?.createdAt) - getTime(a?.createdAt))
@@ -38,18 +39,17 @@ const RecentStudentsTable = ({
   }, [students, maxItems]);
 
   return (
-    <div className="admin-section-card" style={{ marginTop: '24px' }}>
+    <div className="admin-section-card admin-section-card-spaced">
       <div className="admin-section-header">
         <div className="header-title-box">
-          <h3 className="section-heading">Recent Registered Students</h3>
+          <h3 className="section-heading">Recent Registered Members</h3>
           <p className="section-sub">
-            Recently enrolled campus participants, account verification status, and registration records.
+            Recently enrolled community participants, account verification status, and registration records.
           </p>
         </div>
         {onViewAll && (
           <button className="view-all-link-btn" onClick={onViewAll}>
-            <span>View All Students</span>
-            <ArrowRight size={15} />
+            <span>View All Members</span>
           </button>
         )}
       </div>
@@ -111,12 +111,12 @@ const RecentStudentsTable = ({
 
                     <td className="cell-status">
                       {isSuspended ? (
-                        <span className="status-badge suspended">
-                          <Ban size={13} /> Suspended
+                        <span className="status-indicator status-suspended">
+                          Suspended
                         </span>
                       ) : (
-                        <span className="status-badge student-active">
-                          <CheckCircle2 size={13} /> Active Student
+                        <span className="status-indicator status-approved">
+                          Active Student
                         </span>
                       )}
                     </td>

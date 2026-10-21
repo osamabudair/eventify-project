@@ -110,7 +110,7 @@ const LoginForm = ({ onToggleMode }) => {
           <p>Please enter your details to sign in.</p>
         </div>
 
-        {errorMsg && <div style={{ color: '#ef4444', fontSize: '14px', textAlign: 'center', marginBottom: '8px' }}>{errorMsg}</div>}
+        {errorMsg && <div className="auth-error-msg">{errorMsg}</div>}
 
         <div className="input-group">
           <label>Email Address</label>
@@ -140,7 +140,7 @@ const LoginForm = ({ onToggleMode }) => {
         </div>
 
         <button type="submit" className="submit-btn" disabled={loading}>
-          {loading ? 'Logging in...' : 'Log In'}
+          {loading ? 'Signing in...' : 'Sign In'}
         </button>
 
         <SocialAuthButtons />

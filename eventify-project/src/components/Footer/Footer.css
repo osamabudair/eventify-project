@@ -3,13 +3,13 @@
    ========================================================================== */
 
 .site-footer {
-  --footer-glass: rgba(255, 255, 255, 0.65);
-  --footer-glow: rgba(79, 70, 229, 0.10);
+  --footer-glass: rgba(250, 247, 245, 0.85);
+  --footer-glow: rgba(122, 12, 46, 0.06);
 
   position: relative;
   width: 100%;
   margin-top: 40px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-subtle);
   background:
     radial-gradient(600px 220px at 10% 0%, var(--footer-glow), transparent 70%),
     radial-gradient(500px 200px at 90% 100%, var(--footer-glow), transparent 70%),
@@ -21,8 +21,8 @@
 }
 
 body.dark-mode .site-footer {
-  --footer-glass: rgba(19, 28, 46, 0.55);
-  --footer-glow: rgba(99, 102, 241, 0.14);
+  --footer-glass: rgba(22, 19, 24, 0.8);
+  --footer-glow: rgba(159, 18, 57, 0.12);
 }
 
 /* Subtle gradient hairline at the very top */
@@ -33,8 +33,8 @@ body.dark-mode .site-footer {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
-  opacity: 0.35;
+  background: linear-gradient(90deg, transparent, var(--primary-burgundy), transparent);
+  opacity: 0.4;
 }
 
 .footer-sr-only {
@@ -74,21 +74,16 @@ body.dark-mode .site-footer {
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: var(--primary-color);
+  color: var(--text-primary);
   text-decoration: none;
 }
 
-.footer-logo span:not(.footer-logo-dot) {
-  color: var(--text-primary);
+.footer-logo span {
+  color: var(--primary-burgundy);
 }
 
-.footer-logo-dot {
-  width: 7px;
-  height: 7px;
-  margin-left: 3px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--primary-focus);
+body.dark-mode .footer-logo span {
+  color: var(--accent-rose);
 }
 
 .footer-tagline {

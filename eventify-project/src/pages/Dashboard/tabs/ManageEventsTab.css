@@ -32,19 +32,19 @@
 /* --- Archive Toggle Group --- */
 .archive-toggle-group {
   display: flex;
-  gap: 8px;
-  background-color: var(--bg-color);
+  gap: 6px;
+  background-color: var(--bg-canvas);
   padding: 4px;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
 }
 
 .archive-toggle-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
   border: none;
   background: transparent;
   color: var(--text-secondary);
@@ -55,9 +55,10 @@
 }
 
 .archive-toggle-btn.active {
-  background-color: var(--card-bg);
-  color: var(--primary-color);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
 }
 
 /* --- Table Layout --- */

@@ -15,29 +15,45 @@
 
 /* --- Stat Icons Custom Colors --- */
 .stat-icon-amber {
-  color: #f59e0b;
+  color: var(--primary-burgundy);
 }
 
 .stat-icon-green {
-  color: #10b981;
+  color: #0F766E;
 }
 
 .stat-icon-blue {
-  color: #3b82f6;
+  color: var(--accent-rose);
 }
 
 .stat-icon-purple {
-  color: #8b5cf6;
+  color: #7A0C2E;
+}
+
+body.dark-mode .stat-icon-amber {
+  color: var(--accent-rose);
+}
+
+body.dark-mode .stat-icon-green {
+  color: #2DD4BF;
+}
+
+body.dark-mode .stat-icon-blue {
+  color: #FB7185;
+}
+
+body.dark-mode .stat-icon-purple {
+  color: #FDA4AF;
 }
 
 /* --- Admin Section Card --- */
 .admin-section-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
   padding: 24px 28px;
   margin-top: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-sm);
 }
 
 .admin-section-header {
@@ -54,6 +70,7 @@
   font-weight: 700;
   margin: 0 0 4px 0;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 .header-title-box .section-sub {
@@ -67,36 +84,37 @@
   position: relative;
   width: 300px;
   max-width: 100%;
-  height: 40px;
+  height: 38px;
   display: flex;
   align-items: center;
 }
 
 .admin-search-wrapper .search-icon {
   position: absolute;
-  left: 11px; /* Shifted to the left for better balance with rounded corner */
-  color: var(--text-secondary);
+  left: 11px;
+  color: var(--text-muted);
   pointer-events: none;
   flex-shrink: 0;
 }
 
 .admin-search-input {
   width: 100%;
-  height: 40px;
-  padding: 0 34px 0 36px; /* Text starts with clean breathing room from icon */
-  border-radius: 10px;
-  border: 1.5px solid var(--border-color);
-  background-color: var(--bg-color);
+  height: 38px;
+  padding: 0 34px 0 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
   color: var(--text-primary);
   font-size: 13.5px;
+  font-family: inherit;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
   outline: none;
 }
 
 .admin-search-input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: var(--primary-burgundy);
+  box-shadow: 0 0 0 3px var(--primary-focus);
 }
 
 .search-clear-btn {
@@ -193,14 +211,17 @@
   color: var(--text-secondary);
 }
 
+.role-text {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
 .role-tag.leader {
-  background-color: rgba(139, 92, 246, 0.12);
-  color: #8b5cf6;
-  border: none;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  padding: 0;
+  font-size: 13.5px;
+  font-weight: 500;
 }
 
 .date-cell {
@@ -228,87 +249,68 @@
   color: var(--text-secondary);
 }
 
-/* --- Badges (Clean, Borderless) --- */
-.status-badge.pending {
+/* --- Distribution Table Specific Alignment --- */
+.distribution-table th:nth-child(3),
+.distribution-table td:nth-child(3),
+.distribution-table th:nth-child(4),
+.distribution-table td:nth-child(4),
+.distribution-table th:nth-child(5),
+.distribution-table td:nth-child(5) {
+  text-align: center !important;
+}
+
+/* --- Clean Minimalist Status Indicator (Plain Colored Text, No Dots, No Background Pills) --- */
+.status-indicator {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 9999px;
-  font-size: 12px;
+  justify-content: center;
+  font-size: 13px;
   font-weight: 600;
-  background-color: rgba(245, 158, 11, 0.12);
-  color: #d97706;
-  border: none;
+  line-height: 1;
 }
 
-body.dark-mode .status-badge.pending {
-  background-color: rgba(245, 158, 11, 0.2);
-  color: #fbbf24;
+.status-indicator.status-approved,
+.status-approved {
+  color: #047857;
 }
 
-.status-badge.approved {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 600;
-  background-color: rgba(16, 185, 129, 0.12);
-  color: #059669;
-  border: none;
+body.dark-mode .status-indicator.status-approved,
+body.dark-mode .status-approved {
+  color: #34D399;
 }
 
-body.dark-mode .status-badge.approved {
-  background-color: rgba(16, 185, 129, 0.2);
-  color: #34d399;
+.status-indicator.status-pending,
+.status-pending {
+  color: #D97706;
 }
 
-.status-badge.student-active {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 600;
-  background-color: rgba(59, 130, 246, 0.12);
-  color: #2563eb;
-  border: none;
+body.dark-mode .status-indicator.status-pending,
+body.dark-mode .status-pending {
+  color: #FBBF24;
 }
 
-body.dark-mode .status-badge.student-active {
-  background-color: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
+.status-indicator.status-suspended,
+.status-suspended {
+  color: #BE123C;
 }
 
-.status-badge.suspended {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 600;
-  background-color: rgba(239, 68, 68, 0.12);
-  color: #ef4444;
-  border: none;
+body.dark-mode .status-indicator.status-suspended,
+body.dark-mode .status-suspended {
+  color: #FB7185;
 }
 
-body.dark-mode .status-badge.suspended {
-  background-color: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-}
-
-/* Student Avatar in overview & tables */
+/* Student Avatar in overview & tables: Deep wine/burgundy fallback circles */
 .applicant-avatar.student-avatar {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #7A0C2E 0%, #4C051B 100%);
   color: #ffffff;
 }
 
+body.dark-mode .applicant-avatar.student-avatar {
+  background: linear-gradient(135deg, #9F1239 0%, #630823 100%);
+}
+
 .applicant-avatar.student-avatar.avatar-suspended {
-  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  background: linear-gradient(135deg, #BE123C 0%, #881337 100%);
 }
 
 /* --- Action Column (Centered Horizontally & Vertically) --- */

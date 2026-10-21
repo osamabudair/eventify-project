@@ -1,5 +1,6 @@
 // --- Imports ---
 import React from 'react';
+import './StatCard.css';
 
 const StatCard = ({ title, value, icon }) => {
   // --- Main Render ---

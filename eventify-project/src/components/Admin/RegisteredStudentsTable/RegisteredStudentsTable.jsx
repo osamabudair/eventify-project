@@ -2,10 +2,6 @@ import React, { useState, useMemo } from 'react';
 import {
   GraduationCap,
   Search,
-  ArrowUp,
-  ArrowDown,
-  CheckCircle2,
-  Ban,
   UserX,
   UserCheck,
   X,
@@ -21,12 +17,6 @@ const RegisteredStudentsTable = ({
   actionLoadingId = null,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortOrder, setSortOrder] = useState('desc'); // 'desc' = newest first by default
-
-  // Toggle sort order between newest first (desc) and oldest first (asc)
-  const toggleSortOrder = () => {
-    setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'));
-  };
 
   // Safe search filter
   const filteredStudents = useMemo(() => {
@@ -50,49 +40,27 @@ const RegisteredStudentsTable = ({
     return isNaN(t) ? 0 : t;
   };
 
-  // Sort students by date (newest first by default, preserving exact original DB timestamp)
+  // Sort students by date (newest first, preserving exact original DB timestamp)
   const sortedStudents = useMemo(() => {
     return [...filteredStudents].sort((a, b) => {
       const dateA = getTime(a?.createdAt);
       const dateB = getTime(b?.createdAt);
-      return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
+      return dateB - dateA;
     });
-  }, [filteredStudents, sortOrder]);
+  }, [filteredStudents]);
 
   return (
     <div className="admin-tab-content">
       <div className="admin-section-card">
         <div className="admin-section-header">
           <div className="header-title-box">
-            <div className="title-with-badge">
-              <h3 className="section-heading">Registered Students Directory</h3>
-              <span className="count-pill">{students.length} Total</span>
-            </div>
+            <h3 className="section-heading">Registered Students Directory</h3>
             <p className="section-sub">
               Complete directory of all registered campus students, account verification details, and enrollment records.
             </p>
           </div>
 
           <div className="table-controls-group">
-            {/* Sort Toggle Button */}
-            <button
-              className="table-sort-toggle-btn"
-              onClick={toggleSortOrder}
-              title={`Sorted by signup date: ${sortOrder === 'desc' ? 'Newest first' : 'Oldest first'}. Click to toggle.`}
-            >
-              {sortOrder === 'desc' ? (
-                <>
-                  <ArrowDown size={14} className="sort-icon-active" />
-                  <span>Newest First</span>
-                </>
-              ) : (
-                <>
-                  <ArrowUp size={14} className="sort-icon-active" />
-                  <span>Oldest First</span>
-                </>
-              )}
-            </button>
-
             {/* Unified Search Filter */}
             <div className="admin-search-wrapper">
               <Search size={16} className="search-icon" />
@@ -140,22 +108,9 @@ const RegisteredStudentsTable = ({
             <table className="events-table admin-table students-table">
               <thead>
                 <tr>
-                  <th>Student Name</th>
+                  <th>Name</th>
                   <th>Email Address</th>
-                  <th
-                    className="sortable-header"
-                    onClick={toggleSortOrder}
-                    title="Click to sort by signup date"
-                  >
-                    <div className="sortable-header-content">
-                      <span>Signed Up Date</span>
-                      {sortOrder === 'desc' ? (
-                        <ArrowDown size={14} className="sort-indicator active" />
-                      ) : (
-                        <ArrowUp size={14} className="sort-indicator active" />
-                      )}
-                    </div>
-                  </th>
+                  <th>Signed Up Date</th>
                   <th>Account Status</th>
                   <th className="action-col-header">Actions</th>
                 </tr>
@@ -196,12 +151,12 @@ const RegisteredStudentsTable = ({
 
                       <td className="cell-status">
                         {isSuspended ? (
-                          <span className="status-badge suspended">
-                            <Ban size={13} /> Suspended
+                          <span className="status-indicator status-suspended">
+                            Suspended
                           </span>
                         ) : (
-                          <span className="status-badge student-active">
-                            <CheckCircle2 size={13} /> Active Student
+                          <span className="status-indicator status-approved">
+                            Active Student
                           </span>
                         )}
                       </td>

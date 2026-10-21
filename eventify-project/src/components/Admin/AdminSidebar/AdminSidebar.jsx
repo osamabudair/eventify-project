@@ -18,7 +18,6 @@ const AdminSidebar = ({
   leadersCount = 0,
   pendingCount = 0,
   studentsCount = 0,
-  currentUser = {},
   onLogout,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -134,19 +133,6 @@ const AdminSidebar = ({
         </nav>
 
         <div className="sidebar-footer">
-          <div className="admin-user-info">
-            <div className="admin-avatar">
-              <Shield size={18} />
-            </div>
-            <div className="admin-user-details">
-              <span className="admin-user-name">
-                {currentUser.name || 'System Admin'}
-              </span>
-              <span className="admin-user-email">
-                {currentUser.email || 'admin@eventify.com'}
-              </span>
-            </div>
-          </div>
           <button className="logout-btn" onClick={handleLogoutClick}>
             <LogOut size={18} /> Logout
           </button>

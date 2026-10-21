@@ -129,8 +129,8 @@ const MyTicketsTab = ({ showToast }) => {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>
-        <Loader2 className="animate-spin" size={40} style={{ color: 'var(--primary-color)' }} />
+      <div className="tickets-loading-container">
+        <Loader2 className="animate-spin loader-burgundy" size={40} />
       </div>
     );
   }

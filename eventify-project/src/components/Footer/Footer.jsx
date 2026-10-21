@@ -24,7 +24,7 @@ const tagIconProps = { size: 13, 'aria-hidden': true };
 const QUICK_LINKS = [
   { label: 'Home', to: '/', icon: <Home {...linkIconProps} /> },
   { label: 'Explore Events', to: '/explore', icon: <Compass {...linkIconProps} /> },
-  { label: 'Login / Register', to: '/auth', icon: <LogIn {...linkIconProps} /> },
+  { label: 'Sign In / Sign Up', to: '/auth', icon: <LogIn {...linkIconProps} /> },
 ];
 
 const CATEGORIES = [
@@ -51,11 +51,9 @@ const Footer = () => {
           <div className="footer-col footer-brand">
             <Link to="/" className="footer-logo" aria-label="Eventify home">
               Event<span>ify</span>
-              <span className="footer-logo-dot" aria-hidden="true" />
             </Link>
             <p className="footer-tagline">
-              Your premier campus platform to discover, organize, and attend
-              university events seamlessly.
+              A community-driven space to explore local gatherings, workshops, and activities. Built for organizers, learners, and anyone looking to connect.
             </p>
           </div>
 
@@ -118,7 +116,7 @@ const Footer = () => {
         {/* Footer Bottom */}
         <div className="footer-bottom">
           <p className="footer-legal">
-            © {CURRENT_YEAR} Eventify · Built for university communities.
+            © {CURRENT_YEAR} Eventify. Designed for curious minds and open communities.
           </p>
           <Link to="/privacy" className="footer-privacy-link">
             <Lock size={14} aria-hidden="true" />

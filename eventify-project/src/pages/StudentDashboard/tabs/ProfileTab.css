@@ -32,24 +32,24 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  background: var(--primary-burgundy);
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: #ffffff;
   font-size: 28px;
   font-weight: 800;
   position: relative;
-  box-shadow: 0 4px 12px var(--primary-focus);
+  box-shadow: none;
 }
 
 .avatar-edit-btn {
   position: absolute;
   bottom: -4px;
   right: -4px;
-  background-color: var(--bg-color);
+  background-color: var(--bg-surface);
   color: var(--text-primary);
-  border: 2px solid var(--card-bg);
+  border: 1px solid var(--border-subtle);
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -61,8 +61,9 @@
 }
 
 .avatar-edit-btn:hover {
-  background-color: var(--primary-color);
+  background-color: var(--primary-burgundy);
   color: white;
+  border-color: var(--primary-burgundy);
   transform: none;
 }
 
@@ -114,23 +115,32 @@
 
 .input-group input {
   padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  background-color: var(--bg-color);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background-color: var(--bg-surface);
   color: var(--text-primary);
   font-size: 14px;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:root .input-group input {
+  border-color: #D1D5DB;
+}
+
+body.dark-mode .input-group input {
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: var(--primary-burgundy);
+  box-shadow: 0 0 0 3px var(--primary-focus);
 }
 
 .disabled-input {
   opacity: 0.6;
   cursor: not-allowed;
+  background-color: var(--bg-canvas) !important;
 }
 
 /* --- Form Actions --- */
@@ -144,20 +154,22 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 10px;
-  font-weight: bold;
+  background-color: var(--primary-burgundy);
+  color: #ffffff;
+  border: 1px solid var(--primary-burgundy);
+  padding: 11px 24px;
+  border-radius: 8px;
+  font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .settings-save-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+  background-color: var(--primary-burgundy-hover);
+  border-color: var(--primary-burgundy-hover);
+  transform: none;
+  box-shadow: none;
 }
 
 /* --- Password Eye Toggle Wrapper --- */

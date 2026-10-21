@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Users, Clock, Loader2, Edit, Trash2, ArrowRight, UserPlus, Activity, Lock } from 'lucide-react';
+import { Calendar, Users, Clock, Loader2, Edit, Trash2, UserPlus, Activity, Lock } from 'lucide-react';
 import StatCard from '../../../components/StatCard';
 import CreateEventModal from '../../../components/createEventModel/CreateEventModal'; 
 import EventAttendeesModal from '../../../components/EventAttendeesModal/EventAttendeesModal';
@@ -242,7 +242,7 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
             <div className="section-header">
               <h3 className="section-heading">Recent Events</h3>
               <button className="view-all-btn" onClick={() => setActiveTab('manage')}>
-                View All <ArrowRight size={16} />
+                View All
               </button>
             </div>
 
@@ -306,7 +306,7 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
                     })
                   ) : (
                     <tr className="empty-table-row">
-                      <td colSpan="5" style={{ textAlign: 'center', padding: '20px', color: 'var(--text-secondary)' }}>
+                      <td colSpan="5" className="table-empty-cell">
                         No events found.
                       </td>
                     </tr>
@@ -320,7 +320,7 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
         <div className="side-column">
           <div className="modern-view-section">
             <div className="section-header">
-              <h3 className="section-heading" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h3 className="section-heading heading-flex-icon">
                 <Activity size={20} className="text-primary" /> Live Activity
               </h3>
             </div>
@@ -340,15 +340,15 @@ const OverviewTab = ({ setActiveTab, showToast }) => {
                   </div>
                 ))
               ) : (
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', textAlign: 'center' }}>
+                <p className="feed-empty-text">
                   No recent registrations.
                 </p>
               )}
             </div>
 
             <button
-              className="view-all-btn"
-              style={{ width: '100%', marginTop: '16px', justifyContent: 'center' }}
+              className="view-all-btn manage-registrations-btn"
+              
               onClick={() => setActiveTab('registrations')}
             >
               Manage Registrations

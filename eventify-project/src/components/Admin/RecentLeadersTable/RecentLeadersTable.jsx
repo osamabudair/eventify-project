@@ -1,30 +1,31 @@
+import './RecentLeadersTable.css';
 import React from 'react';
-import { Users, Clock, CheckCircle2, Check, X, ArrowRight } from 'lucide-react';
+import { Users, X } from 'lucide-react';
 
 const RecentLeadersTable = ({
   allLeaders = [],
   formatDate = () => 'N/A',
   formatExactTime = () => '',
-  onApprove,
   onReject,
   actionLoadingId = null,
   onViewAll,
 }) => {
-  const recentLeaders = allLeaders.slice(0, 5);
+  // Display ONLY the latest 3 approved club leaders (status === 'APPROVED' or leader.approved === true)
+  const approvedLeaders = allLeaders.filter((l) => l.approved === true);
+  const recentLeaders = approvedLeaders.slice(0, 3);
 
   return (
-    <div className="admin-section-card" style={{ marginTop: '24px' }}>
+    <div className="admin-section-card admin-section-card-spaced">
       <div className="admin-section-header">
         <div className="header-title-box">
-          <h3 className="section-heading">Recent Club Leader Submissions</h3>
+          <h3 className="section-heading">Recent Approved Club Leaders</h3>
           <p className="section-sub">
-            Recent club organizer applications and their current authorization status.
+            Verified club organizers authorized to manage events and community registrations.
           </p>
         </div>
         {onViewAll && (
           <button className="view-all-link-btn" onClick={onViewAll}>
             <span>View All Leaders</span>
-            <ArrowRight size={15} />
           </button>
         )}
       </div>
@@ -33,8 +34,8 @@ const RecentLeadersTable = ({
         {recentLeaders.length === 0 ? (
           <div className="admin-empty-state">
             <Users size={44} className="empty-icon" />
-            <h4>No Recent Applications</h4>
-            <p>New club organizer submissions will appear here once submitted.</p>
+            <h4>No Approved Leaders</h4>
+            <p>Verified club organizers will appear here once approved.</p>
           </div>
         ) : (
           <table className="events-table admin-table">
@@ -54,9 +55,7 @@ const RecentLeadersTable = ({
                   <tr key={leader.id}>
                     <td className="cell-title">
                       <div className="applicant-cell">
-                        <div
-                          className={`applicant-avatar ${leader.approved ? 'approved' : 'pending'}`}
-                        >
+                        <div className="applicant-avatar approved">
                           {leader.name ? leader.name.charAt(0).toUpperCase() : 'L'}
                         </div>
                         <div className="applicant-details">
@@ -79,37 +78,20 @@ const RecentLeadersTable = ({
                       </div>
                     </td>
                     <td className="cell-status">
-                      {leader.approved ? (
-                        <span className="status-badge approved">
-                          <CheckCircle2 size={13} /> Approved
-                        </span>
-                      ) : (
-                        <span className="status-badge pending">
-                          <Clock size={13} /> Pending
-                        </span>
-                      )}
+                      <span className="status-indicator status-approved">
+                        Approved
+                      </span>
                     </td>
                     <td className="action-col-cell cell-actions">
                       <div className="admin-row-actions">
-                        {!leader.approved && (
-                          <button
-                            className="btn-action-accept"
-                            onClick={() => onApprove && onApprove(leader.id, leader.name)}
-                            disabled={isProcessing}
-                            title="Approve this leader"
-                          >
-                            <Check size={15} />
-                            <span>Accept</span>
-                          </button>
-                        )}
                         <button
                           className="btn-action-remove"
                           onClick={() => onReject && onReject(leader.id, leader.name)}
                           disabled={isProcessing}
-                          title={leader.approved ? 'Remove leader' : 'Reject application'}
+                          title="Remove leader"
                         >
                           <X size={15} />
-                          <span>{leader.approved ? 'Remove' : 'Reject'}</span>
+                          <span>Remove</span>
                         </button>
                       </div>
                     </td>

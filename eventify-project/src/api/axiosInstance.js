@@ -60,7 +60,8 @@ const formatEvent = (ev) => {
     ? `${ev.startTime} - ${ev.endTime}` 
     : (ev.time || "10:00 AM - 02:00 PM");
 
-  const attendeesNum = ev.approvedAttendees ?? ev.approvedCount ?? (Array.isArray(ev.attendees) ? ev.attendees.length : ev.attendees) ?? 0;
+  const attendeesNum = Number(ev.registeredCount ?? ev.approvedAttendees ?? ev.approvedCount ?? (Array.isArray(ev.attendees) ? ev.attendees.length : ev.attendees) ?? 0);
+  const totalCapacity = Number(ev.capacity ?? ev.maxAttendees ?? ev.maxSeats ?? 20);
 
   return {
     ...ev,
@@ -75,8 +76,10 @@ const formatEvent = (ev) => {
     approvedAttendees: attendeesNum,
     approvedCount: attendeesNum,
     attendees: attendeesNum,
-    maxAttendees: ev.capacity || ev.maxAttendees || 100,
-    capacity: ev.capacity || ev.maxAttendees || 100,
+    registeredCount: attendeesNum,
+    remainingSeats: ev.remainingSeats !== undefined ? Number(ev.remainingSeats) : Math.max(0, totalCapacity - attendeesNum),
+    maxAttendees: totalCapacity,
+    capacity: totalCapacity,
     image: ev.imageUrl || ev.image || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
     imageUrl: ev.imageUrl || ev.image,
     organizer: {
@@ -136,7 +139,8 @@ export const getEventByIdApi = async (id) => {
     data.organizerName || 
     "University Club";
 
-  const attendeesNum = data.approvedAttendees ?? data.approvedCount ?? (Array.isArray(data.attendees) ? data.attendees.length : data.attendees) ?? 0;
+  const attendeesNum = Number(data.approvedAttendees ?? data.approvedCount ?? (Array.isArray(data.attendees) ? data.attendees.length : data.attendees) ?? 0);
+  const totalCapacity = Number(data.capacity ?? data.maxAttendees ?? data.maxSeats ?? 0);
 
   const formatted = {
     ...data,
@@ -151,7 +155,9 @@ export const getEventByIdApi = async (id) => {
       username: orgName
     },
     approvedAttendees: attendeesNum,
-    approvedCount: attendeesNum
+    approvedCount: attendeesNum,
+    capacity: totalCapacity,
+    maxAttendees: totalCapacity
   };
 
   return { ...res, data: formatted };

@@ -15,7 +15,7 @@ const Navbar = () => {
     <nav className="navbar animate-fade-in-down">
       
       {/* Brand Logo */}
-      <h1 className="logo">
+      <h1 className="logo" onClick={() => navigate('/')} >
         Event<span>ify</span>
       </h1>
       
@@ -29,10 +29,10 @@ const Navbar = () => {
         
         {/* Authentication Buttons */}
         <button className="login-btn" onClick={() => navigate('/auth')}>
-          Log In
+          Sign In
         </button>
         <button className="register-btn" onClick={() => navigate('/auth')}>
-          Registration
+          Sign Up
         </button>
         
       </div>

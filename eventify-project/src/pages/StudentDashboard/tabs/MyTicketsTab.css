@@ -25,13 +25,20 @@
 }
 
 .status-badge.cancelled {
-  background-color: rgba(148, 163, 184, 0.15);
+  background-color: rgba(148, 163, 184, 0.12);
   color: #64748b;
+  border: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .status-badge.rejected {
-  background-color: rgba(239, 68, 68, 0.12);
-  color: #ef4444;
+  background-color: rgba(225, 29, 72, 0.1);
+  color: #BE123C;
+  border: 1px solid rgba(225, 29, 72, 0.2);
+}
+
+body.dark-mode .status-badge.rejected {
+  color: #F43F5E;
+  border-color: rgba(225, 29, 72, 0.28);
 }
 
 .ticket-footer-left {
@@ -46,16 +53,25 @@
   gap: 4px;
   padding: 6px 12px;
   border-radius: 8px;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  background-color: rgba(239, 68, 68, 0.08);
-  color: #ef4444;
+  border: 1px solid rgba(225, 29, 72, 0.2);
+  background-color: rgba(225, 29, 72, 0.08);
+  color: #BE123C;
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
+body.dark-mode .ticket-cancel-action {
+  color: #F43F5E;
+}
+
 .ticket-cancel-action:hover {
-  background-color: #ef4444;
-  color: #ffffff;
+  background-color: rgba(225, 29, 72, 0.18);
+  border-color: rgba(225, 29, 72, 0.35);
+  color: #9F1239;
+}
+
+body.dark-mode .ticket-cancel-action:hover {
+  color: #FB7185;
 }

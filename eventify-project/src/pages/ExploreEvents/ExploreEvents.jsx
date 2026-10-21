@@ -118,10 +118,13 @@ const ExploreEvents = () => {
           .map(ev => ({
             id: ev.id,
             title: ev.name || ev.title,
-            club: ev.organizerName || ev.organizer?.username || "University Club", 
+            club: ev.organizerName || ev.organizer?.username || "Community Club", 
             date: ev.date,
             category: ev.category,
             tags: [ev.category], 
+            capacity: Number(ev.capacity ?? ev.maxAttendees ?? ev.maxSeats ?? 20),
+            registeredCount: Number(ev.registeredCount ?? ev.approvedAttendees ?? ev.approvedCount ?? 0),
+            remainingSeats: ev.remainingSeats !== undefined ? Number(ev.remainingSeats) : undefined,
             image: ev.imageUrl || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
           }));
 
@@ -226,7 +229,7 @@ const ExploreEvents = () => {
       
       <main className="explore-main animate-slide-up">
         {isLoading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '40vh', color: '#6366f1' }}>
+          <div className="explore-loading-container">
              <Loader2 className="animate-spin" size={48} />
           </div>
         ) : filteredEvents.length > 0 ? (

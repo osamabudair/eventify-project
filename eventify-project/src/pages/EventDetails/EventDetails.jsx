@@ -80,7 +80,8 @@ const EventDetails = () => {
             void err;
           }
         }
-        const totalCapacity = data.capacity || data.maxAttendees || 100;
+        const totalCapacity = Number(data.capacity ?? data.maxAttendees ?? data.maxSeats ?? 0);
+        const isEventFull = totalCapacity > 0 && currentAttendees >= totalCapacity;
 
         const token = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -109,7 +110,7 @@ const EventDetails = () => {
           location: data.location || "Campus",
           capacity: totalCapacity,
           approvedAttendees: currentAttendees,
-          isFull: currentAttendees >= totalCapacity,
+          isFull: isEventFull,
           image: data.imageUrl || data.image || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1400",
           description: data.description || "No description provided for this event.",
           tags: [data.category || 'General']
@@ -178,13 +179,16 @@ const EventDetails = () => {
   if (errorMsg || !event) {
     return (
       <div className="event-details-loading">
-        <h2 style={{ color: '#ef4444' }}>{errorMsg || "Event not found"}</h2>
+        <h2 className="event-error-heading">{errorMsg || "Event not found"}</h2>
         <button onClick={() => navigate(-1)} className="back-btn"><ArrowLeft size={18} /> Go Back</button>
       </div>
     );
   }
 
-  const fillPercentage = Math.min(100, Math.round((event.approvedAttendees / event.capacity) * 100));
+  const capacity = Number(event.capacity ?? event.maxSeats ?? event.maxAttendees ?? 0);
+  const registered = Number(event.registeredCount ?? event.approvedAttendees ?? event.approvedCount ?? 0);
+  const seatsLeft = Math.max(0, capacity - registered);
+  const fillPercentage = capacity > 0 ? Math.min(100, Math.round((registered / capacity) * 100)) : 0;
 
   return (
     <div className="event-details-page">
@@ -267,8 +271,8 @@ const EventDetails = () => {
                 {/* Capacity Progress Bar */}
                 <div className="capacity-progress-container">
                   <div className="capacity-label-row">
-                    <span>Attendance</span>
-                    <strong>{event.approvedAttendees} / {event.capacity}</strong>
+                    <span>Attendance ({capacity > 0 ? `${seatsLeft} seats left` : 'Open'})</span>
+                    <strong>{registered} / {capacity}</strong>
                   </div>
                   <div className="progress-track">
                     <div 

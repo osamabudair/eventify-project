@@ -61,19 +61,36 @@
 
 /* Create Event Button */
 .add-event-btn { 
-  padding: 10px 20px; 
+  padding: 9px 18px; 
   display: flex; 
   align-items: center; 
   gap: 8px; 
-  font-weight: 600;
-  border-radius: 12px;
+  font-weight: 700;
+  font-size: 13.5px;
+  border-radius: 8px;
+  background: var(--primary-burgundy);
+  color: #FFFFFF !important;
+  border: 1px solid var(--primary-burgundy);
+  box-shadow: 0 2px 8px var(--primary-focus);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-event-btn:hover {
+  background: var(--primary-burgundy-hover);
+  border-color: var(--primary-burgundy-hover);
+  transform: translateY(-1px);
+}
+
+.add-event-btn:active {
+  transform: scale(0.98);
 }
 
 /* --- Sidebar --- */
 .sidebar {
-  width: 240px;
-  background-color: var(--card-bg);
-  border-right: 1px solid var(--border-color);
+  width: 250px;
+  background-color: var(--bg-surface);
+  border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
   padding: 24px 16px;
@@ -85,21 +102,26 @@
 }
 
 .sidebar-header { 
-  margin-bottom: 40px; 
+  margin-bottom: 36px; 
   padding: 0 12px; 
 }
 
 .sidebar-header .logo { 
-  font-size: 26px; 
+  font-size: 24px; 
   margin: 0; 
-  color: var(--primary-color);
-  font-weight: bold;
+  color: var(--text-primary);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.sidebar-header .logo span {
+  color: var(--primary-burgundy);
 }
 
 .sidebar-nav { 
   display: flex; 
   flex-direction: column; 
-  gap: 8px; 
+  gap: 6px; 
   flex-grow: 1; 
 }
 
@@ -108,9 +130,9 @@
   border: none;
   color: var(--text-secondary);
   text-align: left;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 14px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -120,14 +142,22 @@
 }
 
 .nav-item:hover {
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  transform: translateX(4px); 
+  background-color: var(--tag-bg);
+  color: var(--primary-burgundy);
+  transform: translateX(3px); 
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.1));
-  color: var(--primary-color);
+  background: var(--tag-bg);
+  color: var(--primary-burgundy);
+  border-left: 3px solid var(--primary-burgundy);
+  border-radius: 4px 8px 8px 4px;
+  font-weight: 700;
+}
+
+body.dark-mode .nav-item.active {
+  color: #FECDD3;
+  border-left-color: var(--accent-rose);
 }
 
 .sidebar-footer { 
@@ -230,8 +260,8 @@
 }
 
 .clickable-event-row:hover .attendees-badge-click {
-  background-color: var(--primary-color);
-  color: #ffffff;
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
 }
 
 /* --- Dynamic Status Badges --- */

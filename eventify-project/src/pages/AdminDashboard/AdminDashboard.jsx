@@ -352,8 +352,6 @@ const AdminDashboard = () => {
     });
   };
 
-  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
-
   // Dynamic Header Titles
   const getHeaderMeta = () => {
     switch (activeTab) {
@@ -387,7 +385,7 @@ const AdminDashboard = () => {
   const renderTabContent = () => {
     if (loading) {
       return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '40vh', color: '#6366f1' }}>
+        <div className="admin-loading-container">
           <Loader2 className="animate-spin" size={40} />
         </div>
       );
@@ -399,6 +397,7 @@ const AdminDashboard = () => {
           <AdminOverview
             stats={stats}
             allLeaders={allLeaders}
+            pendingLeaders={pendingLeaders}
             students={students}
             setActiveTab={setActiveTab}
             formatDate={formatDate}
@@ -438,7 +437,6 @@ const AdminDashboard = () => {
         return (
           <PendingApprovalsTable
             pendingLeaders={pendingLeaders}
-            stats={stats}
             formatDate={formatDate}
             formatExactTime={formatExactTime}
             onApprove={handleApprove}
@@ -477,7 +475,6 @@ const AdminDashboard = () => {
         leadersCount={allLeaders.length}
         pendingCount={pendingLeaders.length}
         studentsCount={students.length || stats.totalStudentsCount}
-        currentUser={currentUser}
         onLogout={handleLogout}
       />
 

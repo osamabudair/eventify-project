@@ -17,16 +17,16 @@ const AuthVisuals = ({ toggleView }) => {
           <h2>Welcome Back!</h2>
           <p>To keep connected with us please login with your personal info.</p>
           <button className="ghost-btn" onClick={toggleView}>
-            Log In
+            Sign In
           </button>
         </div>
 
-        {/* Right Panel (Log In View) */}
+        {/* Right Panel (Sign In View) */}
         <div className="overlay-panel overlay-right">
-          <h2>Your Campus Life,<br/>Elevated.</h2>
-          <p>Experience the ultimate platform for student activities.</p>
+          <h2>Connect & Discover,<br/>Elevated.</h2>
+          <p>Experience the platform for community events and gatherings.</p>
           <button className="ghost-btn" onClick={toggleView}>
-            Registration
+            Sign Up
           </button>
         </div>
         

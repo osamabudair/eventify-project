@@ -1,7 +1,7 @@
 /* ==================== PAGE LAYOUT ==================== */
 .explore-page-container {
   min-height: 100vh;
-  background-color: var(--bg-color);
+  background-color: var(--bg-canvas);
   display: flex;
   flex-direction: column;
 }
@@ -11,9 +11,9 @@
 }
 
 .explore-header {
-  background-color: var(--bg-color);
-  padding: 60px 20px 40px;
-  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-canvas);
+  padding: 56px 24px 36px;
+  border-bottom: 1px solid var(--border-subtle);
   text-align: center;
 }
 
@@ -23,16 +23,17 @@
 }
 
 .explore-header h1 {
-  font-size: 40px;
+  font-size: 38px;
   font-weight: 800;
+  letter-spacing: -0.025em;
   color: var(--text-primary);
-  margin: 0 0 12px 0;
+  margin: 0 0 10px 0;
 }
 
 .explore-header p {
-  font-size: 17px;
+  font-size: 16px;
   color: var(--text-secondary);
-  margin: 0 0 32px 0;
+  margin: 0 0 28px 0;
 }
 
 /* ==================== FILTER SECTION ==================== */
@@ -40,7 +41,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
   max-width: 850px;
   margin: 0 auto;
 }
@@ -48,49 +49,53 @@
 .modern-search-bar {
   position: relative;
   width: 100%;
-  max-width: 650px;
+  max-width: 620px;
   display: flex;
   align-items: center;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 50px; 
-  padding: 6px 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px; 
+  padding: 6px 14px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modern-search-bar:focus-within {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
-  transform: translateY(-2px);
+  border-color: var(--primary-burgundy);
+  box-shadow: 0 0 0 3px var(--primary-focus);
 }
 
 .search-icon {
-  color: var(--text-secondary);
+  color: var(--text-muted);
   margin-right: 12px;
-  margin-left: 6px;
+  margin-left: 4px;
 }
 
 .modern-search-bar input {
   flex: 1;
   border: none;
   background: transparent;
-  padding: 10px 0;
-  font-size: 15px;
+  padding: 8px 0;
+  font-size: 14.5px;
   color: var(--text-primary);
+  font-family: inherit;
   outline: none;
+}
+
+.modern-search-bar input::placeholder {
+  color: var(--text-muted);
 }
 
 .clear-search-btn {
   background: var(--tag-bg);
   border: none;
   border-radius: 50%;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--text-secondary);
+  color: var(--primary-burgundy);
   cursor: pointer;
 }
 
@@ -99,16 +104,16 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   max-width: 800px;
 }
 
 .filter-pill {
-  background-color: var(--card-bg);
+  background-color: var(--bg-surface);
   color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  padding: 8px 16px;
-  border-radius: 50px;
+  border: 1px solid var(--border-subtle);
+  padding: 7px 16px;
+  border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -118,14 +123,19 @@
 .filter-pill:hover {
   border-color: var(--border-hover);
   color: var(--text-primary);
-  transform: none;
+  background-color: var(--bg-surface-elevated);
 }
 
 .filter-pill.active {
-  background-color: var(--primary-color);
-  color: #ffffff;
-  border-color: var(--primary-color);
+  background-color: var(--primary-burgundy) !important;
+  color: #FFFFFF !important;
+  border-color: var(--primary-burgundy) !important;
   box-shadow: 0 2px 8px var(--primary-focus);
+}
+
+body.dark-mode .filter-pill.active {
+  background-color: var(--accent-rose) !important;
+  border-color: var(--accent-rose) !important;
 }
 
 .club-filter-wrapper {
@@ -135,22 +145,27 @@
   margin-top: 4px;
 }
 
+.group-icon {
+  color: var(--accent-rose);
+}
+
 .select-pill {
   appearance: none;
-  padding-right: 36px;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  padding-right: 34px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378716c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 12px center;
+  background-position: right 10px center;
   background-size: 14px;
   outline: none;
+  font-family: inherit;
 }
 
 /* ==================== MAIN CONTENT ==================== */
 .explore-main {
   flex: 1;
-  max-width: 1400px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 36px 32px 64px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -162,44 +177,45 @@
 }
 
 .no-results-icon {
-  opacity: 0.3;
+  opacity: 0.35;
+  color: var(--accent-rose);
   margin-bottom: 16px;
 }
 
 .secondary-btn {
-  background-color: var(--card-bg);
-  color: var(--primary-color);
-  border: 1px solid var(--border-color);
-  padding: 10px 22px;
-  border-radius: 10px;
+  background-color: transparent;
+  color: var(--primary-burgundy);
+  border: 1px solid var(--border-subtle);
+  padding: 9px 20px;
+  border-radius: 8px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13.5px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .secondary-btn:hover {
-  background-color: var(--bg-color);
-  border-color: var(--border-hover);
+  background-color: var(--tag-bg);
+  border-color: var(--primary-burgundy);
 }
 
 @media (max-width: 768px) {
   .explore-header {
-    padding: 36px 16px 24px;
+    padding: 32px 16px 20px;
   }
 
   .explore-header h1 {
-    font-size: 28px;
+    font-size: 26px;
     margin-bottom: 8px;
   }
 
   .explore-header p {
-    font-size: 15px;
-    margin-bottom: 20px;
+    font-size: 14px;
+    margin-bottom: 18px;
   }
 
   .interactive-filter-section {
-    gap: 14px;
+    gap: 12px;
     width: 100%;
   }
 
@@ -208,43 +224,43 @@
   }
 
   .categories-pill-grid {
-    gap: 8px;
+    gap: 6px;
   }
 
   .filter-pill {
-    padding: 6px 14px;
-    font-size: 12.5px;
+    padding: 6px 12px;
+    font-size: 12px;
   }
 
   .explore-main {
-    padding: 24px 16px;
+    padding: 24px 16px 48px;
   }
 }
 
 @media (max-width: 480px) {
   .explore-header {
-    padding: 28px 12px 20px;
+    padding: 24px 12px 16px;
   }
 
   .explore-header h1 {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .explore-header p {
-    font-size: 13.5px;
-    margin-bottom: 16px;
+    font-size: 13px;
+    margin-bottom: 14px;
   }
 
   .modern-search-bar {
-    padding: 4px 12px;
+    padding: 4px 10px;
   }
 
   .filter-pill {
-    padding: 5px 11px;
-    font-size: 12px;
+    padding: 5px 10px;
+    font-size: 11.5px;
   }
 
   .explore-main {
-    padding: 18px 12px;
+    padding: 16px 12px 36px;
   }
 }

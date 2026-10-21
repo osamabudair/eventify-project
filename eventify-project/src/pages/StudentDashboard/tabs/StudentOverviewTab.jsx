@@ -62,7 +62,7 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
   
   const [stats, setStats] = useState({ approved: 0, pending: 0 });
   const [suggestedEvents, setSuggestedEvents] = useState([]);
-  const [nextEvent, setNextEvent] = useState(null);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [recentActivity, setRecentActivity] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -87,13 +87,13 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        const upcoming = approvedRegs
+        const upcomingList = approvedRegs
           .map(reg => reg.event)
           .filter(event => {
             if (!event || !event.date) return false;
             return new Date(event.date) >= today && !isEventExpired(event);
           })
-          .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+          .sort((a, b) => new Date(a.date) - new Date(b.date));
 
         const eventsRes = await getAllEventsApi();
         const allEvents = eventsRes.data || [];
@@ -105,7 +105,7 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
 
         if (isMounted) {
           setStats({ approved: approvedRegs.length, pending: pendingCount });
-          setNextEvent(upcoming || (approvedRegs[0]?.event && !isEventExpired(approvedRegs[0].event) ? approvedRegs[0].event : null));
+          setUpcomingEvents(upcomingList.slice(0, 2));
           setRecentActivity(myRegistrations.slice(0, 5));
           setSuggestedEvents(availableEvents.slice(0, 2));
         }
@@ -137,15 +137,15 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      const upcoming = approvedRegs
+      const upcomingList = approvedRegs
         .map(reg => reg.event)
         .filter(event => {
           if (!event || !event.date) return false;
           return new Date(event.date) >= today && !isEventExpired(event);
         })
-        .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-      setNextEvent(upcoming || (approvedRegs[0]?.event && !isEventExpired(approvedRegs[0].event) ? approvedRegs[0].event : null));
+      setUpcomingEvents(upcomingList.slice(0, 2));
       setRecentActivity(myRegistrations.slice(0, 5));
 
       const eventsRes = await getAllEventsApi();
@@ -203,8 +203,8 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>
-        <Loader2 className="animate-spin" size={40} style={{ color: 'var(--primary-color)' }} />
+      <div className="student-loading-container">
+        <Loader2 className="animate-spin loader-burgundy" size={40} />
       </div>
     );
   }
@@ -241,29 +241,35 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
         <StatCard title="Pending Requests" value={stats.pending} icon={<Clock size={24} />} />
       </div>
 
-      {/* Next Upcoming Event Card */}
-      {nextEvent ? (
-        <div className="modern-view-section next-event-card">
-          <div className="next-event-content">
-            <div className="next-event-badge">
-              <CalendarCheck size={16} /> Upcoming Next
-            </div>
-            <h3>{nextEvent.title || nextEvent.name}</h3>
-            <div className="next-event-details">
-              <span><Clock size={16} /> {new Date(nextEvent.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-              <span><MapPin size={16} /> {nextEvent.location || 'Campus'}</span>
-              <span><Users size={16} /> {nextEvent.organizerName || 'Club Leader'}</span>
-            </div>
+      {/* Upcoming Events Section (Displays up to 2 closest approved events) */}
+      {upcomingEvents.length > 0 ? (
+        <div className="upcoming-events-section">
+          <div className="upcoming-events-grid">
+            {upcomingEvents.map((event) => (
+              <div key={event._id || event.id} className="modern-view-section next-event-card">
+                <div className="next-event-content">
+                  <div className="next-event-badge">
+                    <CalendarCheck size={14} /> Upcoming Next
+                  </div>
+                  <h3>{event.title || event.name}</h3>
+                  <div className="next-event-details">
+                    <span><Clock size={15} /> {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    <span><MapPin size={15} /> {event.location || 'Campus'}</span>
+                    <span><Users size={15} /> {event.organizerName || 'Club Leader'}</span>
+                  </div>
+                </div>
+                <button className="view-ticket-btn" onClick={() => setActiveTab('tickets')}>
+                  View Ticket
+                </button>
+              </div>
+            ))}
           </div>
-          <button className="view-ticket-btn" onClick={() => setActiveTab('tickets')}>
-            View Ticket
-          </button>
         </div>
       ) : (
         <div className="modern-view-section next-event-card empty-next-event">
           <div className="next-event-content">
             <div className="next-event-badge empty-badge">
-              <CalendarCheck size={16} /> Upcoming Next
+              <CalendarCheck size={14} /> Upcoming Next
             </div>
             <h3>No upcoming events yet</h3>
             <p>Once your event registration is approved, your ticket details will appear right here.</p>
@@ -277,7 +283,7 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
             <div className="section-header">
               <div>
                 <h3 className="section-heading">Suggested For You</h3>
-                <p className="text-secondary" style={{ margin: 0 }}>Curated events to boost your skills.</p>
+                <p className="text-secondary section-sub-zero">Curated events to boost your skills.</p>
               </div>
               <button className="view-all-btn" onClick={() => navigate('/explore')}>View All</button>
             </div>
@@ -289,10 +295,10 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
             ) : (
               <div className="suggested-events-grid">
                 {suggestedEvents.map(event => {
-                  const attendees = event.approvedAttendees ?? event.approvedCount ?? 0;
-                  const capacity = event.capacity || event.maxAttendees || 100;
-                  const isFull = attendees >= capacity;
-                  const organizerDisplay = event.organizerName || event.organizer?.name || 'Osama Bd';
+                  const attendees = Number(event.approvedAttendees ?? event.approvedCount ?? 0);
+                  const capacity = Number(event.capacity ?? event.maxSeats ?? event.maxAttendees ?? 0);
+                  const isFull = capacity > 0 && attendees >= capacity;
+                  const organizerDisplay = event.organizerName || event.organizer?.name || 'Community Leader';
 
                   return (
                     <div key={event._id || event.id} className="suggested-event-card">
@@ -307,11 +313,6 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
                       <p className="event-club">
                         <Users size={14} /> <strong>{organizerDisplay}</strong>
                       </p>
-                      
-                      <div className="event-capacity-tag">
-                        <span>{attendees} / {capacity} Registered</span>
-                        {isFull && <span className="full-badge">Full</span>}
-                      </div>
 
                       {/* Equal-width action buttons for details and registration */}
                       <div className="suggested-card-actions-equal">
@@ -339,12 +340,12 @@ const StudentOverviewTab = ({ setActiveTab, showToast }) => {
 
         <div className="side-column">
           <div className="modern-view-section activity-section">
-            <h3 className="section-heading" style={{ fontSize: '1.2rem', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h3 className="section-heading activity-heading-flex">
               <Activity size={20} className="text-primary" /> Recent Activity
             </h3>
             
             {recentActivity.length === 0 ? (
-              <p className="text-secondary" style={{ fontSize: '0.9rem', textAlign: 'center' }}>No recent activity yet.</p>
+              <p className="text-secondary activity-empty-text">No recent activity yet.</p>
             ) : (
               <div className="activity-timeline">
                 {recentActivity.map((activity) => {

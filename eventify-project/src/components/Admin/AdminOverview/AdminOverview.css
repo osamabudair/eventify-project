@@ -10,8 +10,8 @@
 }
 
 .role-avatar.admin-role {
-  background-color: rgba(37, 99, 235, 0.12);
-  color: var(--primary-color, #2563eb);
+  background-color: rgba(122, 12, 46, 0.12);
+  color: var(--primary-burgundy);
 }
 
 .role-avatar.leader-role {
@@ -25,8 +25,8 @@
 }
 
 .role-avatar.student-role {
-  background-color: rgba(139, 92, 246, 0.12);
-  color: #8b5cf6;
+  background-color: rgba(159, 18, 57, 0.12);
+  color: var(--primary-burgundy);
 }
 
 .scope-text {
@@ -41,25 +41,20 @@
   color: var(--text-primary);
 }
 
-.share-pill {
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 12px;
+.share-text {
+  font-size: 13px;
   font-weight: 600;
-  background-color: var(--bg-color);
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .view-all-link-btn {
   background: transparent;
   border: none;
-  color: var(--primary-color);
+  color: var(--text-secondary);
   font-size: 13px;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   cursor: pointer;
   padding: 6px 12px;
   border-radius: 8px;
@@ -67,6 +62,12 @@
 }
 
 .view-all-link-btn:hover {
-  background-color: rgba(37, 99, 235, 0.08);
+  color: var(--primary-burgundy);
+  background-color: rgba(122, 12, 46, 0.08);
+}
+
+body.dark-mode .view-all-link-btn:hover {
+  color: #FB7185;
+  background-color: rgba(159, 18, 57, 0.16);
 }
 

@@ -11,16 +11,17 @@
   letter-spacing: 0.08em;
   padding: 3px 8px;
   border-radius: 6px;
-  background-color: rgba(37, 99, 235, 0.08);
-  color: var(--primary-color, #2563eb);
-  border: none;
+  background-color: rgba(122, 12, 46, 0.08);
+  color: var(--primary-burgundy);
+  border: 1px solid rgba(122, 12, 46, 0.2);
   margin-top: 6px;
   transition: all 0.2s ease;
 }
 
 body.dark-mode .admin-badge {
-  background-color: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
+  background-color: rgba(159, 18, 57, 0.18);
+  color: #FB7185;
+  border-color: rgba(225, 29, 72, 0.25);
 }
 
 /* Clean, Modern Sidebar Number Badges */
@@ -30,21 +31,21 @@ body.dark-mode .admin-badge {
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 9999px;
-  background-color: var(--bg-color, #f1f5f9);
-  color: var(--text-secondary, #64748b);
+  background-color: var(--bg-surface-elevated);
+  color: var(--text-secondary);
   line-height: 1.2;
   transition: all 0.2s ease;
   border: none;
 }
 
 .nav-item.active .sidebar-nav-counter {
-  background-color: rgba(37, 99, 235, 0.12);
-  color: var(--primary-color, #2563eb);
+  background-color: rgba(159, 18, 57, 0.12);
+  color: var(--primary-burgundy);
 }
 
 body.dark-mode .nav-item.active .sidebar-nav-counter {
-  background-color: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
+  background-color: rgba(159, 18, 57, 0.25);
+  color: #F43F5E;
 }
 
 .sidebar-nav-counter.pending-active {

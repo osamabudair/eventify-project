@@ -161,7 +161,7 @@ const StudentDashboard = () => {
         <header className="dashboard-header">
           <div>
             <h2>Hello, {userName}</h2>
-            <p className="text-secondary">Ready to explore new campus activities?</p>
+            <p className="text-secondary">Ready to explore upcoming events and workshops?</p>
           </div>
           
           <div className="header-actions">
@@ -185,7 +185,7 @@ const StudentDashboard = () => {
                         <CheckCheck size={14} /> Mark all read
                       </button>
                     ) : (
-                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>0 New</span>
+                      <span className="notif-empty-badge">0 New</span>
                     )}
                   </div>
                   <div className="notif-dropdown-body">

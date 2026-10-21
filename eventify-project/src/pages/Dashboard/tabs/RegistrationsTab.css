@@ -75,30 +75,52 @@
   background-color: var(--card-bg);
 }
 
-/* Approve Button (Green Theme) */
+/* Approve Button (Muted Emerald) */
 .action-btn.approve {
-  color: #10b981;
-  background-color: #ecfdf5; 
-  border-color: #d1fae5;
+  color: #047857;
+  background-color: rgba(16, 185, 129, 0.12); 
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+body.dark-mode .action-btn.approve {
+  color: #10B981;
+  background-color: rgba(16, 185, 129, 0.16);
+  border-color: rgba(16, 185, 129, 0.28);
 }
 
 .action-btn.approve:hover {
-  background-color: #d1fae5;
-  color: #059669;
-  border-color: #6ee7b7;
+  background-color: rgba(16, 185, 129, 0.22);
+  color: #047857;
+  border-color: rgba(16, 185, 129, 0.35);
 }
 
-/* Reject Button (Red Theme) */
+body.dark-mode .action-btn.approve:hover {
+  color: #34D399;
+  background-color: rgba(16, 185, 129, 0.26);
+}
+
+/* Reject Button (Muted Crimson) */
 .action-btn.reject {
-  color: #ef4444;
-  background-color: #fef2f2; 
-  border-color: #fee2e2;
+  color: #BE123C;
+  background-color: rgba(225, 29, 72, 0.12); 
+  border: 1px solid rgba(225, 29, 72, 0.2);
+}
+
+body.dark-mode .action-btn.reject {
+  color: #F43F5E;
+  background-color: rgba(225, 29, 72, 0.16);
+  border-color: rgba(225, 29, 72, 0.28);
 }
 
 .action-btn.reject:hover {
-  background-color: #fee2e2;
-  color: #dc2626;
-  border-color: #fca5a5;
+  background-color: rgba(225, 29, 72, 0.22);
+  color: #9F1239;
+  border-color: rgba(225, 29, 72, 0.35);
+}
+
+body.dark-mode .action-btn.reject:hover {
+  color: #FB7185;
+  background-color: rgba(225, 29, 72, 0.26);
 }
 
 /* --- Loading & Empty States --- */

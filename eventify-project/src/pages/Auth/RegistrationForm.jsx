@@ -98,7 +98,7 @@ const RegistrationForm = ({ onToggleMode }) => {
           <p>Join us and start managing or joining events.</p>
         </div>
 
-        {errorMsg && <div style={{ color: '#ef4444', fontSize: '14px', textAlign: 'center', marginBottom: '8px' }}>{errorMsg}</div>}
+        {errorMsg && <div className="auth-error-msg">{errorMsg}</div>}
 
         <div className="form-scrollable-content">
           <div className="input-group">
@@ -139,7 +139,7 @@ const RegistrationForm = ({ onToggleMode }) => {
             </div>
           </div>
 
-          <div style={{ marginTop: '-8px', marginBottom: '8px' }}>
+          <div className="meter-wrapper-spacing">
             <PasswordStrengthMeter password={password} />
           </div>
 
@@ -174,7 +174,7 @@ const RegistrationForm = ({ onToggleMode }) => {
           </div>
 
           <button type="submit" className="submit-btn" disabled={loading}>
-            {loading ? 'Creating Account...' : 'Register'}
+            {loading ? 'Signing up...' : 'Sign Up'}
           </button>
 
           <SocialAuthButtons />
@@ -183,7 +183,7 @@ const RegistrationForm = ({ onToggleMode }) => {
             <div className="mobile-auth-switch">
               Already have an account?{' '}
               <button type="button" onClick={onToggleMode}>
-                Log In
+                Sign In
               </button>
             </div>
           )}

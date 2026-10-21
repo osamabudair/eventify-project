@@ -4,11 +4,13 @@ import StatCard from '../../StatCard';
 import RoleDistributionTable from '../RoleDistributionTable/RoleDistributionTable';
 import RecentLeadersTable from '../RecentLeadersTable/RecentLeadersTable';
 import RecentStudentsTable from '../RecentStudentsTable/RecentStudentsTable';
+import RecentPendingLeadersTable from '../RecentPendingLeadersTable/RecentPendingLeadersTable';
 import './AdminOverview.css';
 
 const AdminOverview = ({
   stats = {},
   allLeaders = [],
+  pendingLeaders = [],
   students = [],
   setActiveTab,
   formatDate = () => 'N/A',
@@ -48,7 +50,7 @@ const AdminOverview = ({
       {/* Table 1: Account & Role Distribution */}
       <RoleDistributionTable stats={stats} />
 
-      {/* Table 2: Recent Leaders Submissions */}
+      {/* Table 2: Recent Approved Club Leaders */}
       <RecentLeadersTable
         allLeaders={allLeaders}
         formatDate={formatDate}
@@ -59,7 +61,7 @@ const AdminOverview = ({
         onViewAll={() => setActiveTab && setActiveTab('all-leaders')}
       />
 
-      {/* Table 3: Recent Registered Students (Exact same columns as RegisteredStudentsTable) */}
+      {/* Table 3: Recent Registered Members/Students */}
       <RecentStudentsTable
         students={students}
         formatDate={formatDate}
@@ -68,7 +70,18 @@ const AdminOverview = ({
         onCancel={onCancel}
         actionLoadingId={actionLoadingId}
         onViewAll={() => setActiveTab && setActiveTab('students')}
-        maxItems={5}
+        maxItems={3}
+      />
+
+      {/* Table 4: Recent Pending Leader Applications */}
+      <RecentPendingLeadersTable
+        pendingLeaders={pendingLeaders}
+        formatDate={formatDate}
+        formatExactTime={formatExactTime}
+        onApprove={onApprove}
+        onReject={onReject}
+        actionLoadingId={actionLoadingId}
+        onViewAll={() => setActiveTab && setActiveTab('approvals')}
       />
     </div>
   );

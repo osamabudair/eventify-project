@@ -7,4 +7,5 @@ export { default as RegisteredStudentsTable } from './RegisteredStudentsTable/Re
 export { default as RoleDistributionTable } from './RoleDistributionTable/RoleDistributionTable';
 export { default as RecentLeadersTable } from './RecentLeadersTable/RecentLeadersTable';
 export { default as RecentStudentsTable } from './RecentStudentsTable/RecentStudentsTable';
+export { default as RecentPendingLeadersTable } from './RecentPendingLeadersTable/RecentPendingLeadersTable';
 export { default as ToastNotification } from './ToastNotification/ToastNotification';

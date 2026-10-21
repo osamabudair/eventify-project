@@ -14,15 +14,14 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+  transform: none;
+  border-color: rgba(225, 29, 72, 0.35);
+  box-shadow: 0 4px 16px rgba(159, 18, 57, 0.08);
 }
 
 .stat-icon {
@@ -89,10 +88,10 @@
 
 .view-all-btn {
   background: transparent;
-  color: var(--primary-color);
+  color: var(--primary-burgundy) !important;
   border: none;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -102,8 +101,28 @@
   border-radius: 8px;
 }
 
+body.dark-mode .view-all-btn {
+  color: var(--primary-burgundy) !important;
+}
+
+.manage-registrations-btn {
+  width: 100%;
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 0.875rem !important;
+  color: var(--primary-burgundy) !important;
+}
+
+body.dark-mode .manage-registrations-btn {
+  color: var(--primary-burgundy) !important;
+}
+
 .view-all-btn:hover {
   background-color: var(--tag-bg);
+  opacity: 0.9;
 }
 
 /* --- Events Table --- */
@@ -139,62 +158,144 @@
   white-space: nowrap;
 }
 
-/* Status Badges */
+/* Status Badges - Plain text with zero backgrounds or boxes */
 .status-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-}
-.status-badge.active {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: #10b981;
-}
-.status-badge.completed {
-  background-color: rgba(99, 102, 241, 0.1);
-  color: #6366f1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-/* Action Buttons */
+.status-badge.upcoming {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #0284C7 !important;
+  border: none !important;
+}
+
+body.dark-mode .status-badge.upcoming {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #38BDF8 !important;
+  border: none !important;
+}
+
+.status-badge.ongoing,
+.status-badge.active {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #059669 !important;
+  border: none !important;
+}
+
+body.dark-mode .status-badge.ongoing,
+body.dark-mode .status-badge.active {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #34D399 !important;
+  border: none !important;
+}
+
+.status-badge.completed {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #64748b !important;
+  border: none !important;
+}
+
+/* Attendee Count Pill - Clean plain text with icon, zero backgrounds */
+.attendees-badge-click {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: 13px;
+  font-weight: 600;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+body.dark-mode .attendees-badge-click {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Action Buttons - Transparent with minimal inline text/icons */
 .actions-wrapper {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
-  gap: 6px; 
+  gap: 12px; 
 }
 
 .action-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: 8px;
+  gap: 5px;
+  padding: 0 !important;
+  border-radius: 0 !important;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  border: none !important;
+  background: transparent !important;
   background-color: transparent !important;
+  border: none !important;
   box-shadow: none !important;
+  transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 .action-btn.edit {
   color: var(--text-secondary);
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
 }
 
 .action-btn.edit:hover {
-  color: var(--primary-color) !important;
-  background-color: rgba(37, 99, 235, 0.1) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--primary-burgundy) !important;
+  opacity: 0.85;
 }
 
 .action-btn.delete {
-  color: #ef4444 !important;
+  color: var(--primary-burgundy) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+body.dark-mode .action-btn.delete {
+  color: var(--accent-rose) !important;
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 .action-btn.delete:hover {
-  color: #ef4444 !important;
-  background-color: rgba(239, 68, 68, 0.1) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--primary-burgundy-hover) !important;
+  opacity: 0.85;
+}
+
+body.dark-mode .action-btn.delete:hover {
+  color: var(--accent-rose-hover) !important;
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 /* --- Live Activity Feed --- */
@@ -212,7 +313,7 @@
 
 .feed-icon {
   background-color: var(--tag-bg);
-  color: var(--primary-color);
+  color: var(--primary-burgundy);
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -237,7 +338,8 @@
   display: block;
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--primary-color);
+  font-style: normal;
+  color: var(--text-primary);
   margin-top: 2px;
   line-height: 1.2;
 }

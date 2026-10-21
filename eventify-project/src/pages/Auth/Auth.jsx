@@ -16,7 +16,7 @@ const Auth = () => {
 
   // --- Side Effects ---
   useEffect(() => {
-    document.title = isLogin ? "Log In - Eventify" : "Registration - Eventify";
+    document.title = isLogin ? "Sign In - Eventify" : "Sign Up - Eventify";
   }, [isLogin]);
 
   // --- Render ---

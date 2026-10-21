@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LayoutDashboard, CalendarDays, Users, Settings, LogOut, Menu, X } from 'lucide-react';
+import './Sidebar.css';
 
 const Sidebar = ({ activeTab, setActiveTab, handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +52,7 @@ const Sidebar = ({ activeTab, setActiveTab, handleLogout }) => {
       <div
         className={`sidebar-drawer-overlay ${isOpen ? 'show' : ''}`}
         onClick={() => setIsOpen(false)}
-        aria-hidden={!isOpen}
+        aria-hidden="true"
       />
 
       <aside className={`sidebar ${isOpen ? 'drawer-open' : ''}`}>
@@ -64,7 +65,7 @@ const Sidebar = ({ activeTab, setActiveTab, handleLogout }) => {
             onClick={() => setIsOpen(false)}
             aria-label="Close navigation menu"
           >
-            <X size={22} />
+            <X size={20} />
           </button>
         </div>
 
@@ -73,38 +74,35 @@ const Sidebar = ({ activeTab, setActiveTab, handleLogout }) => {
             className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
             onClick={() => handleNavClick('overview')}
           >
-            <LayoutDashboard size={18} />
+            <LayoutDashboard size={20} />
             <span>Overview</span>
           </button>
-
           <button
             className={`nav-item ${activeTab === 'manage' ? 'active' : ''}`}
             onClick={() => handleNavClick('manage')}
           >
-            <CalendarDays size={18} />
+            <CalendarDays size={20} />
             <span>Manage Events</span>
           </button>
-
           <button
             className={`nav-item ${activeTab === 'registrations' ? 'active' : ''}`}
             onClick={() => handleNavClick('registrations')}
           >
-            <Users size={18} />
+            <Users size={20} />
             <span>Registrations</span>
           </button>
-
           <button
             className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
             onClick={() => handleNavClick('settings')}
           >
-            <Settings size={18} />
-            <span>Profile</span>
+            <Settings size={20} />
+            <span>Settings</span>
           </button>
         </nav>
 
         <div className="sidebar-footer">
           <button className="logout-btn" onClick={handleLogoutClick}>
-            <LogOut size={18} />
+            <LogOut size={20} />
             <span>Logout</span>
           </button>
         </div>

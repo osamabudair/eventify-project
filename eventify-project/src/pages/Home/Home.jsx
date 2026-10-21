@@ -5,7 +5,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import HeroSection from '../../components/HeroSection/HeroSection';
 import EventCard from '../../components/EventCard/EventCard'; 
 import Footer from '../../components/Footer/Footer';
-import { getAllEventsApi } from '../../api/axiosInstance';
+import { getAllEventsApi, getEventByIdApi } from '../../api/axiosInstance';
 import './Home.css';
 
 // ==================== HELPER FUNCTIONS ====================
@@ -117,14 +117,37 @@ const Home = () => {
           .map(ev => ({
             id: ev.id,
             title: ev.name || ev.title,
-            club: ev.organizerName || ev.organizer?.name || "University Club",
+            club: ev.organizerName || ev.organizer?.name || "Community Organizer",
             date: ev.date, 
             image: ev.imageUrl || ev.image || "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
+            category: ev.category || "",
+            registeredCount: Number(ev.registeredCount ?? ev.approvedAttendees ?? ev.approvedCount ?? 0),
+            capacity: Number(ev.capacity ?? ev.maxAttendees ?? ev.maxSeats ?? 20),
+            remainingSeats: ev.remainingSeats !== undefined ? Number(ev.remainingSeats) : undefined,
             tags: [ev.category || "General"]
           }));
 
         if (isMounted) {
-          setFeaturedEvents(upcomingSorted);
+        let enrichedEvents = [...upcomingSorted];
+        if (enrichedEvents.length > 0 && (!enrichedEvents[0].capacity || enrichedEvents[0].registeredCount === 0)) {
+          try {
+            const detailRes = await getEventByIdApi(enrichedEvents[0].id);
+            if (detailRes?.data) {
+              const d = detailRes.data;
+              const cap = Number(d.capacity ?? d.maxAttendees ?? d.maxSeats ?? 20);
+              const reg = Number(d.registeredCount ?? d.approvedAttendees ?? d.approvedCount ?? d.attendees ?? 0);
+              enrichedEvents[0] = {
+                ...enrichedEvents[0],
+                capacity: cap,
+                registeredCount: reg,
+                remainingSeats: d.remainingSeats !== undefined ? Number(d.remainingSeats) : Math.max(0, cap - reg)
+              };
+            }
+          } catch (err) {
+            console.warn("Could not fetch detailed attendee data for hero event", err);
+          }
+        }
+        setFeaturedEvents(enrichedEvents);
         }
       } catch {
         if (isMounted) {
@@ -148,16 +171,16 @@ const Home = () => {
     <>
     <div className="home-container">
       <Navbar />
-      <HeroSection />
+      <HeroSection featuredSampleEvent={featuredEvents[0]} />
       
       <section className="events-section">
         <div className="section-header animate-slide-up-delayed">
-          <h3>Upcoming Highlights</h3>
-          <p>Don't miss out on these featured activities</p>
+          <h3>Community Events & Activities</h3>
+          <p>Don't miss out on these featured gatherings</p>
         </div>
         
         {isLoading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '40px', color: 'var(--primary-color)' }}>
+          <div className="home-loading-container">
             <Loader2 className="animate-spin" size={40} />
           </div>
         ) : (

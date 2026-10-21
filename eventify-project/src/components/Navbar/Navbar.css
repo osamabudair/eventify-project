@@ -32,38 +32,48 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 40px;
-  max-width: 1200px; 
+  padding: 18px 40px;
+  max-width: 1240px; 
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
   background-color: transparent;
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  z-index: 50;
 }
 
 /* --- Logo Styling --- */
 .logo {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
-  color: var(--primary-color);
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
   margin: 0;
+  display: inline-flex;
+  align-items: baseline;
 }
 
 .logo span {
-  color: var(--text-primary);
+  color: var(--primary-burgundy);
+}
+
+body.dark-mode .logo span {
+  color: var(--accent-rose);
 }
 
 /* --- Navigation Actions Section --- */
 .nav-actions {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
 }
 
-/* --- Theme Toggle Button (Completely Transparent, No Background) --- */
+/* --- Theme Toggle Button --- */
 .theme-toggle {
   background: transparent !important;
   background-color: transparent !important;
-  border: none !important;
+  border: 1px solid transparent !important;
   box-shadow: none !important;
   width: 40px;
   height: 40px;
@@ -73,25 +83,27 @@
   border-radius: 8px;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
   padding: 0;
 }
 
 .theme-toggle:hover {
-  background: transparent !important;
-  color: var(--text-primary);
+  background: var(--tag-bg) !important;
+  color: var(--primary-burgundy) !important;
+  border-color: var(--border-subtle) !important;
   transform: none;
 }
 
-/* --- Authentication Buttons (Polished & Professional) --- */
+/* --- Authentication Buttons --- */
+/* Secondary Action (Log In): Clean ghost/outline button */
 .login-btn {
   background: transparent;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   padding: 8px 18px;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
@@ -100,36 +112,43 @@
 }
 
 .login-btn:hover {
-  background-color: var(--card-bg);
+  background-color: var(--bg-surface);
   border-color: var(--border-hover);
-  color: var(--primary-color);
+  color: var(--text-primary);
+  transform: translateY(-1px);
 }
 
+body.dark-mode .login-btn:hover {
+  border-color: var(--border-hover);
+}
+
+/* Primary Action (Registration): Solid burgundy button */
 .register-btn {
-  background-color: var(--primary-color);
-  color: #ffffff;
-  border: 1px solid transparent;
-  padding: 9px 20px;
-  border-radius: 10px;
-  font-size: 14px;
+  background: var(--primary-burgundy);
+  color: #FFFFFF !important;
+  border: 1px solid var(--primary-burgundy);
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 13.5px;
   font-weight: 600;
   letter-spacing: -0.01em;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08), 0 2px 6px var(--primary-focus);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px var(--primary-focus);
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .register-btn:hover {
-  background-color: var(--primary-hover);
-  box-shadow: 0 4px 12px var(--primary-focus);
-  transform: none;
+  background: var(--primary-burgundy-hover);
+  border-color: var(--primary-burgundy-hover);
+  box-shadow: 0 4px 14px var(--primary-focus);
+  transform: translateY(-1px);
 }
 
 .register-btn:active {
-  background-color: var(--primary-active);
+  transform: scale(0.98);
 }
 
 @media (max-width: 768px) {

@@ -79,17 +79,18 @@
 .btn-confirm-secondary {
   padding: 10px 16px;
   border-radius: 10px;
-  background-color: var(--bg-color);
-  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .btn-confirm-secondary:hover {
-  background-color: var(--border-color);
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: var(--border-subtle);
 }
 
 .btn-confirm-main {
@@ -99,26 +100,35 @@
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   color: #ffffff;
 }
 
 .btn-confirm-main.btn-danger {
-  background-color: #ef4444;
+  background-color: rgba(225, 29, 72, 0.12);
+  border: 1px solid rgba(225, 29, 72, 0.2);
+  color: #BE123C;
+}
+
+body.dark-mode .btn-confirm-main.btn-danger {
+  color: #F43F5E;
 }
 
 .btn-confirm-main.btn-danger:hover {
-  background-color: #dc2626;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  background-color: rgba(225, 29, 72, 0.22);
+  border-color: rgba(225, 29, 72, 0.35);
+  box-shadow: none;
 }
 
 .btn-confirm-main.btn-primary {
-  background-color: var(--primary-color);
+  background-color: var(--primary-burgundy);
+  border: 1px solid var(--primary-burgundy);
+  color: #ffffff;
 }
 
 .btn-confirm-main.btn-primary:hover {
-  background-color: var(--primary-hover);
-  box-shadow: 0 4px 12px var(--primary-focus);
+  background-color: var(--primary-burgundy-hover);
+  border-color: var(--primary-burgundy-hover);
 }
 
 @media (max-width: 480px) {
