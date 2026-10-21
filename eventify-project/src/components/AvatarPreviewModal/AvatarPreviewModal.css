@@ -1,0 +1,196 @@
+/* ==========================================================================
+   EVENTIFY - HARDWARE-ACCELERATED AVATAR ADJUSTMENT MODAL
+   ========================================================================== */
+
+.avatar-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.18s ease-out;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.avatar-modal-box {
+  background-color: var(--bg-surface);
+  width: 100%;
+  max-width: 420px;
+  border-radius: 18px;
+  padding: 24px 28px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-xl, 0 20px 35px rgba(0, 0, 0, 0.25));
+  animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Modal Header */
+.avatar-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.avatar-modal-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.avatar-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.avatar-modal-close:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-elevated, rgba(255, 255, 255, 0.08));
+}
+
+/* Modal Body */
+.avatar-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0 12px 0;
+}
+
+/* Circular 240px x 240px Viewport */
+.avatar-circular-viewport {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--primary-burgundy);
+  background-color: var(--bg-canvas, #0f172a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.avatar-circular-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+/* Hardware-Accelerated 60fps Image */
+.avatar-viewport-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform: translate3d(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, 0px)), 0) scale(var(--scale, 1));
+  will-change: transform;
+}
+
+/* Helper Hint */
+.avatar-drag-hint {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin: 4px 0 0 0;
+  text-align: center;
+  user-select: none;
+}
+
+/* Centered Equal-Weight Action Buttons */
+.avatar-modal-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  width: 100%;
+}
+
+.avatar-btn-cancel,
+.avatar-btn-save {
+  flex: 1;
+  max-width: 130px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.avatar-btn-cancel {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.avatar-btn-cancel:hover {
+  background-color: var(--bg-surface-elevated, rgba(255, 255, 255, 0.06));
+  border-color: var(--text-secondary);
+}
+
+.avatar-btn-save {
+  background-color: var(--primary-burgundy);
+  border: 1px solid var(--primary-burgundy);
+  color: #ffffff;
+}
+
+.avatar-btn-save:hover {
+  background-color: var(--primary-burgundy-hover);
+  border-color: var(--primary-burgundy-hover);
+}
+
+.avatar-btn-save:disabled,
+.avatar-btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 480px) {
+  .avatar-modal-box {
+    padding: 20px 16px;
+  }
+
+  .avatar-circular-viewport {
+    width: min(220px, 68vw);
+    height: min(220px, 68vw);
+  }
+}

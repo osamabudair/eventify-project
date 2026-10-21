@@ -131,15 +131,7 @@ body.dark-mode .action-btn.reject:hover {
   color: var(--primary-color);
 }
 
-.empty-state-container {
-  text-align: center;
-  padding: 40px;
-  color: var(--text-secondary);
-  background-color: var(--bg-color);
-  border: 1px dashed var(--border-color);
-  border-radius: 12px;
-  margin-top: 16px;
-}
+/* .empty-state-container handled by EmptyState.css */
 
 .empty-icon {
   opacity: 0.5;

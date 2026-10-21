@@ -43,7 +43,25 @@
   box-shadow: none;
 }
 
+
+.avatar-profile-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatar-monogram {
+  font-size: 28px;
+  font-weight: 800;
+  color: #ffffff;
+  user-select: none;
+  line-height: 1;
+}
+
 .avatar-edit-btn {
+  z-index: 2;
   position: absolute;
   bottom: -4px;
   right: -4px;
@@ -239,4 +257,40 @@ body.dark-mode .input-group input {
   .single-profile-card {
     padding: 18px 14px;
   }
+}
+/* --- Avatar Micro Remove Badge --- */
+.avatar-remove-btn {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 50%;
+  padding: 0;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(225, 29, 72, 0.35);
+  color: #E11D48;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+body.dark-mode .avatar-remove-btn,
+[data-theme="dark"] .avatar-remove-btn {
+  background: #1A161E;
+  border: 1.5px solid rgba(244, 63, 94, 0.4);
+  color: #F43F5E;
+}
+
+.avatar-remove-btn:hover {
+  background: #E11D48;
+  color: #FFFFFF;
+  border-color: #E11D48;
+  transform: scale(1.1);
 }

@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
+import { useToast } from '../../context/ToastContext';
 import { Sun, Moon, Bell, CheckCircle2, AlertCircle, Info, X, Calendar, Clock, CheckCheck } from 'lucide-react';
 import StudentSidebar from '../../components/StudentSidebar';
 import StudentOverviewTab from './tabs/StudentOverviewTab';

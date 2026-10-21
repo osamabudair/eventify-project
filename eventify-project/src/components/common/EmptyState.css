@@ -2,7 +2,8 @@
    EVENTIFY - REFINED & QUIET EMPTY STATE COMPONENT
    ========================================================================== */
 
-.empty-state-card {
+.empty-state-card,
+.empty-state-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,9 +18,11 @@
   margin: 24px auto;
   box-shadow: var(--shadow-sm);
   transition: border-color 0.2s ease, background-color 0.25s ease;
+  box-sizing: border-box;
 }
 
-.empty-state-icon-box {
+.empty-state-icon-box,
+.empty-state-icon-wrapper {
   width: 52px;
   height: 52px;
   border-radius: 12px;
@@ -34,7 +37,9 @@
 }
 
 body.dark-mode .empty-state-icon-box,
-[data-theme="dark"] .empty-state-icon-box {
+body.dark-mode .empty-state-icon-wrapper,
+[data-theme="dark"] .empty-state-icon-box,
+[data-theme="dark"] .empty-state-icon-wrapper {
   background-color: rgba(255, 255, 255, 0.04);
   color: var(--text-secondary);
 }
@@ -82,7 +87,8 @@ body.dark-mode .empty-state-icon-box,
 }
 
 /* Compact variant for table cells or side feeds */
-.empty-state-card.compact {
+.empty-state-card.compact,
+.empty-state-container.compact {
   padding: 32px 16px;
   border: none;
   background: transparent;
@@ -90,18 +96,22 @@ body.dark-mode .empty-state-icon-box,
   margin: 0 auto;
 }
 
-.empty-state-card.compact .empty-state-icon-box {
+.empty-state-card.compact .empty-state-icon-box,
+.empty-state-card.compact .empty-state-icon-wrapper,
+.empty-state-container.compact .empty-state-icon-box,
+.empty-state-container.compact .empty-state-icon-wrapper {
   width: 42px;
   height: 42px;
   margin-bottom: 12px;
 }
 
-.empty-state-card.compact .empty-state-title {
+.empty-state-card.compact .empty-state-title,
+.empty-state-container.compact .empty-state-title {
   font-size: 1rem;
 }
 
-.empty-state-card.compact .empty-state-description {
+.empty-state-card.compact .empty-state-description,
+.empty-state-container.compact .empty-state-description {
   font-size: 0.8125rem;
   margin-bottom: 14px;
 }
-
