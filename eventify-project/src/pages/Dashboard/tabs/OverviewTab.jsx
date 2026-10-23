@@ -28,39 +28,51 @@ const getTimeAgo = (dateStr) => {
 // --- Date and Time Parsing Utilities ---
 const parseEventDate = (dateVal) => {
   if (!dateVal) return new Date();
+  if (Array.isArray(dateVal)) {
+    const [y, m = 1, d = 1] = dateVal;
+    return new Date(y, m - 1, d, 0, 0, 0, 0);
+  }
   if (typeof dateVal === 'string' && dateVal.includes('-')) {
-    const parts = dateVal.split('-');
+    const parts = dateVal.split('T')[0].split('-');
     // ISO format yyyy-MM-dd
     if (parts[0].length === 4) {
-      return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10), 0, 0, 0, 0);
     }
     // d-M-yyyy format (day-month-year)
     if (parts.length === 3) {
-      return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+      return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10), 0, 0, 0, 0);
     }
   }
   const d = new Date(dateVal);
-  return isNaN(d.getTime()) ? new Date() : d;
+  return isNaN(d.getTime()) ? new Date() : new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
 };
 
-const parseTimeOnDate = (baseDate, timeStr, defaultHour, defaultMinute) => {
-  const d = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
-  if (!timeStr) {
-    d.setHours(defaultHour, defaultMinute, 0, 0);
+const parseTimeOnDate = (baseDate, timeVal, defaultHour, defaultMinute, isEnd = false) => {
+  const sec = isEnd ? 59 : 0;
+  const ms = isEnd ? 999 : 0;
+  const d = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate(), defaultHour, defaultMinute, sec, ms);
+  if (!timeVal || timeVal === 'TBA') {
     return d;
   }
-  const isPM = /pm/i.test(timeStr);
-  const isAM = /am/i.test(timeStr);
-  const cleaned = timeStr.replace(/(am|pm)/gi, '').trim();
+  if (Array.isArray(timeVal)) {
+    const [h = defaultHour, m = defaultMinute] = timeVal;
+    d.setHours(Number(h), Number(m), sec, ms);
+    return d;
+  }
+  if (typeof timeVal !== 'string') return d;
+  const isPM = /pm/i.test(timeVal);
+  const isAM = /am/i.test(timeVal);
+  const cleaned = timeVal.replace(/(am|pm)/gi, '').trim();
   const parts = cleaned.split(':');
 
-  let hours = parseInt(parts[0], 10) || 0;
+  let hours = parseInt(parts[0], 10);
   let minutes = parseInt(parts[1], 10) || 0;
+  if (isNaN(hours)) return d;
 
   if (isPM && hours < 12) hours += 12;
   if (isAM && hours === 12) hours = 0;
 
-  d.setHours(hours, minutes, 0, 0);
+  d.setHours(hours, minutes, sec, ms);
   return d;
 };
 
@@ -74,15 +86,15 @@ const getEventDynamicStatus = (event) => {
   let startStr = event.startTime;
   let endStr = event.endTime;
 
-  if ((!startStr || !endStr) && event.time && event.time.includes('-')) {
+  if ((!startStr || !endStr) && typeof event.time === 'string' && event.time.includes('-')) {
     const timeParts = event.time.split('-');
     startStr = startStr || timeParts[0]?.trim();
     endStr = endStr || timeParts[1]?.trim();
   }
 
   // Fallback: If no explicit start time is specified, default to 09:00 AM
-  const startDateTime = parseTimeOnDate(eventBaseDate, startStr, 9, 0);
-  const endDateTime = parseTimeOnDate(eventBaseDate, endStr, 23, 59);
+  const startDateTime = parseTimeOnDate(eventBaseDate, startStr, 9, 0, false);
+  const endDateTime = parseTimeOnDate(eventBaseDate, endStr, 23, 59, true);
 
   if (now < startDateTime) {
     return 'Upcoming';

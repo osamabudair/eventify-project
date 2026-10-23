@@ -28,16 +28,22 @@ export const StatCardSkeleton = () => (
   </div>
 );
 
-export const TableRowSkeleton = ({ columns = 5 }) => (
-  <tr className="table-skeleton-row">
-    {Array.from({ length: columns }).map((_, idx) => (
-      <td key={idx}>
-        <div 
-          className="skeleton-box skeleton-cell-text" 
-          style={{ width: idx === 0 ? '80%' : idx === columns - 1 ? '50%' : '65%' }}
-        />
-      </td>
+export const TableRowSkeleton = ({ rows = 1, columns = 5 }) => (
+  <>
+    {Array.from({ length: rows }).map((_, rowIdx) => (
+      <tr key={rowIdx} className="table-skeleton-row">
+        {Array.from({ length: columns }).map((__, colIdx) => (
+          <td key={colIdx}>
+            <div
+              className="skeleton-box skeleton-cell-text"
+              style={{
+                width:
+                  colIdx === 0 ? '80%' : colIdx === columns - 1 ? '50%' : '65%',
+              }}
+            />
+          </td>
+        ))}
+      </tr>
     ))}
-  </tr>
+  </>
 );
-

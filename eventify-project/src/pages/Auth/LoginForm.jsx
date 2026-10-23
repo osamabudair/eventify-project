@@ -92,7 +92,13 @@ const LoginForm = ({ onToggleMode }) => {
         });
         setShowApprovalModal(true);
       } else {
-        setErrorMsg(err.response?.data?.message || err.response?.data?.error || 'Failed to login');
+        setErrorMsg(
+          err.response?.data?.message ||
+          err.response?.data?.email ||
+          err.response?.data?.password ||
+          err.response?.data?.error ||
+          'Failed to login'
+        );
       }
     } finally {
       setLoading(false);

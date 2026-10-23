@@ -75,3 +75,50 @@ body.dark-mode .ticket-cancel-action {
 body.dark-mode .ticket-cancel-action:hover {
   color: #FB7185;
 }
+
+
+/* --- Rate & Review Button on Completed Tickets --- */
+.ticket-review-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(122, 12, 46, 0.35);
+  background-color: rgba(122, 12, 46, 0.12);
+  color: var(--primary-burgundy);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+body.dark-mode .ticket-review-action {
+  border-color: rgba(244, 63, 94, 0.35);
+  background-color: rgba(244, 63, 94, 0.14);
+  color: #FB7185;
+}
+
+.ticket-review-action:hover {
+  background-color: var(--primary-burgundy);
+  border-color: var(--primary-burgundy);
+  color: #ffffff;
+}
+
+body.dark-mode .ticket-review-action:hover {
+  background-color: var(--primary-burgundy);
+  color: #ffffff;
+}
+
+.ticket-reviewed-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary-burgundy);
+}
+
+body.dark-mode .ticket-reviewed-badge {
+  color: #FB7185;
+}

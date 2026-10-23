@@ -2,12 +2,21 @@ import React, { useState } from 'react';
 import {
   Users,
   Search,
-  CheckCircle2,
-  Clock,
-  Check,
   X,
 } from 'lucide-react';
 import './AllLeadersTable.css';
+
+const getAvatarForUser = (user) => {
+  if (!user) return null;
+  return (
+    user.avatarUrl ||
+    user.profileImageUrl ||
+    user.avatar ||
+    user.profilePicture ||
+    localStorage.getItem(`avatar_${user.id || user._id || user.email}`) ||
+    null
+  );
+};
 
 const AllLeadersTable = ({
   allLeaders = [],
@@ -94,15 +103,24 @@ const AllLeadersTable = ({
               <tbody>
                 {filteredLeaders.map((leader) => {
                   const isProcessing = actionLoadingId === leader.id;
+                  const avatarSrc = getAvatarForUser(leader);
                   return (
                     <tr key={leader.id}>
                       <td className="cell-title">
                         <div className="applicant-cell">
-                          <div
-                            className={`applicant-avatar ${leader.approved ? 'approved' : 'pending'}`}
-                          >
-                            {leader.name ? leader.name.charAt(0).toUpperCase() : 'L'}
-                          </div>
+                          {avatarSrc ? (
+                            <img
+                              src={avatarSrc}
+                              alt={leader.name || 'Leader'}
+                              className="admin-user-avatar-thumb"
+                            />
+                          ) : (
+                            <div
+                              className={`applicant-avatar ${leader.approved ? 'approved' : 'pending'}`}
+                            >
+                              {leader.name ? leader.name.charAt(0).toUpperCase() : 'L'}
+                            </div>
+                          )}
                           <div className="applicant-details">
                             <span className="applicant-name">{leader.name}</span>
                             <span className="applicant-id">ID: #{leader.id}</span>
@@ -153,4 +171,3 @@ const AllLeadersTable = ({
 };
 
 export default AllLeadersTable;
-

@@ -1,12 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import {
-  Clock,
   Search,
   ShieldCheck,
   Check,
   X,
 } from 'lucide-react';
 import './PendingApprovalsTable.css';
+
+const getAvatarForUser = (user) => {
+  if (!user) return null;
+  return (
+    user.avatarUrl ||
+    user.profileImageUrl ||
+    user.avatar ||
+    user.profilePicture ||
+    localStorage.getItem(`avatar_${user.id || user._id || user.email}`) ||
+    null
+  );
+};
 
 const PendingApprovalsTable = ({
   pendingLeaders = [],
@@ -99,13 +110,22 @@ const PendingApprovalsTable = ({
               <tbody>
                 {filteredPending.map((leader) => {
                   const isProcessing = actionLoadingId === leader.id;
+                  const avatarSrc = getAvatarForUser(leader);
                   return (
                     <tr key={leader.id} className="admin-table-row">
                       <td className="cell-title">
                         <div className="applicant-cell">
-                          <div className="applicant-avatar">
-                            {leader.name ? leader.name.charAt(0).toUpperCase() : 'L'}
-                          </div>
+                          {avatarSrc ? (
+                            <img
+                              src={avatarSrc}
+                              alt={leader.name || 'Leader'}
+                              className="admin-user-avatar-thumb"
+                            />
+                          ) : (
+                            <div className="applicant-avatar">
+                              {leader.name ? leader.name.charAt(0).toUpperCase() : 'L'}
+                            </div>
+                          )}
                           <div className="applicant-details">
                             <span className="applicant-name">{leader.name}</span>
                             <span className="applicant-id">ID: #{leader.id}</span>

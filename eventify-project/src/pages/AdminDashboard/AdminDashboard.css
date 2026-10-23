@@ -504,3 +504,16 @@ body.dark-mode .btn-action-remove:hover:not(:disabled) {
   border-radius: var(--radius-lg, 12px);
   padding: 1.5rem;
 }
+
+
+/* --- 28px Circular Avatar Thumbnail in Admin Tables --- */
+.admin-user-avatar-thumb {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  display: block;
+}

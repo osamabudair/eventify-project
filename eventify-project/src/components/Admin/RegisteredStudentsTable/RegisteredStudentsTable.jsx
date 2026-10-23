@@ -8,6 +8,18 @@ import {
 } from 'lucide-react';
 import './RegisteredStudentsTable.css';
 
+const getAvatarForUser = (user) => {
+  if (!user) return null;
+  return (
+    user.avatarUrl ||
+    user.profileImageUrl ||
+    user.avatar ||
+    user.profilePicture ||
+    localStorage.getItem(`avatar_${user.id || user._id || user.email}`) ||
+    null
+  );
+};
+
 const RegisteredStudentsTable = ({
   students = [],
   formatDate = () => 'N/A',
@@ -119,14 +131,23 @@ const RegisteredStudentsTable = ({
                 {sortedStudents.map((student) => {
                   const isProcessing = actionLoadingId === student.id;
                   const isSuspended = student.approved === false;
+                  const avatarSrc = getAvatarForUser(student);
 
                   return (
                     <tr key={student.id} className="admin-table-row">
                       <td className="cell-title">
                         <div className="applicant-cell">
-                          <div className={`applicant-avatar student-avatar ${isSuspended ? 'avatar-suspended' : ''}`}>
-                            {student.name ? student.name.charAt(0).toUpperCase() : 'S'}
-                          </div>
+                          {avatarSrc ? (
+                            <img
+                              src={avatarSrc}
+                              alt={student.name || 'Student'}
+                              className="admin-user-avatar-thumb"
+                            />
+                          ) : (
+                            <div className={`applicant-avatar student-avatar ${isSuspended ? 'avatar-suspended' : ''}`}>
+                              {student.name ? student.name.charAt(0).toUpperCase() : 'S'}
+                            </div>
+                          )}
                           <div className="applicant-details">
                             <span className="applicant-name">{student.name}</span>
                             <span className="applicant-id">ID: #{student.id}</span>

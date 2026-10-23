@@ -52,6 +52,7 @@
   margin: 0;
   display: inline-flex;
   align-items: baseline;
+  cursor: pointer;
 }
 
 .logo span {
@@ -92,6 +93,213 @@ body.dark-mode .logo span {
   color: var(--primary-burgundy) !important;
   border-color: var(--border-subtle) !important;
   transform: none;
+}
+
+/* --- Notification Popover in Navbar --- */
+.nav-notif-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-notif-btn {
+  position: relative;
+}
+
+.nav-notif-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  background-color: var(--primary-burgundy);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.nav-notif-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 320px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+  z-index: 120;
+  overflow: hidden;
+}
+
+.nav-notif-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.nav-notif-header h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.nav-notif-mark-all {
+  background: transparent;
+  border: none;
+  color: var(--primary-burgundy);
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+body.dark-mode .nav-notif-mark-all {
+  color: var(--accent-rose);
+}
+
+.nav-notif-count-label {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+.nav-notif-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.nav-notif-empty {
+  margin: 0;
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.nav-notif-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.nav-notif-item:last-child {
+  border-bottom: none;
+}
+
+.nav-notif-item:hover {
+  background-color: var(--tag-bg);
+}
+
+.nav-notif-item.unread {
+  background-color: rgba(122, 12, 46, 0.06);
+}
+
+body.dark-mode .nav-notif-item.unread {
+  background-color: rgba(244, 63, 94, 0.08);
+}
+
+.nav-notif-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.nav-notif-item-top strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.nav-notif-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--primary-burgundy);
+  flex-shrink: 0;
+}
+
+body.dark-mode .nav-notif-dot {
+  background-color: var(--accent-rose);
+}
+
+.nav-notif-item p {
+  margin: 0 0 6px 0;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.nav-notif-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* --- Authenticated User Avatar Pill --- */
+.nav-user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 12px 5px 6px;
+  border-radius: 9999px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-user-pill:hover {
+  border-color: var(--primary-burgundy);
+  transform: translateY(-1px);
+}
+
+.nav-user-avatar-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.nav-user-avatar-monogram {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7A0C2E 0%, #4C051B 100%);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-user-name {
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* --- Authentication Buttons --- */
@@ -181,6 +389,14 @@ body.dark-mode .login-btn:hover {
     font-size: 13px;
     border-radius: 9px;
     white-space: nowrap;
+  }
+
+  .nav-user-name {
+    display: none;
+  }
+
+  .nav-user-pill {
+    padding: 4px;
   }
 }
 

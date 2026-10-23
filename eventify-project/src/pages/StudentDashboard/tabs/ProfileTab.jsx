@@ -1,7 +1,7 @@
 // --- Imports ---
 import React, { useState, useEffect, useRef } from 'react';
 import { Save, Camera, Eye, EyeOff } from 'lucide-react';
-import { updateProfileApi } from '../../../api/axiosInstance';
+import { updateProfileApi, updateAvatarApi, deleteAvatarApi } from '../../../api/axiosInstance';
 import { useToast } from '../../../context/ToastContext';
 import PasswordStrengthMeter from '../../../components/PasswordStrengthMeter/PasswordStrengthMeter';
 import AvatarPreviewModal from '../../../components/AvatarPreviewModal/AvatarPreviewModal';
@@ -34,6 +34,8 @@ const ProfileTab = ({ showToast: propShowToast }) => {
       });
 
       const storedAvatar =
+        user.avatarUrl ||
+        user.profileImageUrl ||
         user.avatar ||
         user.profilePicture ||
         localStorage.getItem(`avatar_${user.id || user._id || user.email}`);
@@ -72,36 +74,56 @@ const ProfileTab = ({ showToast: propShowToast }) => {
     e.target.value = '';
   };
 
-  const handleSaveAvatar = (newAvatarUrl) => {
+  const handleSaveAvatar = async (newAvatarUrl) => {
     setAvatarUrl(newAvatarUrl);
     setIsAvatarModalOpen(false);
     setSelectedImageSrc(null);
 
-    // Persist in localStorage
+    let persistedUrl = newAvatarUrl;
+    try {
+      const updatedDto = await updateAvatarApi(newAvatarUrl);
+      if (updatedDto?.avatarUrl || updatedDto?.profileImageUrl) {
+        persistedUrl = updatedDto.avatarUrl || updatedDto.profileImageUrl;
+        setAvatarUrl(persistedUrl);
+      }
+    } catch {
+      // Fallback to local state if backend endpoint is temporarily unreachable
+    }
+
     const userString = localStorage.getItem('user');
     if (userString) {
       const user = JSON.parse(userString);
       const updatedUser = {
         ...user,
-        avatar: newAvatarUrl,
-        profilePicture: newAvatarUrl
+        avatarUrl: persistedUrl,
+        profileImageUrl: persistedUrl,
+        avatar: persistedUrl,
+        profilePicture: persistedUrl
       };
       localStorage.setItem('user', JSON.stringify(updatedUser));
-      localStorage.setItem(`avatar_${user.id || user._id || user.email}`, newAvatarUrl);
+      localStorage.setItem(`avatar_${user.id || user._id || user.email}`, persistedUrl);
       window.dispatchEvent(new Event('storage'));
     }
 
     showToast('Profile picture updated successfully!', 'success');
   };
 
-  const handleRemovePhoto = () => {
+  const handleRemovePhoto = async () => {
     setAvatarUrl('');
     setIsAvatarModalOpen(false);
     setSelectedImageSrc(null);
 
+    try {
+      await deleteAvatarApi();
+    } catch {
+      // Fallback to local state if backend endpoint is temporarily unreachable
+    }
+
     const userString = localStorage.getItem('user');
     if (userString) {
       const user = JSON.parse(userString);
+      user.avatarUrl = null;
+      user.profileImageUrl = null;
       user.avatar = null;
       user.profilePicture = null;
       localStorage.setItem('user', JSON.stringify(user));
@@ -135,19 +157,23 @@ const ProfileTab = ({ showToast: propShowToast }) => {
         name: profileData.fullName,
         currentPassword: passwords.current || null,
         newPassword: passwords.new || null,
-        confirmNewPassword: passwords.confirm || null
+        confirmNewPassword: passwords.confirm || null,
+        avatarUrl: avatarUrl || null
       };
 
       const res = await updateProfileApi(payload);
 
       const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const resolvedAvatar = avatarUrl || user.avatarUrl || user.avatar || user.profilePicture || null;
       const updatedUser = {
         ...user,
         username: profileData.fullName,
         name: profileData.fullName,
         email: profileData.email,
-        avatar: avatarUrl || user.avatar || user.profilePicture,
-        profilePicture: avatarUrl || user.profilePicture || user.avatar
+        avatarUrl: resolvedAvatar,
+        profileImageUrl: resolvedAvatar,
+        avatar: resolvedAvatar,
+        profilePicture: resolvedAvatar
       };
       localStorage.setItem('user', JSON.stringify(updatedUser));
       window.dispatchEvent(new Event('storage'));

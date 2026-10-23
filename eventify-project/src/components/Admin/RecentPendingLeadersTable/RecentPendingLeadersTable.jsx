@@ -2,6 +2,18 @@ import './RecentPendingLeadersTable.css';
 import React from 'react';
 import { Clock, Check, X } from 'lucide-react';
 
+const getAvatarForUser = (user) => {
+  if (!user) return null;
+  return (
+    user.avatarUrl ||
+    user.profileImageUrl ||
+    user.avatar ||
+    user.profilePicture ||
+    localStorage.getItem(`avatar_${user.id || user._id || user.email}`) ||
+    null
+  );
+};
+
 const RecentPendingLeadersTable = ({
   pendingLeaders = [],
   formatDate = () => 'N/A',
@@ -51,13 +63,22 @@ const RecentPendingLeadersTable = ({
             <tbody>
               {recentPending.map((leader) => {
                 const isProcessing = actionLoadingId === leader.id;
+                const avatarSrc = getAvatarForUser(leader);
                 return (
                   <tr key={leader.id}>
                     <td className="cell-title">
                       <div className="applicant-cell">
-                        <div className="applicant-avatar pending">
-                          {leader.name ? leader.name.charAt(0).toUpperCase() : 'L'}
-                        </div>
+                        {avatarSrc ? (
+                          <img
+                            src={avatarSrc}
+                            alt={leader.name || 'Leader'}
+                            className="admin-user-avatar-thumb"
+                          />
+                        ) : (
+                          <div className="applicant-avatar pending">
+                            {leader.name ? leader.name.charAt(0).toUpperCase() : 'L'}
+                          </div>
+                        )}
                         <div className="applicant-details">
                           <span className="applicant-name">{leader.name}</span>
                           <span className="applicant-id">ID: #{leader.id}</span>
@@ -116,4 +137,3 @@ const RecentPendingLeadersTable = ({
 };
 
 export default RecentPendingLeadersTable;
-

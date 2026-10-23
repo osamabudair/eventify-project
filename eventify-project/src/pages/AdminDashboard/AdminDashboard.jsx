@@ -389,7 +389,11 @@ const AdminDashboard = () => {
             <StatCardSkeleton />
           </div>
           <div className="admin-skeleton-table-card">
-            <TableRowSkeleton rows={5} columns={4} />
+            <table className="events-table admin-table">
+              <tbody>
+                <TableRowSkeleton rows={5} columns={4} />
+              </tbody>
+            </table>
           </div>
         </div>
       );
