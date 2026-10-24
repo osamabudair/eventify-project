@@ -1,0 +1,181 @@
+/* ==========================================================================
+   CUSTOM TIME PICKER - UNIFIED THEME (LIGHT & DARK MODES)
+   ========================================================================== */
+
+.custom-time-picker {
+  position: relative;
+  width: 100%;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.custom-time-picker.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.time-picker-trigger {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  background-color: var(--bg-canvas, #F9FAFB);
+  border: 1px solid var(--border-color, #E5E7EB);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: var(--text-primary, #111827);
+  font-size: 0.88rem;
+  font-weight: 500;
+  font-family: inherit;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.time-picker-trigger:hover:not(:disabled) {
+  border-color: var(--border-hover, #D1D5DB);
+}
+
+.time-picker-trigger.active {
+  border-color: var(--primary-burgundy, #7A0C2E);
+  box-shadow: 0 0 0 3px var(--primary-focus, rgba(122, 12, 46, 0.15));
+  background-color: var(--bg-surface, #FFFFFF);
+}
+
+.time-picker-trigger.placeholder .time-value-display {
+  color: var(--text-muted, #9CA3AF);
+  font-weight: 400;
+}
+
+.trigger-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.time-icon {
+  color: var(--text-secondary, #6B7280);
+  flex-shrink: 0;
+}
+
+.time-value-display {
+  color: var(--text-primary, #111827);
+  font-size: 0.88rem;
+  font-family: inherit;
+}
+
+.time-chevron {
+  color: var(--text-secondary, #6B7280);
+  transition: transform 0.2s ease, color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.time-chevron.open {
+  transform: rotate(180deg);
+  color: var(--primary-burgundy, #7A0C2E);
+}
+
+/* ==================== POPOVER ==================== */
+.time-picker-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  min-width: 210px;
+  background: var(--bg-surface, #FFFFFF);
+  border: 1px solid var(--border-color, #E5E7EB);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg, 0 12px 28px -4px rgba(0, 0, 0, 0.15));
+  z-index: 1100;
+  overflow: hidden;
+  animation: timePopoverFadeIn 0.12s ease-out;
+  box-sizing: border-box;
+}
+
+@keyframes timePopoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.time-columns-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 8px 6px;
+  background: var(--bg-surface-elevated, #F3F4F6);
+  border-bottom: 1px solid var(--border-color, #E5E7EB);
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary, #6B7280);
+  font-family: inherit;
+}
+
+.time-columns-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 160px;
+  padding: 4px;
+}
+
+.time-column {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 2px;
+  padding: 2px 3px;
+}
+
+.time-column:not(:last-child) {
+  border-right: 1px solid var(--border-subtle, #E5E7EB);
+}
+
+.time-column::-webkit-scrollbar {
+  width: 3px;
+}
+
+.time-column::-webkit-scrollbar-thumb {
+  background: var(--border-hover, #D1D5DB);
+  border-radius: 4px;
+}
+
+.time-cell {
+  background: transparent;
+  border: none;
+  color: var(--text-primary, #111827);
+  font-size: 0.82rem;
+  padding: 6px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  text-align: center;
+  font-weight: 500;
+  font-family: inherit;
+}
+
+.time-cell:hover:not(:disabled) {
+  background: var(--bg-surface-elevated, #F3F4F6);
+  color: var(--text-primary, #111827);
+}
+
+.time-cell.selected {
+  background: var(--tag-bg, #FDF2F4);
+  color: var(--tag-text, #7A0C2E);
+  font-weight: 700;
+}
+
+.time-cell.cell-disabled,
+.time-cell:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  pointer-events: none;
+  text-decoration: line-through;
+}
